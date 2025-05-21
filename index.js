@@ -37,6 +37,8 @@
 
     window.onload = initSlideshow;
 
+    
+
     const scrollContainer = document.getElementById("draggableScroll");
     let isDown = false;
     let startX;
@@ -81,6 +83,8 @@
 
 
 
+
+
     const modal = document.getElementById("videoModal");
     const popupVideo = document.getElementById("popupVideo");
     const modalContent = document.getElementById("modalContent");
@@ -105,6 +109,8 @@
             popupVideo.src = ""; // Clear video
         }
     });
+
+
 
 
     

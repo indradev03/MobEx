@@ -7,7 +7,7 @@
 const products = {
         1: {
         name: "Apple iPhone 16 Plus",
-        image: "./index images/PreLovediPhone16Plus128GBWhite2.webp",
+        image: "./indeximages/PreLovediPhone16Plus128GBWhite2.webp",
         details: "Like New Apple iPhone 16 Plus [128GB | 100%] (10 Months Warranty Left)",
         oldPrice: "NPR 171,500.00",
         newPrice: "NPR 121,500.00",
@@ -15,9 +15,9 @@ const products = {
         status: "Sold Out",
         statusClass: "sold-out",
         thumbnails: [
-            "./index images/PreLovediPhone14ProMax128GBPurple03.webp",
-            "./index images/PreLovediPhone16Plus128GBWhite2.webp",
-            "./index images/XAOMIULTRA15.png"
+            "./indeximages/PreLovediPhone14ProMax128GBPurple03.webp",
+            "./indeximages/PreLovediPhone16Plus128GBWhite2.webp",
+            "./indeximages/XAOMIULTRA15.png"
         ],
         condition: "Like New",
         storage: "128GB",
@@ -43,7 +43,7 @@ const products = {
 
         2: {
         name: "Apple iPhone 13",
-        image: "./index images/PreLovediPhone13Blue3.webp",
+        image: "./indeximages/PreLovediPhone13Blue3.webp",
         details: "Apple iPhone 13 [256GB | 80%]",
         oldPrice: "NPR 86,500.00",
         newPrice: "NPR 54,500.00",
@@ -51,8 +51,8 @@ const products = {
         status: "In Stock",
         statusClass: "sale",
         thumbnails: [
-            "./index images/PreLovediPhone13Thumb1.webp",
-            "./index images/PreLovediPhone13Thumb2.webp"
+            "./indeximages/PreLovediPhone13Thumb1.webp",
+            "./indeximages/PreLovediPhone13Thumb2.webp"
         ],
         condition: "Used (Good Condition)",
         storage: "256GB",
@@ -77,7 +77,7 @@ const products = {
         },
         3: {
             name: "Apple iPhone 14 Pro Max",
-            image: "./index images/PreLovediPhone14ProMax128GBPurple03.webp",
+            image: "./indeximages/PreLovediPhone14ProMax128GBPurple03.webp",
             details: "Apple iPhone 14 Pro Max [128GB | 85%]",
             oldPrice: "NPR 247,990.00",
             newPrice: "NPR 115,500.00",
@@ -85,7 +85,7 @@ const products = {
             status: "In Stock",
             statusClass: "sale",
             thumbnails: [
-                "./index images/PreLovediPhone14ProMax128GBPurple03.webp"
+                "./indeximages/PreLovediPhone14ProMax128GBPurple03.webp"
             ],
             condition: "Used (Good Condition)",
             storage: "128GB",
@@ -112,7 +112,7 @@ const products = {
 
         4: {
             name: "Samsung Galaxy S25 Ultra",
-            image: "./index images/S25Ultra.png",
+            image: "./indeximages/S25Ultra.png",
             details: "Samsung Galaxy S25 Ultra [256GB | 90%]",
             oldPrice: "NPR 240,500.00",
             newPrice: "NPR 179,600.00",
@@ -120,7 +120,7 @@ const products = {
             status: "On Sale",
             statusClass: "sale",
             thumbnails: [
-            "./index images/S25Ultra.png"
+            "./indeximages/S25Ultra.png"
             ],
             condition: "",
             storage: "256GB",
@@ -130,7 +130,7 @@ const products = {
         },
         5: {
             name: "Xiaomi 15 Ultra",
-            image: "./index images/XAOMIULTRA15.png",
+            image: "./indeximages/XAOMIULTRA15.png",
             details: "Xiaomi 15 Ultra [512GB | 80%]",
             oldPrice: "NPR 180,400.00",
             newPrice: "NPR 141,500.00",
@@ -138,7 +138,7 @@ const products = {
             status: "Sold Out",
             statusClass: "sold-out",
             thumbnails: [
-            "./index images/XAOMIULTRA15.png"
+            "./indeximages/XAOMIULTRA15.png"
             ],
             condition: "",
             storage: "512GB",
@@ -148,7 +148,7 @@ const products = {
         },
         6: {
             name: "Apple iPhone 15 Pro Max",
-            image: "./index images/PreLovediPhone15ProMaxBlue256GB.webp",
+            image: "./indeximages/PreLovediPhone15ProMaxBlue256GB.webp",
             details: "Apple iPhone 15 Pro Max [256GB | 89%]",
             oldPrice: "NPR 206,000.00",
             newPrice: "NPR 133,500.00",
@@ -156,7 +156,7 @@ const products = {
             status: "On Sale",
             statusClass: "sale",
             thumbnails: [
-            "./index images/PreLovediPhone15ProMaxBlue256GB.webp"
+            "./indeximages/PreLovediPhone15ProMaxBlue256GB.webp"
             ],
             condition: "",
             storage: "256GB",
@@ -166,7 +166,7 @@ const products = {
         },
         7: {
             name: "Apple iPhone 12 Pro Max",
-            image: "./index images/PreLovediPhone12ProMax01_f94bd3d1-2070-47fa-bcef-77a9b7478717.webp",
+            image: "./indeximages/PreLovediPhone12ProMax01_f94bd3d1-2070-47fa-bcef-77a9b7478717.webp",
             details: "Iphone 12 Pro Max [128GB | 91%]",
             oldPrice: "NPR 172,000.00",
             newPrice: "NPR 112,800.00",
