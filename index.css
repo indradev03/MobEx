@@ -329,11 +329,20 @@ body {
     margin: 50px auto;
     padding: 0 20px;
 }
-.premium-products h2 {
-    text-align: center;
-    font-size: 2em;
-    margin-bottom: 40px;
+.premium-product-item h3 {
+    display: inline-block;
+    background-color: transparent;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.premium-product-item h3:hover {
+    background-color: #e0f0ff;
+    color: #0056b3;
+}
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

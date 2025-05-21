@@ -108,3 +108,24 @@
 
 
     
+        document.addEventListener('DOMContentLoaded', function () {
+        // Make product name clickable to go to detail page
+        document.querySelectorAll('.premium-product-item h3').forEach(title => {
+            title.addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent event from bubbling up
+                const productItem = e.target.closest('.premium-product-item');
+                const productId = productItem.getAttribute('data-id');
+                window.location.href = `product-details.html?id=${productId}`;
+            });
+        });
+
+        // Add-to-cart button alert only
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.stopPropagation();
+                alert('Product added to cart!');
+            });
+        });
+    });
+
+    
