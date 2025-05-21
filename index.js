@@ -111,8 +111,46 @@
     });
 
 
+function toggleFilter() {
+        const filter = document.getElementById('filterControls');
+        filter.style.display = (filter.style.display === 'none' || filter.style.display === '') ? 'flex' : 'none';
+        }
 
+        function filterProducts() {
+        const brand = document.getElementById("brand").value.toLowerCase();
+        const status = document.getElementById("status").value.toLowerCase();
+        const search = document.getElementById("search").value.toLowerCase();
 
+        const items = document.querySelectorAll(".premium-product-item");
+
+        items.forEach(item => {
+            const textContent = item.innerText.toLowerCase();
+            const itemBrand = item.getAttribute("data-brand") || "";
+            const itemStatus = item.querySelector(".status")?.classList.value.toLowerCase() || "";
+
+            const matchesBrand = brand === "all" || itemBrand.includes(brand) || textContent.includes(brand);
+            const matchesStatus = status === "all" || itemStatus.includes(status);
+            const matchesSearch = textContent.includes(search);
+
+            item.style.display = (matchesBrand && matchesStatus && matchesSearch) ? "" : "none";
+        });
+        }
+
+        function sortProducts() {
+        const sort = document.getElementById("sort").value;
+        const grid = document.querySelector(".product-grid");
+        const items = Array.from(document.querySelectorAll(".premium-product-item"));
+
+        if (sort === "default") return;
+
+        items.sort((a, b) => {
+            const priceA = parseFloat(a.querySelector(".new-price")?.innerText.replace(/[^\d.]/g, "") || 0);
+            const priceB = parseFloat(b.querySelector(".new-price")?.innerText.replace(/[^\d.]/g, "") || 0);
+            return sort === "price-asc" ? priceA - priceB : priceB - priceA;
+        });
+
+        items.forEach(item => grid.appendChild(item));
+    }
     
         document.addEventListener('DOMContentLoaded', function () {
         // Make product name clickable to go to detail page
