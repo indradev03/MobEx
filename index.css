@@ -467,6 +467,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     text-align: center;
     transition: transform 0.3s ease;
+    /* background: linear-gradient(to top right,  #f50000, #dfe5e8, #edf2f7,#02b3ff); */
 }
 
 .premium-product-item:hover {
@@ -489,6 +490,7 @@ body {
 }
 
 .image-wrapper img {
+    
     display: block;
     border-radius: 8px;
 }
@@ -535,7 +537,6 @@ body {
 .details {
     font-size: 0.95em;
     color: #666;
-    min-height: 60px;
     margin: 10px 0;
 }
 
@@ -560,7 +561,7 @@ body {
 /* === Add to Cart Button (fixed to bottom inside card) === */
 .add-to-cart {
     position: absolute;
-    bottom: 20px;
+    bottom: 35px;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 40px);
@@ -573,7 +574,7 @@ body {
     transition: background-color 0.3s ease;
     background-image: url('./indeximages/shopping-cart.png');
     background-repeat: no-repeat;
-    background-position: 16px center;
+    background-position: 60px center;
     background-size: 20px 20px;
     padding-left: 48px;
     z-index: 1;

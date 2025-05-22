@@ -7,6 +7,7 @@
     padding: 20px;
     background: #fff;
     border-radius: 10px;
+    background: linear-gradient(to top right,  #f50000, #dfe5e8, #edf2f7,#02b3ff);
 }
 
 /* Image gallery */
@@ -125,10 +126,18 @@
     margin-top: 30px;
 }
 
-.features ul {
+.features ol {
     list-style: disc;
     padding-left: 20px;
     color: #444;
+}
+.features li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 .specs-table table {
@@ -144,7 +153,6 @@
 }
 
 .specs-table th {
-    background-color: #f9f9f9;
     font-weight: bold;
 }
 
