@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Times New Roman', Times, serif;
-    background: linear-gradient(to top right,  rgb(113, 174, 236), #dfe5e8, #edf2f7,#f50000);
+    background: linear-gradient(to top right,  rgba(118, 180, 243, 0.562), #f6f6f6, #edf2f7,#f4d7d737);
 
     overflow-x: hidden;
 }
@@ -12,8 +12,9 @@ body {
 .Navbar {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    justify-content: space-around;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: fixed;
@@ -23,6 +24,7 @@ body {
     background-color: #fff;
     height: 80px;
     background: linear-gradient(to top right,  rgb(213, 243, 250), #ffffff, #f9f9f9);
+
 }
 
 .Main_Logo img {
@@ -334,7 +336,7 @@ body {
         font-weight: 500;
         width: 15%;
         cursor: pointer;
-        background-color: rgba(128, 128, 128, 0.473);
+        background-color: rgba(128, 128, 128, 0.185);
         color: black;
         border: none;
         border-radius: 10px;
@@ -679,10 +681,6 @@ body {
         z-index: 1;
     }
 }
-
-
-
-
 /* Banner Container */
 .banner-conatainer {
     width: 100%;
