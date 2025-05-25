@@ -386,6 +386,8 @@ const products = {
         }
 };
 
+
+    // Function to load product details into the page
     function loadProductDetails(productId) {
         const product = products[productId];
         if (!product) {
