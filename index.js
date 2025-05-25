@@ -1,3 +1,5 @@
+    
+    // Slideshow functionality
     let slideIndex = 0;
 
     function initSlideshow() {
@@ -38,7 +40,7 @@
     window.onload = initSlideshow;
 
     
-
+   // Draggable scroll functionality for video gallery
     const scrollContainer = document.getElementById("draggableScroll");
     let isDown = false;
     let startX;
@@ -84,7 +86,7 @@
 
 
 
-
+    // Video modal PopUp functionality
     const modal = document.getElementById("videoModal");
     const popupVideo = document.getElementById("popupVideo");
     const modalContent = document.getElementById("modalContent");
@@ -111,6 +113,8 @@
     });
 
 
+
+    // Filter and sort functionality for premium products
 function toggleFilter() {
         const filter = document.getElementById('filterControls');
         filter.style.display = (filter.style.display === 'none' || filter.style.display === '') ? 'flex' : 'none';
@@ -151,6 +155,8 @@ function toggleFilter() {
 
         items.forEach(item => grid.appendChild(item));
     }
+    
+
     
         document.addEventListener('DOMContentLoaded', function () {
         // Make product name clickable to go to detail page

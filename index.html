@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="./index.css">
 
 </head>
-
 <body>
 <div>
-
+<div>
     <!-- Navbar Section -->
     <div class="Navbar">
         <div class="Main_Logo">
@@ -123,197 +122,197 @@
     </div>
 
 
-<!-- Main Product Grid Page -->
-<div class="premium-products">
-    <h2>Hot Sale</h2>
+    <!-- Main Product Grid Page -->
+    <div class="premium-products">
+        <h2>Hot Sale</h2>
 
-    <!-- Filter Toggle Button -->
-    <button class="filer-btn" id="filterButton" 
-        onclick="toggleFilter()">
-        <img src="./indeximages/filter.png">Filter Products</button>
+        <!-- Filter Toggle Button -->
+        <button class="filer-btn" id="filterButton" 
+            onclick="toggleFilter()">
+            <img src="./indeximages/filter.png">Filter Products</button>
 
-    <!-- Filter Controls -->
-    <div class="filter-container" id="filterControls">
-        <div class="filter-bar">
-        <label for="brand">Brand:</label>
-        <select id="brand" onchange="filterProducts()">
-            <option value="all">All</option>
-            <option value="iphone">Apple</option>
-            <option value="samsung">Samsung</option>
-            <option value="xiaomi">Xiaomi</option>
-        </select>
+        <!-- Filter Controls -->
+        <div class="filter-container" id="filterControls">
+            <div class="filter-bar">
+            <label for="brand">Brand:</label>
+            <select id="brand" onchange="filterProducts()">
+                <option value="all">All</option>
+                <option value="iphone">Apple</option>
+                <option value="samsung">Samsung</option>
+                <option value="xiaomi">Xiaomi</option>
+            </select>
 
-        <label for="status">Status:</label>
-        <select id="status" onchange="filterProducts()">
-            <option value="all">All</option>
-            <option value="sale">Sale</option>
-            <option value="sold-out">Sold Out</option>
-        </select>
-        </div>
-
-        <div class="sort-bar">
-        <label for="sort">Sort By:</label>
-        <select id="sort" onchange="sortProducts()">
-            <option value="default">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-        </select>
-        </div>
-
-        <div class="search-bar">
-        <input type="text" id="search" placeholder="Search for products..." onkeyup="filterProducts()">
-        <button id="searchButton" onclick="filterProducts()">Search</button>
-        </div>
-    </div>
-    <div class="product-grid">
-
-        <!-- Product 1 -->
-    
-        <div class="premium-product-item" data-id="1">
-            <div class="image-wrapper">
-                <img src="./indeximages/PreLovediPhone16Plus128GBblue.svg" alt="iPhone 16 Plus">
-                <p class="status sale">Sale</p>
+            <label for="status">Status:</label>
+            <select id="status" onchange="filterProducts()">
+                <option value="all">All</option>
+                <option value="sale">Sale</option>
+                <option value="sold-out">Sold Out</option>
+            </select>
             </div>
-            <h3>Apple iPhone 16 Plus</h3>
-            <p class="details">Like New Apple iPhone 16 Plus [128GB | 100%] Brand New</p>
-            <p class="price">
-                <span class="old-price">NPR 171,500.00</span>
-                <span class="new-price">NPR 154,500.00</span>
-            </p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
 
-
-        <!-- Product 2 -->
-        <div class="premium-product-item" data-id="2">
-            <div class="image-wrapper">
-                <img src="./indeximages/PreLovediPhone13Blue3.svg" alt="iPhone 13 Blue">
-                <p class="status sale">Sale</p>
+            <div class="sort-bar">
+            <label for="sort">Sort By:</label>
+            <select id="sort" onchange="sortProducts()">
+                <option value="default">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+            </select>
             </div>
-            <h3>Apple iPhone 13</h3>
-            <p class="details">Apple iPhone 13 [256GB | 80%]</p>
-            <p class="price">
-                <span class="old-price">NPR 86,500.00</span>
-                <span class="new-price">NPR 54,500.00</span>
-            </p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
 
-        <!-- Product 3 -->
-        <div class="premium-product-item" data-id="3">
-            <div class="image-wrapper">
-                <img src="./indeximages/PreLovediPhone14ProMax128GBPurple03.svg" alt="iPhone 14 Pro Max">
-                <p class="status sold-out">Sold Out</p>
+            <div class="search-bar">
+            <input type="text" id="search" placeholder="Search for products..." onkeyup="filterProducts()">
+            <button id="searchButton" onclick="filterProducts()">Search</button>
             </div>
-            <h3>Apple iPhone 14 Pro Max</h3>
-            <p class="details">Apple iPhone 14 Pro Max [512GB | 85%]</p>
-            <p class="price">
-                <span class="old-price">NPR 247,990.00 </span>
-                <span class="new-price">NPR 115,500.00</span>
-            </p>
-            <button class="add-to-cart" disabled>Add to Cart</button>
         </div>
-        <!-- Sample for Product 4 -->
-        <div class="premium-product-item" data-id="4">
-            <div class="image-wrapper">
-                <img src="./indeximages/S25Ultra.svg" alt="Samsung Galaxy S25 Ultra">
-                <p class="status sale">Sale</p>
-            </div>
-            <h3>Samsung Galaxy S25 Ultra</h3>
-            <p class="details">Samsung Galaxy S25 Ultra [ 256GB | 90%]</p>
-            <p class="price">
-                <span class="old-price">NPR 240,500.00</span>
-                <span class="new-price">NPR 179,600.00</span>
-            </p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
+        <div class="product-grid">
 
-        <div class="premium-product-item" data-id="5">
-            <div class="image-wrapper">
-                <img src="./indeximages/XAOMIULTRA15.svg" alt="Xiaomi 15 Ultra">
-                <p class="status sold-out">Sold Out</p>
-            </div>
-            <h3>Xiaomi 15 Ultra</h3>
-            <p class="details">Xiaomi 15 Ultra [ 512GB | 80%]</p>
-            <p class="price">
-                <span class="old-price">NPR 180,400.00</span>
-                <span class="new-price">NPR 141,500.00</span>
-            </p>
-
-            <button class="add-to-cart" disabled>Add to Cart</button>
-        </div>
-                            
-            <div class="premium-product-item" data-id="6">
+            <!-- Product 1 -->
+        
+            <div class="premium-product-item" data-id="1">
                 <div class="image-wrapper">
-                    <img src="./indeximages/PreLovediPhone15ProMaxBlue256GB.svg" alt="iPhone 15 Pro Max">
+                    <img src="./indeximages/PreLovediPhone16Plus128GBblue.svg" alt="iPhone 16 Plus">
                     <p class="status sale">Sale</p>
                 </div>
-                <h3>Apple iPhone 15 Pro Max</h3>
-                <p class="details">Apple iPhone 15 Pro Max [256GB | 89%]</p>
+                <h3>Apple iPhone 16 Plus</h3>
+                <p class="details">Like New Apple iPhone 16 Plus [128GB | 100%] Brand New</p>
                 <p class="price">
-                    <span class="old-price">NPR 206,000.00</span>
-                    <span class="new-price">NPR 133,500.00</span>
+                    <span class="old-price">NPR 171,500.00</span>
+                    <span class="new-price">NPR 154,500.00</span>
                 </p>
                 <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+
+            <!-- Product 2 -->
+            <div class="premium-product-item" data-id="2">
+                <div class="image-wrapper">
+                    <img src="./indeximages/PreLovediPhone13Blue3.svg" alt="iPhone 13 Blue">
+                    <p class="status sale">Sale</p>
+                </div>
+                <h3>Apple iPhone 13</h3>
+                <p class="details">Apple iPhone 13 [256GB | 80%]</p>
+                <p class="price">
+                    <span class="old-price">NPR 86,500.00</span>
+                    <span class="new-price">NPR 54,500.00</span>
+                </p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="premium-product-item" data-id="3">
+                <div class="image-wrapper">
+                    <img src="./indeximages/PreLovediPhone14ProMax128GBPurple03.svg" alt="iPhone 14 Pro Max">
+                    <p class="status sold-out">Sold Out</p>
+                </div>
+                <h3>Apple iPhone 14 Pro Max</h3>
+                <p class="details">Apple iPhone 14 Pro Max [512GB | 85%]</p>
+                <p class="price">
+                    <span class="old-price">NPR 247,990.00 </span>
+                    <span class="new-price">NPR 115,500.00</span>
+                </p>
+                <button class="add-to-cart" disabled>Add to Cart</button>
+            </div>
+            <!-- Sample for Product 4 -->
+            <div class="premium-product-item" data-id="4">
+                <div class="image-wrapper">
+                    <img src="./indeximages/S25Ultra.svg" alt="Samsung Galaxy S25 Ultra">
+                    <p class="status sale">Sale</p>
+                </div>
+                <h3>Samsung Galaxy S25 Ultra</h3>
+                <p class="details">Samsung Galaxy S25 Ultra [ 256GB | 90%]</p>
+                <p class="price">
+                    <span class="old-price">NPR 240,500.00</span>
+                    <span class="new-price">NPR 179,600.00</span>
+                </p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+            <div class="premium-product-item" data-id="5">
+                <div class="image-wrapper">
+                    <img src="./indeximages/XAOMIULTRA15.svg" alt="Xiaomi 15 Ultra">
+                    <p class="status sold-out">Sold Out</p>
+                </div>
+                <h3>Xiaomi 15 Ultra</h3>
+                <p class="details">Xiaomi 15 Ultra [ 512GB | 80%]</p>
+                <p class="price">
+                    <span class="old-price">NPR 180,400.00</span>
+                    <span class="new-price">NPR 141,500.00</span>
+                </p>
+
+                <button class="add-to-cart" disabled>Add to Cart</button>
+            </div>
+                                
+            <div class="premium-product-item" data-id="6">
+                    <div class="image-wrapper">
+                        <img src="./indeximages/PreLovediPhone15ProMaxBlue256GB.svg" alt="iPhone 15 Pro Max">
+                        <p class="status sale">Sale</p>
+                    </div>
+                    <h3>Apple iPhone 15 Pro Max</h3>
+                    <p class="details">Apple iPhone 15 Pro Max [256GB | 89%]</p>
+                    <p class="price">
+                        <span class="old-price">NPR 206,000.00</span>
+                        <span class="new-price">NPR 133,500.00</span>
+                    </p>
+                    <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="premium-product-item" data-id="7">
-                <div class="image-wrapper">
-                    <img src="./indeximages/PreLovediPhone12ProMax01_f94bd3d1-2070-47fa-bcef-77a9b7478717.svg" alt="iPhone12ProMax">
-                    <p class="status sale">Sale</p>
-                </div>
-                <h3>Apple iPhone 12 Pro Max</h3>
-                <p class="details">Iphone 12 Pro Max [128GB | 91%]</p>
-                <p class="price">
-                    <span class="old-price">NPR 172,000.00</span>
-                    <span class="new-price">NPR 112,800.00</span>
-                </p>
-                <button class="add-to-cart">Add to Cart</button>
+                    <div class="image-wrapper">
+                        <img src="./indeximages/PreLovediPhone12ProMax01_f94bd3d1-2070-47fa-bcef-77a9b7478717.svg" alt="iPhone12ProMax">
+                        <p class="status sale">Sale</p>
+                    </div>
+                    <h3>Apple iPhone 12 Pro Max</h3>
+                    <p class="details">Iphone 12 Pro Max [128GB | 91%]</p>
+                    <p class="price">
+                        <span class="old-price">NPR 172,000.00</span>
+                        <span class="new-price">NPR 112,800.00</span>
+                    </p>
+                    <button class="add-to-cart">Add to Cart</button>
             </div>
 
-            <div class="premium-product-item" data-id="8">
-                <div class="image-wrapper">
-                    <img src="./indeximages/Xiaomi 14.svg" alt="Xiaomi 14">
-                    <p class="status sale">Sale</p> 
-                </div>
-                <h3>Xiaomi 14</h3>
-                <p class="details">Xiaomi 14 Brand New</p>
-                <p class="price">
-                    <span class="new-price">NPR 99,999.00</span>
-                </p>
-                <button class="add-to-cart">Add to Cart</button>
-            </div>    
+                <div class="premium-product-item" data-id="8">
+                    <div class="image-wrapper">
+                        <img src="./indeximages/Xiaomi 14.svg" alt="Xiaomi 14">
+                        <p class="status sale">Sale</p> 
+                    </div>
+                    <h3>Xiaomi 14</h3>
+                    <p class="details">Xiaomi 14 Brand New</p>
+                    <p class="price">
+                        <span class="new-price">NPR 99,999.00</span>
+                    </p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>    
 
-            <div class="premium-product-item" data-id="9">
-                <div class="image-wrapper">
-                    <img src="./indeximages/S25.svg" alt="Samsung Galaxy S25">
-                    <p class="status sold-out">Sold Out</p>
-                </div>
-                <h3>Samsung Galaxy S25</h3>
-                <p class="details">Samsung Galaxy S25 Brand New</p>
-                <p class="price">
-                    <span class="new-price">NPR 104,999.00</span>
-                </p>
-                <button class="add-to-cart" disabled>Add to Cart</button>
-            </div>   
-            
-            
-            <div class="premium-product-item" data-id="10">
-                <div class="image-wrapper">
-                    <img src="./indeximages/S25+.svg" alt="Samsung Galaxy S25+">
-                    <p class="status sale">Sale</p>
+                <div class="premium-product-item" data-id="9">
+                    <div class="image-wrapper">
+                        <img src="./indeximages/S25.svg" alt="Samsung Galaxy S25">
+                        <p class="status sold-out">Sold Out</p>
+                    </div>
+                    <h3>Samsung Galaxy S25</h3>
+                    <p class="details">Samsung Galaxy S25 Brand New</p>
+                    <p class="price">
+                        <span class="new-price">NPR 104,999.00</span>
+                    </p>
+                    <button class="add-to-cart" disabled>Add to Cart</button>
+                </div>   
+                
+                
+                <div class="premium-product-item" data-id="10">
+                    <div class="image-wrapper">
+                        <img src="./indeximages/S25+.svg" alt="Samsung Galaxy S25+">
+                        <p class="status sale">Sale</p>
 
-                </div>
-                <h3>Samsung Galaxy S25+</h3>
-                <p class="details">Samsung Galaxy S25+ Brand New</p>
-                <p class="price">
-                    <span class="new-price">NPR 141,900.00</span>
-                </p>
-                <button class="add-to-cart">Add to Cart</button>
-            </div>         
+                    </div>
+                    <h3>Samsung Galaxy S25+</h3>
+                    <p class="details">Samsung Galaxy S25+ Brand New</p>
+                    <p class="price">
+                        <span class="new-price">NPR 141,900.00</span>
+                    </p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>         
 
+        </div>
     </div>
-</div>
 
 
     <div class="banner-conatainer">
@@ -329,6 +328,75 @@
     </div>
 
 
+    <div class="about_sections">
+        <div class="about099">
+            <div class="row00111">
+                <div class="Text-section001">
+                    <h2>Our Mision</h2>
+                    <p>Welcome to MobEx, your trusted platform for buying,
+                        selling, and exchanging smartphones with ease and confidence.</p>
+                    <p>Our mission is to simplify the mobile device market by connecting
+                        buyers and sellers through a secure, user-friendly
+                        system that ensures transparency and value for everyone.</p>
+                    <p>We understand that upgrading or exchanging your phone can be a hassle 
+                        That's why we offer a seamless experience, from listing your device to finding the perfect match.</p>
+
+                    <button id="learnmore"onclick="learnmore">Learn More</button>
+                </div>
+                <div class="image-section001">
+                    <img src="./indeximages/Aboutus.png" alt="About MobEx">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="whyus-section">
+        <div class="whyuss001">
+            <div class="us001">
+                <div class="whysuuus999">
+                    <h2>Why Us</h2>
+                    <p>The products we sell are professionally inspected and thoroughly 
+                        tested using a full diagnostic testing software.
+                        Our skilled professionals make sure that the products 
+                        that reach your doorsteps are always in a pristine condition.</p>
+                </div>
+
+                <div class="whyuss000">
+                    <ul>
+                        <li>
+                            <img src="./indeximages/trust.svg" alt="turst">
+                            <div class="Why01">
+                                <h4>Product you can turst</h4>
+                                <p>You'll always have a tested and certified latest piece of tech and a Happy Wallet all the time.</p>
+                            </div>
+
+                        </li>
+                        <li>
+                            <img src="./indeximages/quality.svg" alt="quality">
+                            <div class="Why01">
+                                <h4>Quality you can realy</h4>
+                                <p>Our working professionals make sure that the utmost quality products are always in a top-notch condition.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="./indeximages/freePurchases.svg" alt="purchase">
+                            <div class="Why01">
+                                <h4>Hassle for free purchase</h4>
+                                <p>You like it, You buy it, You get it,As simple as that.  There are no extra or hidden costs whatsoever.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="./indeximages/quickEasy.svg" alt="easy return">
+                            <div class="Why01">
+                                <h4>QUick delivery and easy return</h4>
+                                <p>We’re confident that combination of timely service and convenience will ensure your satisfaction with every order.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     
 

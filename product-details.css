@@ -189,7 +189,7 @@
     font-weight: bold;
 }
 
-/* ----------- Responsive Styles ----------- */
+/* Responsive Styles */
 @media (max-width: 991px) {
     .product-details-container {
         flex-direction: column;
