@@ -20,7 +20,7 @@ import QuickLinksSection from './components/QuickLinksFooters'
 import FooterBottom from './components/Footer';
 import ProductDetails from './pages/ProductDetails';
 import ForgotPassword from './pages/ForgotPassword';
-
+import Apple from './pages/brands/Apple';
 
 // Home section (used on "/")
 const Home = () => (
@@ -51,6 +51,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/productdetails" element={<ProductDetails />} />
+
+        <Route path="/brands/apple" element={<Apple />} />
       </Routes>
       <QuickLinksSection/>
       <FooterBottom />
