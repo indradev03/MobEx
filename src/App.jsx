@@ -19,6 +19,7 @@ import WhyUsSection from './components/WhyusSection';
 import QuickLinksSection from './components/QuickLinksFooters'
 import FooterBottom from './components/Footer';
 import ProductDetails from './pages/ProductDetails';
+import ForgotPassword from './pages/ForgotPassword';
 
 
 // Home section (used on "/")
@@ -48,6 +49,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/productdetails" element={<ProductDetails />} />
       </Routes>
       <QuickLinksSection/>
