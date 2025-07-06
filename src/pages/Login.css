@@ -1,0 +1,138 @@
+.login-container {
+  max-width: 400px;
+  margin: 200px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 40px;
+  line-height: 1.2;
+  resize: none;
+  transition: border-color 0.3s ease;
+  /* Prevent any animation that can cause flicker */
+  transition-property: border-color, background-color;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+
+/* Placeholder styling fixed */
+.login-form input::placeholder {
+  color: #999;
+  opacity: 1; /* Fix for Firefox */
+  transition: none;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.login-form button:hover {
+  background: #0056b3;
+}
+
+.login-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.login-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Password input wrapper to position icon */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+  min-width: 0;
+}
+
+/* Password input with padding for icon */
+.password-input-wrapper input {
+  padding-right: 40px; /* room for eye icon */
+  /* Ensure stable width and height */
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 40px;
+  line-height: 1.2;
+  resize: none;
+  transition-property: border-color, background-color;
+}
+
+/* Eye icon container */
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: color 0.3s ease;
+}
+
+.password-toggle-icon:hover {
+  color: #007bff;
+}
+
+/* Keep SVG vertical alignment */
+.password-input-wrapper svg {
+
+    margin-bottom: 10px;
+}
