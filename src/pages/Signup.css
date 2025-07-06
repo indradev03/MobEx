@@ -1,0 +1,148 @@
+.signup-container {
+  max-width: 900px;
+  margin: 200px auto;
+  background: #fff;
+  padding: 35px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signup-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.left-column,
+.right-column {
+  flex: 1;
+  min-width: 250px;
+}
+
+.left-column label,
+.right-column label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.left-column input,
+.right-column input,
+.right-column select {
+  width: 100%;
+  height: 42px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.right-column select {
+  appearance: none;
+}
+
+.form-actions {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form-actions button {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-actions button:hover {
+  background: #0056b3;
+}
+
+.signup-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.signup-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-links a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+  .signup-grid {
+    flex-direction: column;
+  }
+}
+
+/* Placeholder styles */
+.signup-form input::placeholder,
+.signup-form select::placeholder {
+  color: #888;
+  opacity: 1;
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* space for eye icon */
+  box-sizing: border-box;
+  font-size: 16px;
+  height: 40px;
+  line-height: 1.2;
+  font-family: Arial, sans-serif;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: color 0.3s ease;
+}
+
+.password-toggle-icon:hover {
+  color: #007bff;
+}
