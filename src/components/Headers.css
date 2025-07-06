@@ -1,0 +1,177 @@
+/* Navbar */
+.Navbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-around;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fff;
+    height: 100px;
+    background: linear-gradient(to top right,  rgb(213, 243, 250), #ffffff, #f9f9f9);
+
+}
+
+.Main_Logo img {
+    height: 100px;
+    transition: transform 1s ease-in-out;
+}
+.Main_Logo img:hover {
+    transform: scale(1.1);
+}
+
+/*=================== NAVIGATION LINKS ===================*/
+nav ul.header-links {
+    display: flex;
+    list-style: none;
+    gap: 50px;
+    flex-wrap: wrap;
+    animation: fade 1s ease-in-out;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    cursor: pointer;
+}
+.header-links li a:hover {
+    color: #0091ff;
+}
+
+/*=================== AUTH BUTTONS ===================*/
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+.auth-buttons button {
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    transition: transform 0.2s ease;
+}
+.auth-buttons .login-btn,
+.auth-buttons .signup-btn {
+    background-color: #5a5959;
+    color: #fff;
+}
+.auth-buttons button.active-btn {
+    background-color: #000;
+    color: #fff;
+}
+.auth-buttons button:hover {
+    background-color: #0091ff;
+    color: white;
+    transform: scale(1.05);
+}
+
+
+.header-icons {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    margin-right: 2%;
+}
+.header-icons button {
+    border: none;
+    cursor: pointer;
+}
+
+#menuButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+.header-icons img {
+    width: 25px;
+    height: 25px;
+}
+.header-icons button:hover {
+    transform: scale(1.1);
+}
+
+
+/* Search form hidden initially */
+.search-form {
+    display: none;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* Show form when toggled with JS */
+.search-form.show {
+    display: flex;
+}
+
+.search-form input[type="text"] {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.submit-search {
+    padding: 6px 12px;
+    margin-left: 5px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.submit-search:hover {
+    background-color: #0097a7;
+}
+
+
+
+/* Responsive Navbar */
+
+@media (max-width: 768px) {
+    .Navbar {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 0px;
+    }
+    .nav-links ul {
+        display: none;
+    }
+    .auth-buttons {
+        width: 90%;
+        gap: 10px;
+    }
+    .auth-buttons button {
+        width: 90%;
+    }
+    .header-icons {
+        margin-top: 10px;
+    }
+}
+@media (max-width: 550px) {
+    .nav-links ul {
+        display: none;
+    }
+    .auth-buttons {
+        width: 90%;
+        gap: 10px;
+    }
+    .auth-buttons button {
+        width: 90%;
+    }
+    .header-icons {
+        justify-content: center;
+        width: 100%;
+    }
+}

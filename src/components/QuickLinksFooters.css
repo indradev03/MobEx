@@ -1,0 +1,73 @@
+/* Quick Links Section */
+.quicklink_bottom-section {
+    background-color: #121212;
+    color: #f5f5f5;
+    padding: 50px ;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.page-width {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.footer-row img {
+    vertical-align: middle;
+}
+.footer-row p {
+    font-size: 14px;
+    color: #cccccc;
+    margin-top: 10px;
+
+
+}
+.footer-column {
+    flex: 1 1 250px;
+    min-width: 200px;
+}
+
+.footer-column h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    color: #ffffff;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin: 10px 0;
+}
+
+.footer-column ul li a {
+    text-decoration: none;
+    color: #cccccc;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #00bcd4;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-column {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
