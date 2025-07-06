@@ -1,0 +1,90 @@
+/* Container for the entire brand page */
+.brands-page {
+  padding: 120px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Header section */
+.brands-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #ffa0a0;
+}
+
+.brands-header p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* Grid layout for brand cards */
+.brand-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+/* Individual brand card */
+.brand-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.brand-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Brand image */
+.brand-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.brand-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Brand text */
+.brand-card p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .brands-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .brands-header p {
+    font-size: 1rem;
+  }
+
+  .brand-card {
+    padding: 16px;
+  }
+
+  .brand-card img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .brand-card p {
+    font-size: 0.95rem;
+  }
+}
