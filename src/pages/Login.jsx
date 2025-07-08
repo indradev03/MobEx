@@ -6,37 +6,81 @@ import './Login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('user'); // default to 'user'
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setError('');
 
-    if (!email || !password) {
-      setError('Please fill in both fields');
+  if (!email || !password) {
+    setError('Please fill in both fields');
+    return;
+  }
+
+  const loginUrl =
+    userType === 'admin'
+      ? 'http://localhost:5000/api/admin/login'
+      : 'http://localhost:5000/api/users/login';
+
+  const body =
+    userType === 'admin'
+      ? { emailOrUsername: email, password }
+      : { email, password, role: 'user' };
+
+
+  try {
+    const response = await fetch(loginUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    console.log('Login response:', data);
+
+    if (!response.ok) {
+      setError(data.error || data.message || 'Login failed');
       return;
     }
 
-    // Replace with your real auth logic
-    if (email === 'admin@example.com' && password === 'admin123') {
-      localStorage.setItem('email', email);
-      navigate('/dashboard');
+    localStorage.setItem('token', data.token);
+
+    if (userType === 'admin') {
+      localStorage.setItem('email', data.admin.email);
+      localStorage.setItem('name', data.admin.username);
+      localStorage.setItem('userType', 'admin');
+      navigate('/admindashboard');
     } else {
-      setError('Invalid email or password');
+      localStorage.setItem('email', data.user.email);
+      localStorage.setItem('name', data.user.name);
+      localStorage.setItem('userType', 'user');
+      navigate('/userdashboard');
     }
-  };
+
+    window.dispatchEvent(new Event('login'));
+  } catch (err) {
+    console.error('Login error:', err);
+    setError('Server error. Please try again later.');
+  }
+};
+
 
   return (
     <div className="login-container">
       <h2>Login</h2>
       {error && <p className="error">{error}</p>}
+
       <form onSubmit={handleLogin} className="login-form">
         <label>Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Email"
         />
 
         <label>Password</label>
@@ -45,6 +89,8 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder="Password"
           />
           <div
             className="password-toggle-icon"
@@ -59,6 +105,16 @@ const Login = () => {
             {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
           </div>
         </div>
+
+        <label>User Type</label>
+        <select
+          value={userType}
+          onChange={(e) => setUserType(e.target.value)}
+          required
+        >
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
 
         <button type="submit">Login</button>
       </form>

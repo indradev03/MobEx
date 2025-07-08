@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import MobexLogo from '../assets/indeximages/Mobex_logo.svg';
@@ -6,73 +6,136 @@ import SearchIcon from '../assets/indeximages/search-interface-symbol.png';
 import CheckoutIcon from '../assets/indeximages/checkout.png';
 import FavouriteIcon from '../assets/indeximages/favourite.png';
 import ProfileIcon from '../assets/indeximages/people.png';
+
+import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import icons
+
 import './Headers.css';
 
 const Headers = () => {
-    const navigate = useNavigate();
-    const [searchVisible, setSearchVisible] = useState(false);
-    const searchInputRef = useRef(null);
+  const navigate = useNavigate();
+  const [searchVisible, setSearchVisible] = useState(false);
+  const searchInputRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
-    const toggleSearch = () => {
-        setSearchVisible(prev => !prev);
-        setTimeout(() => {
-            if (searchInputRef.current) {
-                searchInputRef.current.focus();
-            }
-        }, 100); // slight delay ensures visibility before focusing
+  useEffect(() => {
+    const handleLoginEvent = () => setIsLoggedIn(true);
+    const handleLogoutEvent = () => setIsLoggedIn(false);
+
+    window.addEventListener('login', handleLoginEvent);
+    window.addEventListener('logout', handleLogoutEvent);
+
+    return () => {
+      window.removeEventListener('login', handleLoginEvent);
+      window.removeEventListener('logout', handleLogoutEvent);
     };
+  }, []);
 
-    return (
-        <div className="Navbar">
-            <div className="Main_Logo">
-                <Link to="/">
-                    <img src={MobexLogo} alt="Mobex Logo" />
-                </Link>
-            </div>
+  const toggleSearch = () => {
+    setSearchVisible(prev => !prev);
+    setTimeout(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 100);
+  };
 
-            <nav className="nav-links">
-                <ul className="header-links">
-                    <li><Link to="/brands">Brands</Link></li>
-                    <li><Link to="/exchange">Exchange</Link></li>
-                    <li><Link to="/special-offers">Special Offers</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/contact">Contact</Link></li>
-                    <li><Link to="/faq">FAQ</Link></li>
-                </ul>
-            </nav>
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    window.dispatchEvent(new Event('logout'));
+    navigate('/login');
+  };
 
-            <div className="auth-buttons">
-                <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
-                <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
-            </div>
+  const handleProtectedNavigation = (path) => {
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      navigate('/login');
+    }
+  };
 
-            <div className="header-icons">
-                <button type="button" onClick={toggleSearch} id="menuButton">
-                    <img src={SearchIcon} alt="Search Icon" />
+  return (
+    <div className="Navbar">
+      <div className="Main_Logo">
+        <Link to="/">
+          <img src={MobexLogo} alt="Mobex Logo" />
+        </Link>
+      </div>
+
+      <nav className="nav-links">
+        <ul className="header-links">
+          <li><Link to="/brands">Brands</Link></li>
+          <li><Link to="/exchange">Exchange</Link></li>
+          <li><Link to="/special-offers">Special Offers</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/faq">FAQ</Link></li>
+        </ul>
+      </nav>
+
+      <div className="auth-buttons">
+        {!isLoggedIn && (
+          <>
+            <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
+            <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
+          </>
+        )}
+      </div>
+
+      <div className="header-icons">
+        <button type="button" onClick={toggleSearch} id="menuButton" aria-label="Toggle search">
+          <img src={SearchIcon} alt="Search Icon" />
+        </button>
+
+        <form className={`search-form ${searchVisible ? 'show' : ''}`} onSubmit={e => e.preventDefault()}>
+          <input type="text" placeholder="Search..." ref={searchInputRef} autoComplete="off" />
+          <button type="submit" className="submit-search">Go</button>
+        </form>
+
+        <button
+          id="menuButton"
+          aria-label="Checkout"
+          onClick={() => handleProtectedNavigation('/checkout')}
+        >
+          <img src={CheckoutIcon} alt="Checkout Icon" />
+        </button>
+
+        <button
+          id="menuButton"
+          aria-label="Favourites"
+          onClick={() => handleProtectedNavigation('/favourites')}
+        >
+          <img src={FavouriteIcon} alt="Favourite Icon" />
+        </button>
+
+        {isLoggedIn && (
+          <div
+            className="profile-dropdown-wrapper"
+            onMouseEnter={() => setProfileMenuOpen(true)}
+            onMouseLeave={() => setProfileMenuOpen(false)}
+          >
+            <button id="menuButton" aria-label="Profile">
+              <img src={ProfileIcon} alt="Profile Icon" />
+            </button>
+
+            {profileMenuOpen && (
+              <div className="profile-dropdown">
+                <button className="dropdown-item" onClick={() => navigate('/profile')}>
+                  <FaUser className="dropdown-icon" />
+                  Profile
                 </button>
-
-                <form
-                    className={`search-form ${searchVisible ? 'show' : ''}`}
-                    id="searchForm"
-                    action="#"
-                    method="GET"
-                >
-                    <input
-                        type="text"
-                        name="query"
-                        placeholder="Search..."
-                        ref={searchInputRef}
-                        id="searchInput"
-                    />
-                    <button type="submit" className="submit-search">Go</button>
-                </form>
-
-                <button id="menuButton" ><img src={CheckoutIcon} alt="Checkout Icon" /></button>
-                <button id="menuButton" ><img src={FavouriteIcon} alt="Favourite Icon" /></button>
-                <button id="menuButton" ><img src={ProfileIcon} alt="Profile Icon" /></button>
-            </div>
-        </div>
-    );
+                <button className="dropdown-item logout-btn" onClick={handleLogout}>
+                  <FaSignOutAlt className="dropdown-icon" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Headers;
