@@ -1,3 +1,15 @@
+/* Animation keyframes for fade-in + slide-up */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .login-container {
   max-width: 400px;
   margin: 200px auto;
@@ -5,6 +17,9 @@
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  /* Apply the animation */
+  animation: fadeSlideIn 1s ease forwards;
 }
 
 .login-container h2 {
@@ -18,6 +33,7 @@
   font-weight: 600;
 }
 
+/* Inputs (email, password) */
 .login-form input {
   width: 100%;
   padding: 10px;
@@ -33,7 +49,6 @@
   line-height: 1.2;
   resize: none;
   transition: border-color 0.3s ease;
-  /* Prevent any animation that can cause flicker */
   transition-property: border-color, background-color;
 }
 
@@ -42,7 +57,6 @@
   border-color: #007bff;
 }
 
-
 /* Placeholder styling fixed */
 .login-form input::placeholder {
   color: #999;
@@ -50,6 +64,31 @@
   transition: none;
 }
 
+/* User Type dropdown */
+.login-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 40px;
+  line-height: 1.2;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.login-form select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Button */
 .login-form button {
   width: 100%;
   padding: 10px;
@@ -98,7 +137,6 @@
 /* Password input with padding for icon */
 .password-input-wrapper input {
   padding-right: 40px; /* room for eye icon */
-  /* Ensure stable width and height */
   width: 100%;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
@@ -133,6 +171,5 @@
 
 /* Keep SVG vertical alignment */
 .password-input-wrapper svg {
-
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
