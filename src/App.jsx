@@ -24,7 +24,7 @@ import Apple from './pages/brands/Apple';
 import UserDashboard from './pages/users/UserDashboard';
 import Profile from './pages/users/Profile';
 
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/pages/AdminDashboard';
 
 // Home section (used on "/")
 const Home = () => (
@@ -43,7 +43,8 @@ function App() {
     <Router>
       <Routes>
         {/* Admin route without header/footer */}
-        <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/admindashboard/*" element={<AdminDashboard />} />
+
 
         {/* All other routes with normal header/footer */}
         <Route

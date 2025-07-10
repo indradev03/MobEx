@@ -1,0 +1,215 @@
+/* Wrapper for the entire page */
+.addproduct-wrapper {
+  max-width: 1200px;
+  margin-left: 340px;
+  margin-top: 5%;
+  padding: 30px;
+  background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Form container */
+.addproduct-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px; /* Spacing between sections */
+}
+
+/* Form title */
+.addproduct__title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #222;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 8px;
+}
+
+/* Form section */
+.addproduct__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between label and input */
+  margin-bottom: 16px; /* Spacing between input blocks */
+}
+
+/* Label */
+.addproduct__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Input, Select, Textarea shared styles */
+.addproduct__input,
+.addproduct__textarea,
+.addproduct__select {
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #333;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.2s ease;
+}
+
+.addproduct__input:focus,
+.addproduct__textarea:focus,
+.addproduct__select:focus {
+  border-color: #007bff;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+/* Placeholder color */
+.addproduct__input::placeholder,
+.addproduct__textarea::placeholder {
+  color: #aaa;
+}
+
+/* Textarea specific */
+.addproduct__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* File input fix */
+input[type="file"].addproduct__input {
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+/* Grouped input (features/specs) */
+.addproduct__feature-group,
+.addproduct__spec-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Inputs inside grouped rows */
+.addproduct__feature-group input,
+.addproduct__spec-group input {
+  flex: 1;
+}
+
+/* Button base */
+.addproduct__button {
+  padding: 8px 14px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Remove button */
+.addproduct__button.remove {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.addproduct__button.remove:hover {
+  background-color: #c0392b;
+  transform: scale(1.03);
+}
+
+/* Add button */
+.addproduct__button.add {
+  background-color: #2ecc71;
+  color: #fff;
+  margin-top: 6px;
+}
+
+.addproduct__button.add:hover {
+  background-color: #27ae60;
+  transform: scale(1.03);
+}
+
+/* Submit button */
+.addproduct__submit-button {
+  align-self: flex-start;
+  margin-top: 30px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.addproduct__submit-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Disabled field */
+.addproduct__input:disabled,
+.addproduct__textarea:disabled,
+.addproduct__select:disabled {
+  background-color: #eee;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .addproduct-wrapper {
+    padding: 20px;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+
+  .addproduct__title {
+    font-size: 26px;
+  }
+
+  .addproduct__submit-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .addproduct__feature-group,
+  .addproduct__spec-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .addproduct__button {
+    width: 100%;
+  }
+}
+.addproduct-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4BB543; /* green */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  font-weight: 600;
+  z-index: 9999;
+  animation: slideDownFade 0.5s ease forwards;
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
