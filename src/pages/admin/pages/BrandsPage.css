@@ -1,0 +1,99 @@
+/* BrandsPage.css */
+
+.brands-container {
+  max-width: 1300px;
+  margin-left: 330px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brands-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.brands-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  background-color: #fff;
+}
+
+.brands-input-text {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.brands-file-input {
+  font-size: 1rem;
+}
+
+.brands-preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.brands-add-button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.brands-add-button:hover {
+  background-color: #0056b3;
+}
+
+.brands-error-text {
+  color: red;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.brand-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  background-color: #fff;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.brand-card:hover,
+.brand-card:focus {
+  transform: scale(1.05);
+  outline: none;
+}
+
+.brand-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.brand-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
