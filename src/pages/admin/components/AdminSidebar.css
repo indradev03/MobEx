@@ -1,0 +1,133 @@
+.admin-sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: #0f172a; /* dark slate */
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+/* Logo section */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.2rem;
+}
+
+.logo-icon {
+  color: #22c55e;
+  width: 28px;
+  height: 28px;
+}
+
+.logo-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Admin profile under logo */
+.admin-profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-left: 0.25rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #22c55e;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+}
+
+.admin-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-email {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* Navigation menu */
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #cbd5e1;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-bottom: 0.4rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+.nav-item.active {
+  background-color: #22c55e;
+  color: #ffffff;
+}
+
+.nav-icon {
+  margin-right: 0.75rem;
+  width: 20px;
+  height: 20px;
+}
+
+/* Logout at bottom */
+.sidebar-footer {
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  color: #f87171;
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+}

@@ -1,0 +1,94 @@
+/* AdminDashboardHome.css */
+
+.dashboard-container {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-left: 330px;
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #1f2937; /* gray-800 */
+}
+
+.stats-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card {
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+}
+
+.stat-info h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563; /* gray-600 */
+}
+
+.stat-info p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937; /* gray-800 */
+}
+
+.stat-icon-wrapper {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bg-blue {
+  background-color: #dbeafe;
+}
+
+.bg-green {
+  background-color: #d1fae5;
+}
+
+.bg-yellow {
+  background-color: #fef9c3;
+}
+
+.bg-red {
+  background-color: #fee2e2;
+}
+
+.recent-activity {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+}
+
+.recent-activity h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.recent-activity ul {
+  color: #374151; /* gray-700 */
+  list-style: disc inside;
+}
