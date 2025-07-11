@@ -1,44 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
-const products = [
-  { id: 1, brandId: 1, name: "iPhone 14 Pro Max" },
-  { id: 2, brandId: 1, name: "iPhone 13" },
-  { id: 3, brandId: 2, name: "Samsung Galaxy S22" },
-  { id: 4, brandId: 3, name: "Xiaomi Redmi Note 11" },
-];
-
-const brands = [
-  { id: 1, name: "Apple" },
-  { id: 2, name: "Samsung" },
-  { id: 3, name: "Xiaomi" },
-];
+import "./BrandProductsPage.css";
+import { ArrowLeft } from "lucide-react";
 
 const BrandProductsPage = () => {
   const { brandId } = useParams();
   const navigate = useNavigate();
 
-  const brandProducts = products.filter(p => p.brandId === parseInt(brandId));
-  const brand = brands.find(b => b.id === parseInt(brandId));
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/products/brand/${brandId}`);
+        if (!res.ok) throw new Error("Products not found");
+        const data = await res.json();
+        setProducts(data);
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load products for this brand");
+      }
+    };
+
+    fetchProducts();
+  }, [brandId]);
 
   return (
-    <div style={{ maxWidth: 800, margin: "2rem auto" }}>
-      <button onClick={() => navigate(-1)} style={{ marginBottom: "1rem" }}>
-        ← Back to Brands
+    <div className="brand-products-page">
+      <button onClick={() => navigate(-1)} className="back-button">
+        <ArrowLeft size={18} /> Back
       </button>
 
-      <h2>Products for Brand: {brand ? brand.name : "Unknown"}</h2>
+      <h2>Products from Brand ID: {brandId}</h2>
 
-      {brandProducts.length === 0 ? (
+      {error && <p className="error">{error}</p>}
+
+      {products.length === 0 ? (
         <p>No products found for this brand.</p>
       ) : (
-        <ul>
-          {brandProducts.map(product => (
-            <li key={product.id} style={{ marginBottom: "0.5rem" }}>
-              {product.name}
-            </li>
+        <div className="products-grid">
+          {products.map((product) => (
+            <div
+              key={product.product_id}
+              className="product-card"
+              onClick={() => navigate(`/products/${product.product_id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="image-wrapper">
+                {product.discount && (
+                  <span className="discount-badge">
+                    {product.discount.replace("%", "")}% off
+                  </span>
+                )}
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="product-image"
+                />
+              </div>
+
+              <h3>{product.name}</h3>
+
+              {product.details && (
+                <p className="product-details">{product.details}</p>
+              )}
+
+              <p className="product-price">
+                {product.old_price && (
+                  <span className="old-price">
+                    NPR {parseFloat(product.old_price).toLocaleString()}
+                  </span>
+                )}
+                <span className="new-price">
+                  NPR {parseFloat(product.new_price).toLocaleString()}
+                </span>
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

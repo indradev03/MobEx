@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
-import { AdminSidebar } from "../components/AdminSIdebar"; // fixed typo
+import { AdminSidebar } from "../components/AdminSIdebar";
+
 import AdminDashboardHome from "./AdminDashboardHome";
 import AddProductPage from "./AddProductPage";
 import BrandsPage from "./BrandsPage";
-import BrandProductsPage from "./BrandProductsPage"; // import brand details page
+import BrandProductsPage from "./BrandProductsPage"; // brand detail view
 
+// Stub pages for future sections
 const BookingsPage = () => <h2>Bookings Page</h2>;
 const UsersPage = () => <h2>Users Page</h2>;
 const OrdersPage = () => <h2>Orders Page</h2>;
@@ -29,9 +31,7 @@ const AdminDashboard = () => {
           <Route index element={<AdminDashboardHome />} />
           <Route path="add-product" element={<AddProductPage />} />
           <Route path="brands" element={<BrandsPage />} />
-          {/* Nested route for individual brand details */}
           <Route path="brands/:brandId" element={<BrandProductsPage />} />
-
           <Route path="bookings" element={<BookingsPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="orders" element={<OrdersPage />} />
