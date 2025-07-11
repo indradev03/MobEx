@@ -1,15 +1,25 @@
 {
-  "name": "mobex-react-app",
-  "private": true,
-  "version": "0.0.0",
+  "name": "mobex-fullstack-app",
+  "version": "1.0.0",
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev:backend": "nodemon src/backend/index.js",
+    "dev:frontend": "vite",
+    "start": "node src/backend/index.js",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.525.0",
+    "multer": "^2.0.1",
+    "pg": "^8.11.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
@@ -20,10 +30,25 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "concurrently": "^8.2.2",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "nodemon": "^3.1.10",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indradev03/MobEx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/indradev03/MobEx/issues"
+  },
+  "homepage": "https://github.com/indradev03/MobEx#readme"
 }

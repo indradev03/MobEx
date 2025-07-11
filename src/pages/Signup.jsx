@@ -6,7 +6,7 @@ import './Signup.css';
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [contactNo, setContactNo] = useState('');
+  const [contact, setContact] = useState('');
   const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
@@ -16,36 +16,51 @@ const Signup = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    setError('');
 
-    if (!name || !email || !contactNo || !address || !gender || !password || !confirmPassword) {
+    // Basic validation
+    if (!name || !email || !contact || !address || !gender || !password || !confirmPassword) {
       setError('All fields are required');
       return;
     }
-
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
-    if (!/^\d{7,15}$/.test(contactNo)) {
+    if (!/^\d{7,15}$/.test(contact)) {
       setError('Contact number must be 7 to 15 digits');
       return;
     }
 
-    // Replace this with actual signup API logic
-    console.log({
-      name,
-      email,
-      contactNo,
-      address,
-      gender,
-      password,
-    });
+    try {
+      const response = await fetch('http://localhost:5000/api/users/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          contact,
+          address,
+          gender,
+          password,
+        }),
+      });
 
-    // On success, redirect
-    navigate('/login');
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Signup failed');
+        return;
+      }
+
+      // On success, redirect to login page
+      navigate('/login');
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+      console.error(err);
+    }
   };
 
   return (
@@ -55,13 +70,13 @@ const Signup = () => {
 
       <form onSubmit={handleSignup} className="signup-form">
         <div className="signup-grid">
-          {/* Left column */}
           <div className="left-column">
             <label>Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
 
             <label>Email</label>
@@ -69,13 +84,17 @@ const Signup = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
 
             <label>Contact Number</label>
             <input
               type="tel"
-              value={contactNo}
-              onChange={(e) => setContactNo(e.target.value)}
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              required
+              pattern="\d{7,15}"
+              title="Contact number must be 7 to 15 digits"
             />
 
             <label>Address</label>
@@ -83,13 +102,17 @@ const Signup = () => {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+              required
             />
           </div>
 
-          {/* Right column */}
           <div className="right-column">
             <label>Gender</label>
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            >
               <option value="">Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -102,6 +125,7 @@ const Signup = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <div
                 className="password-toggle-icon"
@@ -123,6 +147,7 @@ const Signup = () => {
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
               <div
                 className="password-toggle-icon"
@@ -140,7 +165,6 @@ const Signup = () => {
           </div>
         </div>
 
-        {/* Button and links below full width */}
         <div className="form-actions">
           <button type="submit">Sign Up</button>
           <div className="signup-links">
