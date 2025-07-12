@@ -1,99 +1,310 @@
-/* BrandsPage.css */
-
-.brands-container {
-  max-width: 1300px;
-  margin-left: 330px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Wrapper around the brands grid for layout and styling */
+.brands-grid-wrapper {
+  background-color: #f9fafb; /* light off-white for subtle contrast */
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow-x: auto; /* allow horizontal scroll on small screens */
+  margin-top: 80px;
 }
 
-.brands-title {
-  text-align: center;
+/* Header section with title and add button aligned horizontally */
+.header-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
-.brands-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
-  background-color: #fff;
+/* Main heading styles */
+.headings h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-.brands-input-text {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+/* Subheading styles */
+.headings h3 {
+  margin: 0;
+  font-weight: 400;
+  color: #555;
+  font-size: 1.1rem;
 }
 
-.brands-file-input {
-  font-size: 1rem;
-}
-
-.brands-preview-image {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.brands-add-button {
-  padding: 12px;
-  background-color: #007bff;
+/* Button to open "Add Brand" modal */
+.brands-open-modal-button {
+  background-color: #0d6efd; /* brighter blue for better visibility */
   color: white;
-  border: none;
+  padding: 10px 20px;
   border-radius: 6px;
+  font-weight: 600;
   font-size: 1rem;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.brands-add-button:hover {
-  background-color: #0056b3;
+/* Hover/focus style for open modal button */
+.brands-open-modal-button:hover {
+  background-color: #084cd6; /* darker blue on hover */
 }
 
-.brands-error-text {
-  color: red;
-  margin-top: 4px;
+/* Modal overlay: fullscreen dark translucent backdrop */
+.brands-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 1000; /* place above all content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal content box styling */
+.brands-modal-content {
+  background-color: #ffffff; /* pure white for modal */
+  border-radius: 8px;
+  padding: 30px 25px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Modal header/title styling */
+.brands-modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
   font-weight: 600;
+  font-size: 1.5rem;
+  color: #333;
 }
 
-.brands-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+/* Main container of the whole Brands page */
+.brands-container {
+  max-width: 1300px;
+  margin-left: 290px; /* adjust based on sidebar or layout */
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-.brand-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1rem;
+/* Centered title styling (if used) */
+.brands-title {
   text-align: center;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-  background-color: #fff;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.2s ease;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
-.brand-card:hover,
-.brand-card:focus {
-  transform: scale(1.05);
+/* Form styling inside modal */
+.brands-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Form hover and focus effect */
+.brands-form:hover,
+.brands-form:focus-within {
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.25);
+}
+
+/* Text and file inputs */
+.brands-input-text,
+.brands-file-input {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fafafa; /* very light background inside inputs */
+}
+
+/* Input focus styles */
+.brands-input-text:focus,
+.brands-file-input:focus {
+  outline: none;
+  border-color: #0d6efd; /* consistent blue */
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+}
+
+/* Pointer cursor on file input */
+.brands-file-input {
+  cursor: pointer;
+}
+
+/* Image preview inside modal */
+.brands-preview-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-top: 8px;
+  user-select: none;
+  margin-left: 130px;
+}
+
+/* Buttons container inside modal */
+.brands-button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Common styles for Add and Cancel buttons */
+.brands-add-button,
+.brands-cancel-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+/* Add button styling */
+.brands-add-button {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.4);
+}
+
+.brands-add-button:hover,
+.brands-add-button:focus {
+  background-color: #084cd6;
+  box-shadow: 0 6px 14px rgba(8, 76, 214, 0.6);
   outline: none;
 }
 
-.brand-image {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 0.5rem;
+/* Cancel button styling */
+.brands-cancel-button {
+  background-color: #6c757d;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
 }
 
-.brand-name {
+.brands-cancel-button:hover,
+.brands-cancel-button:focus {
+  background-color: #5a6268;
+  box-shadow: 0 6px 14px rgba(90, 98, 104, 0.6);
+  outline: none;
+}
+
+/* Error message styling */
+.brands-error-text {
+  color: #d8000c;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* Grid layout for brand cards */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual brand card styling */
+.brand-card {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+
+/* Hover and focus effect for brand cards */
+.brand-card:hover,
+.brand-card:focus {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+/* Brand logo image inside cards */
+.brand-image {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 6px;
+  user-select: none;
+}
+
+/* Brand name text */
+.brand-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #222;
+}
+
+/* Edit and Delete buttons inside brand cards */
+.brand-edit-button,
+.brand-delete-button {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 20px;
+  border: none;
+  border-radius: 6px;
+  margin: 30px 6px 0 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Edit button color and hover */
+.brand-edit-button {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(13, 110, 253, 0.5);
+}
+
+.brand-edit-button:hover,
+.brand-edit-button:focus {
+  background-color: #084cd6;
+  box-shadow: 0 4px 14px rgba(8, 76, 214, 0.6);
+  outline: none;
+}
+
+/* Delete button color and hover */
+.brand-delete-button {
+  background-color: #dc3545;
+  color: white;
+  box-shadow: 0 3px 8px rgba(220, 53, 69, 0.5);
+}
+
+.brand-delete-button:hover,
+.brand-delete-button:focus {
+  background-color: #b52a37;
+  box-shadow: 0 4px 14px rgba(181, 42, 55, 0.7);
+  outline: none;
 }

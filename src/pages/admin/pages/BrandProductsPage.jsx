@@ -33,7 +33,7 @@ const BrandProductsPage = () => {
         <ArrowLeft size={18} /> Back
       </button>
 
-      <h2>Products from Brand ID: {brandId}</h2>
+      <h2>Product based on brands</h2>
 
       {error && <p className="error">{error}</p>}
 
@@ -45,8 +45,6 @@ const BrandProductsPage = () => {
             <div
               key={product.product_id}
               className="product-card"
-              onClick={() => navigate(`/products/${product.product_id}`)}
-              style={{ cursor: "pointer" }}
             >
               <div className="image-wrapper">
                 {product.discount && (
