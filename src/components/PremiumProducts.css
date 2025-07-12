@@ -172,7 +172,6 @@ input[type="text"] {
     position: relative;
     background: #fff;
     padding: 20px;
-    padding-bottom: 80px; /* Space for fixed button */
     border: 1px solid #ddd;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);

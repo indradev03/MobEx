@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Headers from './components/Headers';
 import Slideshow from './components/Slideshow';
-import Brands from './pages/Brands';
+import Brands from './pages/brands/Brands';
 import Exchange from './pages/Exchange';
 import SpecialOffers from './pages/SpecialOffers';
 import About from './pages/About';
@@ -20,12 +20,11 @@ import QuickLinksSection from './components/QuickLinksFooters';
 import FooterBottom from './components/Footer';
 import ProductDetails from './pages/ProductDetails';
 import ForgotPassword from './pages/ForgotPassword';
-import Apple from './pages/brands/Apple';
 import UserDashboard from './pages/users/UserDashboard';
 import Profile from './pages/users/Profile';
-
+import BrandProductsPage from './pages/brands/BrandProductsPage';
 import AdminDashboard from './pages/admin/pages/AdminDashboard';
-
+import ProductDetailsPage from "./pages/product/ProductDetailsPage";
 // Home section (used on "/")
 const Home = () => (
   <>
@@ -55,6 +54,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/brands" element={<Brands />} />
+                  <Route path="/brands/:brandId" element={<BrandProductsPage />} />
+                  <Route path="/productdetails" element={<ProductDetailsPage />} />
                 <Route path="/exchange" element={<Exchange />} />
                 <Route path="/special-offers" element={<SpecialOffers />} />
                 <Route path="/about" element={<About />} />
@@ -66,7 +67,6 @@ function App() {
                 <Route path="/productdetails" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/userdashboard" element={<UserDashboard />} />
-                <Route path="/brands/apple" element={<Apple />} />
               </Routes>
               <QuickLinksSection />
               <FooterBottom />
