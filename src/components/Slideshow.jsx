@@ -1,9 +1,14 @@
     import React, { useEffect, useState } from 'react';
     import slide1 from '../assets/indeximages/exchange.jpg';
     import slide2 from '../assets/indeximages/Slide2.png';
+    import slide3 from '../assets/indeximages/banner2.png';
+    import slide4 from '../assets/indeximages/banner3.png';
+    import slide5 from '../assets/indeximages/banner1.png';
+    import slide6 from '../assets/indeximages/banner5.png';
+
     import './Slideshow.css';
 
-    const slides = [slide1, slide2];
+    const slides = [slide1,slide5,slide6, slide2,slide3,slide4];
 
     const Slideshow = () => {
     const [current, setCurrent] = useState(0);
@@ -36,17 +41,7 @@
             >
                 <img src={slide} alt={`Slide ${index + 1}`} />
 
-                {/* Pause/Play button overlay only on active slide */}
-                {index === current && (
-                <button
-                    className="pause-play-btn"
-                    onClick={() => setIsPaused(prev => !prev)}
-                    aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
-                    aria-pressed={isPaused}
-                >
-                    {isPaused ? "▶️" : "⏸️"}
-                </button>
-                )}
+        
             </div>
             ))}
         </div>
