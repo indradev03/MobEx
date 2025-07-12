@@ -47,10 +47,9 @@
 
 /* Brand image */
 .brand-card img {
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
   object-fit: contain;
-  margin-bottom: 12px;
   transition: transform 0.3s ease;
 }
 

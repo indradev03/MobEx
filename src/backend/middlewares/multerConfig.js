@@ -2,13 +2,16 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+// Resolve absolute path to uploads folder
+const uploadDir = path.resolve(process.cwd(), "uploads");
+
 // Ensure uploads directory exists
-const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
+  console.log(`Created uploads directory at ${uploadDir}`);
 }
 
-// Configure storage
+// Configure storage with unique file names
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -20,9 +23,9 @@ const storage = multer.diskStorage({
   },
 });
 
-// Filter files (optional) — accept only images
+// Filter: accept only images (jpeg, jpg, png, gif)
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif/;
+  const allowedTypes = /jpeg|jpg|png|gif|svg/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
   if (extname && mimetype) {
@@ -32,13 +35,14 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Multer instance with limits and file filter
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // max 5MB file size
+  limits: { fileSize: 5 * 1024 * 1024 }, // max 5MB
 });
 
-// Middleware wrapper to handle multer errors gracefully
+// Middleware wrapper to handle multer upload fields and errors gracefully
 export const uploadFields = (req, res, next) => {
   const multerMiddleware = upload.fields([
     { name: "image", maxCount: 1 },
@@ -47,10 +51,10 @@ export const uploadFields = (req, res, next) => {
 
   multerMiddleware(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      // Multer specific errors
+      console.error("Multer error:", err);
       return res.status(400).json({ error: err.message });
     } else if (err) {
-      // Unknown errors
+      console.error("Unknown upload error:", err);
       return res.status(400).json({ error: err.message });
     }
     next();
