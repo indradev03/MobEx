@@ -4,6 +4,7 @@ import "./Brands.css";
 
 const Brands = () => {
   const [brands, setBrands] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -13,8 +14,14 @@ const Brands = () => {
         if (!res.ok) throw new Error("Failed to fetch brands");
         return res.json();
       })
-      .then((data) => setBrands(data))
-      .catch((err) => setError(err.message));
+      .then((data) => {
+        setBrands(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -26,23 +33,26 @@ const Brands = () => {
 
       {error && <p className="error-text">{error}</p>}
 
-      <div className="brand-container">
-        {brands.map((brand) => (
-          <div
-            key={brand.brand_id}
-            className="brand-card"
-            onClick={() => navigate(`/brands/${brand.brand_id}`)} // Or use brand.name for route if you prefer
-          >
-            {/* Assuming brand.image is a path like "/uploads/brand-image.png" */}
-            <img
-              src={`http://localhost:5000${brand.image}`}
-              alt={brand.name}
-              loading="lazy"
-            />
-            <p>{brand.name}</p>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="loading-brands">Loading brands...</div>
+      ) : (
+        <div className="brand-container">
+          {brands.map((brand) => (
+            <div
+              key={brand.brand_id}
+              className="brand-card"
+              onClick={() => navigate(`/brands/${brand.brand_id}`)}
+            >
+              <img
+                src={`http://localhost:5000${brand.image}`}
+                alt={brand.name}
+                loading="lazy"
+              />
+              <p>{brand.name}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

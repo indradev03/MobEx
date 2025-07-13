@@ -1,48 +1,125 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import MobexLogo from '../assets/indeximages/Mobex_logo.svg';
-import SearchIcon from '../assets/indeximages/search-interface-symbol.png';
 import CheckoutIcon from '../assets/indeximages/checkout.png';
 import FavouriteIcon from '../assets/indeximages/favourite.png';
 import ProfileIcon from '../assets/indeximages/people.png';
 
-import { FaUser, FaSignOutAlt } from 'react-icons/fa'; // Import icons
-
+import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import './Headers.css';
 
 const Headers = () => {
   const navigate = useNavigate();
-  const [searchVisible, setSearchVisible] = useState(false);
-  const searchInputRef = useRef(null);
+  const location = useLocation();
+
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0); // <-- new state for cart count
+
+  // Fetch wishlist count
+  const fetchWishlistCount = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return setWishlistCount(0);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/wishlist', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch wishlist');
+      const data = await res.json();
+      if (Array.isArray(data)) setWishlistCount(data.length);
+      else setWishlistCount(0);
+    } catch (err) {
+      console.error('Failed to load wishlist', err);
+      setWishlistCount(0);
+    }
+  };
+
+  // Fetch cart count
+  const fetchCartCount = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return setCartCount(0);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/cart', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch cart');
+      const data = await res.json();
+
+      if (Array.isArray(data.cartItems)) {
+        const totalQuantity = data.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        setCartCount(totalQuantity);
+      } else {
+        setCartCount(0);
+      }
+    } catch (err) {
+      console.error('Failed to load cart', err);
+      setCartCount(0);
+    }
+  };
 
   useEffect(() => {
-    const handleLoginEvent = () => setIsLoggedIn(true);
-    const handleLogoutEvent = () => setIsLoggedIn(false);
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setUserName(parsed.name || '');
+      } catch {
+        setUserName('');
+      }
+    }
+
+    if (token) {
+      fetchWishlistCount();
+      fetchCartCount();
+    }
+
+    const handleLoginEvent = () => {
+      setIsLoggedIn(true);
+      fetchWishlistCount();
+      fetchCartCount();
+    };
+    const handleLogoutEvent = () => {
+      setIsLoggedIn(false);
+      setUserName('');
+      setWishlistCount(0);
+      setCartCount(0);
+    };
+
+    const handleWishlistUpdate = () => {
+      fetchWishlistCount();
+    };
+
+    const handleCartUpdate = () => {
+      fetchCartCount();
+    };
 
     window.addEventListener('login', handleLoginEvent);
     window.addEventListener('logout', handleLogoutEvent);
+    window.addEventListener('wishlist-updated', handleWishlistUpdate);
+    window.addEventListener('cart-updated', handleCartUpdate); // listen to cart updates
 
     return () => {
       window.removeEventListener('login', handleLoginEvent);
       window.removeEventListener('logout', handleLogoutEvent);
+      window.removeEventListener('wishlist-updated', handleWishlistUpdate);
+      window.removeEventListener('cart-updated', handleCartUpdate);
     };
   }, []);
-
-  const toggleSearch = () => {
-    setSearchVisible(prev => !prev);
-    setTimeout(() => {
-      if (searchInputRef.current) {
-        searchInputRef.current.focus();
-      }
-    }, 100);
-  };
 
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    setUserName('');
+    setWishlistCount(0);
+    setCartCount(0);
     window.dispatchEvent(new Event('logout'));
     navigate('/login');
   };
@@ -51,83 +128,70 @@ const Headers = () => {
     if (isLoggedIn) {
       navigate(path);
     } else {
+      alert('Please log in first.');
       navigate('/login');
     }
   };
 
   return (
-    <div className="Navbar">
-      <div className="Main_Logo">
+    <div className="header-container">
+      <div className="header-logo">
         <Link to="/">
           <img src={MobexLogo} alt="Mobex Logo" />
         </Link>
       </div>
 
-      <nav className="nav-links">
-        <ul className="header-links">
-          <li><Link to="/brands">Brands</Link></li>
-          <li><Link to="/exchange">Exchange</Link></li>
-          <li><Link to="/special-offers">Special Offers</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          <li><Link to="/faq">FAQ</Link></li>
+      <nav className="header-nav">
+        <ul className="header-nav-links">
+          <li><Link to="/brands" className={location.pathname === '/brands' ? 'active-link' : ''}>Brands</Link></li>
+          <li><Link to="/exchange" className={location.pathname === '/exchange' ? 'active-link' : ''}>Exchange</Link></li>
+          <li><Link to="/special-offers" className={location.pathname === '/special-offers' ? 'active-link' : ''}>Special Offers</Link></li>
+          <li><Link to="/about" className={location.pathname === '/about' ? 'active-link' : ''}>About</Link></li>
+          <li><Link to="/contact" className={location.pathname === '/contact' ? 'active-link' : ''}>Contact</Link></li>
+          <li><Link to="/faq" className={location.pathname === '/faq' ? 'active-link' : ''}>FAQ</Link></li>
         </ul>
       </nav>
 
-      <div className="auth-buttons">
+      <div className="header-auth">
         {!isLoggedIn && (
           <>
-            <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
-            <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
+            <button className="auth-login" onClick={() => navigate('/login')}>Login</button>
+            <button className="auth-signup" onClick={() => navigate('/signup')}>Sign Up</button>
           </>
         )}
       </div>
 
       <div className="header-icons">
-        <button type="button" onClick={toggleSearch} id="menuButton" aria-label="Toggle search">
-          <img src={SearchIcon} alt="Search Icon" />
+        <button onClick={() => {
+            console.log('Cart clicked');
+            handleProtectedNavigation('/cart');
+          }} aria-label="Cart" className="header-cart-icon">
+
+          <img src={CheckoutIcon} alt="Cart Icon" />
+          {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
         </button>
 
-        <form className={`search-form ${searchVisible ? 'show' : ''}`} onSubmit={e => e.preventDefault()}>
-          <input type="text" placeholder="Search..." ref={searchInputRef} autoComplete="off" />
-          <button type="submit" className="submit-search">Go</button>
-        </form>
-
-        <button
-          id="menuButton"
-          aria-label="Checkout"
-          onClick={() => handleProtectedNavigation('/checkout')}
-        >
-          <img src={CheckoutIcon} alt="Checkout Icon" />
-        </button>
-
-        <button
-          id="menuButton"
-          aria-label="Favourites"
-          onClick={() => handleProtectedNavigation('/favourites')}
-        >
+        <button onClick={() => handleProtectedNavigation('/favourites')} aria-label="Favourites" className="header-wishlist-icon">
           <img src={FavouriteIcon} alt="Favourite Icon" />
+          {wishlistCount > 0 && <span className="wishlist-badge">{wishlistCount}</span>}
         </button>
 
         {isLoggedIn && (
           <div
-            className="profile-dropdown-wrapper"
+            className="header-profile-wrapper"
             onMouseEnter={() => setProfileMenuOpen(true)}
             onMouseLeave={() => setProfileMenuOpen(false)}
           >
-            <button id="menuButton" aria-label="Profile">
+            <button aria-label="Profile">
               <img src={ProfileIcon} alt="Profile Icon" />
             </button>
-
             {profileMenuOpen && (
-              <div className="profile-dropdown">
+              <div className="header-profile-dropdown">
                 <button className="dropdown-item" onClick={() => navigate('/profile')}>
-                  <FaUser className="dropdown-icon" />
-                  Profile
+                  <FaUser className="dropdown-icon" /> Profile
                 </button>
-                <button className="dropdown-item logout-btn" onClick={handleLogout}>
-                  <FaSignOutAlt className="dropdown-icon" />
-                  Logout
+                <button className="dropdown-item-logout-btn" onClick={handleLogout}>
+                  <FaSignOutAlt className="dropdown-icon" /> Logout
                 </button>
               </div>
             )}

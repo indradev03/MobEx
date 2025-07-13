@@ -13,7 +13,10 @@ const AddProductPage = () => {
     { brand_id: 2, name: "Samsung" },
     { brand_id: 3, name: "Xiaomi" },
     { brand_id: 4, name: "OnePlus" },
-    { brand_id: 5, name: "Google" },
+    { brand_id: 5, name: "Realme" },
+    { brand_id: 6, name: "Honor" },
+    { brand_id: 7, name: "Infinix" },
+    { brand_id: 8, name: "Vivo" }
   ];
 
   // Form states
