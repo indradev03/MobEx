@@ -1,0 +1,110 @@
+.favourites-page {
+  max-width: 1200px;
+  margin: 100px auto 50px;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.favourites-title {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #e63946;
+}
+
+.wishlist-loading,
+.wishlist-error,
+.wishlist-empty {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 40px;
+}
+
+.favourites-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.favourite-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.favourite-card:hover {
+  transform: translateY(-5px);
+}
+
+.favourite-img-wrapper {
+  cursor: pointer;
+  overflow: hidden;
+  height: 220px;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favourite-img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.favourite-content {
+  padding: 16px;
+}
+
+.favourite-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.favourite-price {
+  color: #25ae3f;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.favourite-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.favourite-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.favourite-btn.remove {
+  background-color: #fc3134;
+  color: white;
+}
+
+.favourite-btn.remove:hover {
+  background-color: #d62828;
+}
+
+.favourite-btn.cart {
+  background-color: #219ebc;
+  color: white;
+}
+
+.favourite-btn.cart:hover {
+  background-color: #126782;
+}
+
