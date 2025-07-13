@@ -25,6 +25,9 @@ import Profile from './pages/users/Profile';
 import BrandProductsPage from './pages/brands/BrandProductsPage';
 import AdminDashboard from './pages/admin/pages/AdminDashboard';
 import ProductDetailsPage from "./pages/product/ProductDetailsPage";
+import FavouritesPage from './pages/users/FavouritesPage';
+import CartPage from './pages/users/CartPage';
+import UserBooking from './pages/users/UserBooking';
 // Home section (used on "/")
 const Home = () => (
   <>
@@ -56,6 +59,7 @@ function App() {
                 <Route path="/brands" element={<Brands />} />
                   <Route path="/brands/:brandId" element={<BrandProductsPage />} />
                   <Route path="/productdetails" element={<ProductDetailsPage />} />
+
                 <Route path="/exchange" element={<Exchange />} />
                 <Route path="/special-offers" element={<SpecialOffers />} />
                 <Route path="/about" element={<About />} />
@@ -67,6 +71,9 @@ function App() {
                 <Route path="/productdetails" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/userdashboard" element={<UserDashboard />} />
+                <Route path="/favourites" element={<FavouritesPage />} /> 
+                <Route path="/cart" element={<CartPage />} /> 
+                <Route path="/userbooking" element={<UserBooking />} />
               </Routes>
               <QuickLinksSection />
               <FooterBottom />
