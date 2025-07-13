@@ -8,13 +8,22 @@ const brandIdToSlugMap = {
   "1": "apple",
   "2": "samsung",
   "3": "xiaomi",
-  // add more as needed
+  "4": "OnePlus" ,
+  "5": "realme",  
+  "6": "honor",
+  "7": "infinix",
+  "8": "vivo"
 };
 
 const brandMap = {
   apple: "Apple",
   samsung: "Samsung",
   xiaomi: "Xiaomi",
+  OnePlus: "OnePlus",
+  realme: "Realme", 
+  honor: "Honor",
+  infinix: "Infinix",
+  vivo: "Vivo"
   // add more as needed
 };
 

@@ -25,10 +25,43 @@ const BrandProductsList = ({ brandId }) => {
     fetchProducts();
   }, [brandId]);
 
-  const handleAddToCart = (product) => {
-    alert(`Added "${product.name}" to cart!`);
-    // TODO: integrate with your cart system
-  };
+    const handleAddToCart = async (product) => {
+      const token = localStorage.getItem("token");
+      console.log("Token used for addToCart:", token);  // debug token presence
+
+      if (!token) {
+        alert("Please login to add products to your cart");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,  // <-- this is critical
+          },
+          body: JSON.stringify({ productId: product.product_id }),
+        });
+
+        if (res.status === 401) {
+          alert("Unauthorized! Please login again.");
+          navigate("/login");
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
+
+        alert(data.message || "Product added to cart!");
+        window.dispatchEvent(new Event("cart-updated"));
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
 
   return (
     <div className="bp-page">
@@ -36,8 +69,10 @@ const BrandProductsList = ({ brandId }) => {
         <ArrowLeft size={18} /> Back
       </button>
 
-      <h2 className="bp-heading">Explore {products.length > 0 ? products[0].brand_name || "Products" : "Products"}</h2>
-        <p className="bp-subheading">Find the best deals and latest arrivals from this brand.</p>
+      <h2 className="bp-heading">
+        Explore {products.length > 0 ? products[0].brand_name || "Products" : "Products"}
+      </h2>
+      <p className="bp-subheading">Find the best deals and latest arrivals from this brand.</p>
 
       {error && <p className="bp-error">{error}</p>}
 
@@ -54,9 +89,7 @@ const BrandProductsList = ({ brandId }) => {
             >
               <div className="bp-image-wrapper">
                 {product.discount && (
-                  <span className="bp-discount-badge">
-                    {product.discount.replace("%", "")}% off
-                  </span>
+                  <span className="bp-discount-badge">{product.discount.replace("%", "")}% off</span>
                 )}
                 <img
                   src={
@@ -87,8 +120,8 @@ const BrandProductsList = ({ brandId }) => {
               <button
                 className="bp-add-to-cart-btn"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToCart(product);
+                  e.stopPropagation(); // prevent card click
+                  handleAddToCart(product); // pass product here
                 }}
               >
                 <ShoppingCart />
