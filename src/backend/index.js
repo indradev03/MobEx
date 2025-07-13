@@ -9,6 +9,7 @@ import brandRoutes from './routes/admin/brands/brandRoutes.js';
 import productRoutes from './routes/admin/addproduct/productRoutes.js'
 import wishlistRoutes from './routes/wishlist/wishlist.js';
 import cartRoutes from './routes/cart/cartRoutes.js';
+import orderRoutes from './routes/order/orderRoutes.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/brands', brandRoutes);
 app.use("/api/products", productRoutes);
 app.use('/api/wishlist', wishlistRoutes);
   app.use('/api/cart', cartRoutes);
+  app.use("/api/orders", orderRoutes);
 
 app.use("/uploads", express.static("uploads"));
 // Health check
@@ -37,3 +39,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
+
+

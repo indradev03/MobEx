@@ -108,7 +108,7 @@ const FavouritesPage = () => {
 
   return (
     <div className="favourites-page">
-      <h1 className="favourites-title">❤️ Your Wishlist</h1>
+      <h1 className="favourites-title">❤️ My Wishlist</h1>
 
       {loading && <p className="wishlist-loading">Loading your wishlist...</p>}
       {error && <p className="wishlist-error">{error}</p>}

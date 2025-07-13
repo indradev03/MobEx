@@ -5,6 +5,7 @@ import "./CartPage.css";
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -46,6 +47,7 @@ const CartPage = () => {
         throw new Error(data.error || "Failed to remove item");
       }
       setCartItems((prev) => prev.filter((item) => item.cart_id !== cartId));
+      setSelectedItems((prev) => prev.filter((id) => id !== cartId));
       window.dispatchEvent(new Event("cart-updated"));
     } catch (err) {
       alert(err.message);
@@ -73,7 +75,6 @@ const CartPage = () => {
         throw new Error(data.error || "Failed to update quantity");
       }
 
-      // Update local state only
       setCartItems((prevItems) =>
         prevItems.map((item) =>
           item.cart_id === cartId ? { ...item, quantity: newQuantity } : item
@@ -86,15 +87,29 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = cartItems.reduce((sum, item) => {
-    const price = parseFloat(item.new_price) || 0;
-    const qty = item.quantity || 1;
-    return sum + price * qty;
-  }, 0);
+  const handleSelectToggle = (cartId) => {
+    setSelectedItems((prev) =>
+      prev.includes(cartId)
+        ? prev.filter((id) => id !== cartId)
+        : [...prev, cartId]
+    );
+  };
+
+  const handleSelectAllToggle = () => {
+    if (selectedItems.length === cartItems.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(cartItems.map((item) => item.cart_id));
+    }
+  };
+
+  const handleCheckoutSingle = (cartItem) => {
+    navigate("/userbooking", { state: { checkoutItems: [cartItem] } });
+  };
 
   return (
     <div className="cart-container">
-      <h1 className="cart-header">🛒 Your Cart</h1>
+      <h1 className="cart-header">🛒 My Cart</h1>
 
       {loading ? (
         <p className="cart-loading">Loading cart items...</p>
@@ -102,15 +117,33 @@ const CartPage = () => {
         <p className="cart-error">{error}</p>
       ) : cartItems.length === 0 ? (
         <p className="cart-empty">
-            Your cart is empty.
-            <br />
-                <button onClick={() => navigate("/brands")} className="btn-shop-now">
-                    Start Shopping
-                </button>
+          Your cart is empty.
+          <br />
+          <button onClick={() => navigate("/brands")} className="btn-shop-now">
+            Start Shopping
+          </button>
         </p>
-
       ) : (
         <div className="cart-content-wrapper">
+          <button className="btn-select-toggle" onClick={handleSelectAllToggle}>
+            {selectedItems.length === cartItems.length
+              ? "Deselect All"
+              : "Select All"}
+          </button>
+
+          <button
+            className="btn-checkout-selected"
+            disabled={selectedItems.length === 0}
+            onClick={() => {
+              const selectedCartItems = cartItems.filter((item) =>
+                selectedItems.includes(item.cart_id)
+              );
+              navigate("/userbooking", { state: { checkoutItems: selectedCartItems } });
+            }}
+          >
+            Checkout Selected Items ({selectedItems.length})
+          </button>
+
           <div className="cart-items-list">
             {cartItems.map(({ cart_id, name, image_url, new_price, quantity }) => {
               const imageUrl =
@@ -122,10 +155,18 @@ const CartPage = () => {
 
               return (
                 <div key={cart_id} className="cart-item-card">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(cart_id)}
+                    onChange={() => handleSelectToggle(cart_id)}
+                    className="cart-item-checkbox"
+                  />
                   <img src={imageUrl} alt={name} className="cart-item-img" />
                   <div className="cart-item-info">
                     <h3 className="item-title">{name}</h3>
-                    <p className="item-price">Price: NPR {parseFloat(new_price).toLocaleString()}</p>
+                    <p className="item-price">
+                      Price: NPR {parseFloat(new_price).toLocaleString()}
+                    </p>
                     <div className="qty-control">
                       <button
                         className="qty-btn"
@@ -143,28 +184,27 @@ const CartPage = () => {
                       </button>
                     </div>
                     <p className="item-subtotal">Subtotal: NPR {subtotal.toLocaleString()}</p>
-                    <button onClick={() => handleRemove(cart_id)} className="btn-remove">
-                      ✕ Remove
-                    </button>
+                    <div className="btn-group">
+                      <button
+                        onClick={() => handleRemove(cart_id)}
+                        className="btn-remove"
+                      >
+                        Remove
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleCheckoutSingle({ cart_id, name, image_url, new_price, quantity })
+                        }
+                        className="btn-checkout-single"
+                        disabled={!selectedItems.includes(cart_id)} // Disabled unless selected
+                      >
+                        Checkout This Item
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
             })}
-          </div>
-
-          <div className="cart-summary">
-            <h2>Order Summary</h2>
-            <div className="summary-detail">
-              <span>Items:</span>
-              <span>{cartItems.length}</span>
-            </div>
-            <div className="summary-detail total">
-              <span>Total:</span>
-              <span>NPR {totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-            </div>
-            <button className="btn-checkout" onClick={() => navigate("/checkout")}>
-              Proceed to Checkout
-            </button>
           </div>
         </div>
       )}

@@ -27,6 +27,7 @@ import AdminDashboard from './pages/admin/pages/AdminDashboard';
 import ProductDetailsPage from "./pages/product/ProductDetailsPage";
 import FavouritesPage from './pages/users/FavouritesPage';
 import CartPage from './pages/users/CartPage';
+import UserBooking from './pages/users/UserBooking';
 // Home section (used on "/")
 const Home = () => (
   <>
@@ -72,6 +73,7 @@ function App() {
                 <Route path="/userdashboard" element={<UserDashboard />} />
                 <Route path="/favourites" element={<FavouritesPage />} /> 
                 <Route path="/cart" element={<CartPage />} /> 
+                <Route path="/userbooking" element={<UserBooking />} />
               </Routes>
               <QuickLinksSection />
               <FooterBottom />
