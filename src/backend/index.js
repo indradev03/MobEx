@@ -8,6 +8,7 @@ import adminRoutes from './routes/admin/index.js';
 import brandRoutes from './routes/admin/brands/brandRoutes.js'; 
 import productRoutes from './routes/admin/addproduct/productRoutes.js'
 import wishlistRoutes from './routes/wishlist/wishlist.js';
+import cartRoutes from './routes/cart/cartRoutes.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/brands', brandRoutes); 
 app.use("/api/products", productRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+  app.use('/api/cart', cartRoutes);
 
 app.use("/uploads", express.static("uploads"));
 // Health check

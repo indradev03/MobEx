@@ -12,11 +12,14 @@ import './Headers.css';
 const Headers = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0); // <-- new state for cart count
 
+  // Fetch wishlist count
   const fetchWishlistCount = async () => {
     const token = localStorage.getItem('token');
     if (!token) return setWishlistCount(0);
@@ -35,6 +38,30 @@ const Headers = () => {
     }
   };
 
+  // Fetch cart count
+  const fetchCartCount = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return setCartCount(0);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/cart', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch cart');
+      const data = await res.json();
+
+      if (Array.isArray(data.cartItems)) {
+        const totalQuantity = data.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        setCartCount(totalQuantity);
+      } else {
+        setCartCount(0);
+      }
+    } catch (err) {
+      console.error('Failed to load cart', err);
+      setCartCount(0);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
@@ -49,30 +76,41 @@ const Headers = () => {
       }
     }
 
-    if (token) fetchWishlistCount();
+    if (token) {
+      fetchWishlistCount();
+      fetchCartCount();
+    }
 
     const handleLoginEvent = () => {
       setIsLoggedIn(true);
       fetchWishlistCount();
+      fetchCartCount();
     };
     const handleLogoutEvent = () => {
       setIsLoggedIn(false);
       setUserName('');
       setWishlistCount(0);
+      setCartCount(0);
     };
 
     const handleWishlistUpdate = () => {
       fetchWishlistCount();
     };
 
+    const handleCartUpdate = () => {
+      fetchCartCount();
+    };
+
     window.addEventListener('login', handleLoginEvent);
     window.addEventListener('logout', handleLogoutEvent);
     window.addEventListener('wishlist-updated', handleWishlistUpdate);
+    window.addEventListener('cart-updated', handleCartUpdate); // listen to cart updates
 
     return () => {
       window.removeEventListener('login', handleLoginEvent);
       window.removeEventListener('logout', handleLogoutEvent);
       window.removeEventListener('wishlist-updated', handleWishlistUpdate);
+      window.removeEventListener('cart-updated', handleCartUpdate);
     };
   }, []);
 
@@ -81,6 +119,7 @@ const Headers = () => {
     setIsLoggedIn(false);
     setUserName('');
     setWishlistCount(0);
+    setCartCount(0);
     window.dispatchEvent(new Event('logout'));
     navigate('/login');
   };
@@ -123,8 +162,13 @@ const Headers = () => {
       </div>
 
       <div className="header-icons">
-        <button onClick={() => handleProtectedNavigation('/checkout')} aria-label="Checkout">
-          <img src={CheckoutIcon} alt="Checkout Icon" />
+        <button onClick={() => {
+            console.log('Cart clicked');
+            handleProtectedNavigation('/cart');
+          }} aria-label="Cart" className="header-cart-icon">
+
+          <img src={CheckoutIcon} alt="Cart Icon" />
+          {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
         </button>
 
         <button onClick={() => handleProtectedNavigation('/favourites')} aria-label="Favourites" className="header-wishlist-icon">

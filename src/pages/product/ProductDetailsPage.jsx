@@ -50,10 +50,36 @@ const ProductDetailsPage = () => {
     setMainImage(url);
   };
 
-  const handleAddToCart = () => {
-    console.log("Added to cart:", product);
-    alert("Added to cart!");
-  };
+    // inside your component
+    const handleAddToCart = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please login to add products to your cart");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ productId: product.product_id }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
+
+        alert(data.message || "Product added to cart!");
+        window.dispatchEvent(new Event('cart-updated'));
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
 
   const handleAddToWishlist = async () => {
     const token = localStorage.getItem("token");

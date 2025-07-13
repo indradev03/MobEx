@@ -49,9 +49,58 @@ const FavouritesPage = () => {
     }
   };
 
-  const handleAddToCart = (product) => {
-    alert(`Added ${product.name} to cart!`);
+  const handleAddToCart = async (product) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login to add products to your cart");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId: product.product_id }),
+      });
+
+      if (res.status === 401) {
+        alert("Unauthorized! Please login again.");
+        navigate("/login");
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
+
+      // Now delete from wishlist table on backend
+      const removeRes = await fetch(`http://localhost:5000/api/wishlist/${product.product_id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!removeRes.ok) {
+        const removeData = await removeRes.json();
+        throw new Error(removeData.error || "Failed to remove product from wishlist");
+      }
+
+      alert(data.message || "Product added to cart and removed from wishlist!");
+      window.dispatchEvent(new Event("cart-updated"));
+      window.dispatchEvent(new Event("wishlist-updated"));
+
+      // Remove from wishlist state to update UI
+      setWishlist((prev) => prev.filter((item) => item.product_id !== product.product_id));
+
+    } catch (err) {
+      alert(err.message);
+    }
   };
+
+
 
   useEffect(() => {
     fetchWishlist();

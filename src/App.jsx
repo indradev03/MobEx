@@ -26,6 +26,7 @@ import BrandProductsPage from './pages/brands/BrandProductsPage';
 import AdminDashboard from './pages/admin/pages/AdminDashboard';
 import ProductDetailsPage from "./pages/product/ProductDetailsPage";
 import FavouritesPage from './pages/users/FavouritesPage';
+import CartPage from './pages/users/CartPage';
 // Home section (used on "/")
 const Home = () => (
   <>
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/userdashboard" element={<UserDashboard />} />
                 <Route path="/favourites" element={<FavouritesPage />} /> 
+                <Route path="/cart" element={<CartPage />} /> 
               </Routes>
               <QuickLinksSection />
               <FooterBottom />
