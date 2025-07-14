@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { FaTrashAlt } from "react-icons/fa"; // make sure to install react-icons
+import { FaTrashAlt } from "react-icons/fa";
 import "./OrderHistoryPage.css";
+
+const formatNPR = (amount) => {
+  return new Intl.NumberFormat("en-NP", {
+    style: "currency",
+    currency: "NPR",
+    minimumFractionDigits: 2,
+  }).format(amount);
+};
 
 const OrderHistoryPage = () => {
   const [orders, setOrders] = useState([]);
@@ -55,9 +63,8 @@ const OrderHistoryPage = () => {
     }
   };
 
-  // Delete single order with fade out
   const deleteOrder = async (orderId) => {
-    if (!window.confirm(`Are you sure you want to delete order #${orderId}?`)) return;
+    if (!window.confirm(`Are you sure you want to delete this order?`)) return;
 
     setDeletingOrderId(orderId);
     setError(null);
@@ -79,7 +86,6 @@ const OrderHistoryPage = () => {
         throw new Error(`Failed to delete order: ${errMsg}`);
       }
 
-      // Animate fade-out before removing from state
       setTimeout(() => {
         setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
         setDeletingOrderId(null);
@@ -90,7 +96,6 @@ const OrderHistoryPage = () => {
     }
   };
 
-  // Delete all orders immediately
   const deleteAllOrders = async () => {
     if (!window.confirm("Are you sure you want to delete ALL your orders?")) return;
 
@@ -128,24 +133,24 @@ const OrderHistoryPage = () => {
 
   if (loading)
     return (
-      <div className="loading-container">
-        <p className="loading-text">Loading your order history...</p>
+      <div className="orderHistory-loadingContainer">
+        <p className="orderHistory-loadingText">Loading your order history...</p>
       </div>
     );
 
   return (
-    <div className="order-history-container">
-      <h1>Order History</h1>
+    <div className="orderHistory-container">
+      <h1 className="orderHistory-title">Order History</h1>
 
       {error && (
-        <div className="error-container">
-          <p className="error-message">⚠️ Error: {error}</p>
+        <div className="orderHistory-errorContainer">
+          <p className="orderHistory-errorMessage">⚠️ Error: {error}</p>
         </div>
       )}
 
       {orders.length > 0 && (
         <button
-          className="delete-all-button"
+          className="orderHistory-deleteAllButton"
           onClick={deleteAllOrders}
           disabled={deletingAll}
           style={{ marginBottom: "20px" }}
@@ -155,33 +160,34 @@ const OrderHistoryPage = () => {
       )}
 
       {orders.length === 0 && !loading && (
-        <div className="empty-message">
+        <div className="orderHistory-emptyMessage">
           <p>You have no orders yet.</p>
         </div>
       )}
 
-      <div className="order-cards-row">
+      <div className="orderHistory-cardsRow">
         {orders.map((order) => (
           <div
             key={order.order_id}
-            className={`order-card-wrapper ${deletingOrderId === order.order_id ? "deleting" : ""}`}
+            className={`orderHistory-cardWrapper ${
+              deletingOrderId === order.order_id ? "orderHistory-deleting" : ""
+            }`}
           >
-            <div className="order-card">
-              <div className="order-header">
-                <h3>Order #{order.order_id}</h3>
-                <span className="order-date">
+            <div className="orderHistory-card">
+              <div className="orderHistory-header">
+                <span className="orderHistory-date">
                   {order.created_at ? new Date(order.created_at).toLocaleString() : "Date N/A"}
                 </span>
 
                 <button
-                  className="delete-order-button"
+                  className="orderHistory-deleteOrderButton"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteOrder(order.order_id);
                   }}
                   disabled={deletingOrderId === order.order_id}
                   title="Delete this order"
-                  aria-label={`Delete order #${order.order_id}`}
+                  aria-label={`Delete order`}
                 >
                   {deletingOrderId === order.order_id ? (
                     "Deleting..."
@@ -194,66 +200,67 @@ const OrderHistoryPage = () => {
                 </button>
               </div>
 
-              <div className="order-details">
-                <div>
-                  <p>
-                    <strong>Name:</strong> {order.name}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong> {order.phone}
-                  </p>
-                  <p>
-                    <strong>Address:</strong> {order.address}
-                  </p>
+              <div className="orderHistory-content">
+                <div className="orderHistory-userDetails">
+                  <h4 className="orderHistory-subtitle">User Details</h4>
+                  <div className="orderHistory-userDetailsInfo">
+                    <label className="orderHistory-label name">Name:</label>
+                    <span className="orderHistory-value">{order.name}</span>
+
+                    <label className="orderHistory-label phone">Phone:</label>
+                    <span className="orderHistory-value">{order.phone}</span>
+
+                    <label className="orderHistory-label address">Address:</label>
+                    <span className="orderHistory-value">{order.address}</span>
+
+                    <label className="orderHistory-label payment">Payment Method:</label>
+                    <span className="orderHistory-value">{order.payment_method}</span>
+                  </div>
                 </div>
-                <div>
-                  <p>
-                    <strong>Payment Method:</strong> {order.payment_method}
-                  </p>
-                  <p>
-                    <strong>Total Price:</strong>{" "}
-                    {typeof order.total_price === "number"
-                      ? `$${order.total_price.toFixed(2)}`
-                      : "N/A"}
-                  </p>
+
+                <div className="orderHistory-productDetails">
+                  <h4 className="orderHistory-subtitle">Products</h4>
+                  {order.items && order.items.length > 0 ? (
+                    <table className="orderHistory-itemsTable">
+                      <thead>
+                        <tr>
+                          <th>Image</th>
+                          <th>Product Name</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {order.items.map((item) => (
+                          <tr key={item.item_id}>
+                            <td>
+                              <img
+                                src={item.image_url || "/placeholder.png"}
+                                alt={item.product_name || "Product Image"}
+                                className="orderHistory-productImage"
+                              />
+                            </td>
+                            <td>{item.product_name || "Unknown Product"}</td>
+                            <td>{item.quantity}</td>
+                            <td>
+                              {typeof item.product_price === "number"
+                                ? formatNPR(item.product_price)
+                                : "N/A"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>No items found for this order.</p>
+                  )}
                 </div>
               </div>
 
-              <h4>Items:</h4>
-              {order.items && order.items.length > 0 ? (
-                <table className="items-table">
-                  <thead>
-                    <tr>
-                      <th>Image</th>
-                      <th>Product Name</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {order.items.map((item) => (
-                      <tr key={item.item_id}>
-                        <td>
-                          <img
-                            src={item.image_url || "/placeholder.png"}
-                            alt={item.product_name || "Product Image"}
-                            className="product-image"
-                          />
-                        </td>
-                        <td>{item.product_name || "Unknown Product"}</td>
-                        <td>{item.quantity}</td>
-                        <td>
-                          {typeof item.product_price === "number"
-                            ? `$${item.product_price.toFixed(2)}`
-                            : "N/A"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p>No items found for this order.</p>
-              )}
+              <p className="orderHistory-totalPrice" style={{ marginTop: "1rem", fontWeight: "600", fontSize: "1.1rem" , color: "green" }}>
+                Total Price:{" "}
+                {typeof order.total_price === "number" ? formatNPR(order.total_price) : "N/A"}
+              </p>
             </div>
           </div>
         ))}

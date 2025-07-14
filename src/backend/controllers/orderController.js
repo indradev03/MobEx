@@ -93,6 +93,14 @@ export const getOrderHistory = async (req, res) => {
 
     const orderItems = itemsResult.rows;
 
+    // Convert prices to numbers (in case they come as strings)
+    orders.forEach(order => {
+      order.total_price = Number(order.total_price);
+    });
+    orderItems.forEach(item => {
+      item.product_price = Number(item.product_price);
+    });
+
     // Combine items into orders
     const ordersWithItems = orders.map(order => ({
       ...order,
@@ -105,6 +113,7 @@ export const getOrderHistory = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch order history" });
   }
 };
+
 
 
 
