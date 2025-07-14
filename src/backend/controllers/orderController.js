@@ -63,6 +63,7 @@ export const getOrderHistory = async (req, res) => {
   const userId = req.user.userId;
 
   try {
+    // Get all orders for user
     const ordersResult = await pool.query(
       `SELECT order_id, name, phone, address, payment_method, total_price, created_at
        FROM orders
@@ -78,15 +79,21 @@ export const getOrderHistory = async (req, res) => {
 
     const orderIds = orders.map(o => o.order_id);
 
+    // Join order_items with products to get product info
     const itemsResult = await pool.query(
-      `SELECT item_id, order_id, product_id, cart_id, quantity
-       FROM order_items
-       WHERE order_id = ANY($1::int[])`,
+      `SELECT oi.item_id, oi.order_id, oi.product_id, oi.cart_id, oi.quantity,
+              p.name AS product_name,
+              p.image_url,
+              p.new_price AS product_price
+       FROM order_items oi
+       JOIN products p ON oi.product_id = p.product_id
+       WHERE oi.order_id = ANY($1::int[])`,
       [orderIds]
     );
 
     const orderItems = itemsResult.rows;
 
+    // Combine items into orders
     const ordersWithItems = orders.map(order => ({
       ...order,
       items: orderItems.filter(item => item.order_id === order.order_id),
@@ -98,6 +105,7 @@ export const getOrderHistory = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch order history" });
   }
 };
+
 
 
 export const deleteOrderById = async (req, res) => {
@@ -171,3 +179,5 @@ export const deleteAllOrdersForUser = async (req, res) => {
     client.release();
   }
 };
+
+

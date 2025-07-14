@@ -224,15 +224,29 @@ const OrderHistoryPage = () => {
                 <table className="items-table">
                   <thead>
                     <tr>
-                      <th>Product ID</th>
+                      <th>Image</th>
+                      <th>Product Name</th>
                       <th>Quantity</th>
+                      <th>Price</th>
                     </tr>
                   </thead>
                   <tbody>
                     {order.items.map((item) => (
                       <tr key={item.item_id}>
-                        <td>{item.product_id}</td>
+                        <td>
+                          <img
+                            src={item.image_url || "/placeholder.png"}
+                            alt={item.product_name || "Product Image"}
+                            className="product-image"
+                          />
+                        </td>
+                        <td>{item.product_name || "Unknown Product"}</td>
                         <td>{item.quantity}</td>
+                        <td>
+                          {typeof item.product_price === "number"
+                            ? `$${item.product_price.toFixed(2)}`
+                            : "N/A"}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
