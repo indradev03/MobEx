@@ -57,3 +57,117 @@ export const createOrder = async (req, res) => {
     client.release();
   }
 };
+
+
+export const getOrderHistory = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const ordersResult = await pool.query(
+      `SELECT order_id, name, phone, address, payment_method, total_price, created_at
+       FROM orders
+       WHERE user_id = $1
+       ORDER BY created_at DESC`,
+      [userId]
+    );
+
+    const orders = ordersResult.rows;
+    if (orders.length === 0) {
+      return res.json([]);
+    }
+
+    const orderIds = orders.map(o => o.order_id);
+
+    const itemsResult = await pool.query(
+      `SELECT item_id, order_id, product_id, cart_id, quantity
+       FROM order_items
+       WHERE order_id = ANY($1::int[])`,
+      [orderIds]
+    );
+
+    const orderItems = itemsResult.rows;
+
+    const ordersWithItems = orders.map(order => ({
+      ...order,
+      items: orderItems.filter(item => item.order_id === order.order_id),
+    }));
+
+    res.json(ordersWithItems);
+  } catch (error) {
+    console.error("Get orders error:", error.message);
+    res.status(500).json({ error: "Failed to fetch order history" });
+  }
+};
+
+
+export const deleteOrderById = async (req, res) => {
+  const userId = req.user.userId;
+  const { orderId } = req.params;
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    // Verify order belongs to user
+    const orderCheck = await client.query(
+      `SELECT order_id FROM orders WHERE order_id = $1 AND user_id = $2`,
+      [orderId, userId]
+    );
+
+    if (orderCheck.rowCount === 0) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({ error: "Order not found or unauthorized" });
+    }
+
+    // Delete order items
+    await client.query(`DELETE FROM order_items WHERE order_id = $1`, [orderId]);
+
+    // Delete the order itself
+    await client.query(`DELETE FROM orders WHERE order_id = $1`, [orderId]);
+
+    await client.query("COMMIT");
+    res.json({ message: "Order deleted successfully" });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Delete order error:", error.message);
+    res.status(500).json({ error: "Failed to delete order" });
+  } finally {
+    client.release();
+  }
+};
+
+export const deleteAllOrdersForUser = async (req, res) => {
+  const userId = req.user.userId;
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    // Get all order IDs for the user
+    const ordersResult = await client.query(
+      `SELECT order_id FROM orders WHERE user_id = $1`,
+      [userId]
+    );
+    const orderIds = ordersResult.rows.map(row => row.order_id);
+
+    if (orderIds.length > 0) {
+      // Delete order items for these orders
+      await client.query(
+        `DELETE FROM order_items WHERE order_id = ANY($1::int[])`,
+        [orderIds]
+      );
+
+      // Delete orders
+      await client.query(`DELETE FROM orders WHERE user_id = $1`, [userId]);
+    }
+
+    await client.query("COMMIT");
+    res.json({ message: "All orders deleted successfully" });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Delete all orders error:", error.message);
+    res.status(500).json({ error: "Failed to delete orders" });
+  } finally {
+    client.release();
+  }
+};

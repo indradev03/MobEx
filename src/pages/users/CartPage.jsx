@@ -145,7 +145,7 @@ const CartPage = () => {
           </button>
 
           <div className="cart-items-list">
-            {cartItems.map(({ cart_id, name, image_url, new_price, quantity }) => {
+            {cartItems.map(({ cart_id, product_id, name, image_url, new_price, quantity }) => {
               const imageUrl =
                 image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
                   ? image_url
@@ -183,7 +183,9 @@ const CartPage = () => {
                         +
                       </button>
                     </div>
-                    <p className="item-subtotal">Subtotal: NPR {subtotal.toLocaleString()}</p>
+                    <p className="item-subtotal">
+                      Subtotal: NPR {subtotal.toLocaleString()}
+                    </p>
                     <div className="btn-group">
                       <button
                         onClick={() => handleRemove(cart_id)}
@@ -193,7 +195,14 @@ const CartPage = () => {
                       </button>
                       <button
                         onClick={() =>
-                          handleCheckoutSingle({ cart_id, name, image_url, new_price, quantity })
+                          handleCheckoutSingle({
+                            cart_id,
+                            product_id, // ✅ Ensure this is included
+                            name,
+                            image_url,
+                            new_price,
+                            quantity,
+                          })
                         }
                         className="btn-checkout-single"
                         disabled={!selectedItems.includes(cart_id)} // Disabled unless selected

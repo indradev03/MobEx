@@ -1,0 +1,257 @@
+/* Container */
+.order-history-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin-top: 200px;
+}
+
+.order-history-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Empty State */
+.order-history-container.empty p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Order Card Wrapper - for animation */
+.order-card-wrapper {
+  transition: opacity 0.4s ease, max-height 0.4s ease, margin-bottom 0.4s ease, padding 0.4s ease;
+  opacity: 1;
+  max-height: 1000px; /* sufficiently large */
+  overflow: hidden;
+}
+
+/* Fade out & collapse on delete */
+.order-card-wrapper.deleting {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* Order Card */
+.order-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.8rem;
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.order-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Header with order number and date */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.6rem;
+  margin-bottom: 1rem;
+  gap: 1rem; /* added gap for better spacing */
+}
+
+.order-header h3 {
+  margin: 0;
+  color: #0077cc;
+  font-weight: 700;
+  flex-shrink: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-date {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Details */
+.order-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.order-details div p {
+  margin: 0.2rem 0;
+  font-size: 1rem;
+}
+
+.order-details strong {
+  color: #555;
+}
+
+/* Items Table */
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.items-table th,
+.items-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+.items-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Loading and Error states */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.loading-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0077cc;
+}
+
+/* Error message */
+.error-message {
+  color: #b00020;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Retry button */
+.retry-button {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.retry-button:hover,
+.retry-button:focus {
+  background-color: #005fa3;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 95, 163, 0.5);
+}
+
+/* Delete order button */
+.delete-order-button {
+  background-color:rgb(235, 4, 4); /* Bootstrap’s red */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.delete-order-button:hover,
+.delete-order-button:focus {
+  background-color: #b52a37;
+  outline: none;
+}
+
+.delete-order-button:disabled {
+  background-color: #e6a4a4;
+  box-shadow: none;
+  cursor: not-allowed;
+  color: #fff;
+}
+
+/* Optional: icon inside button */
+.delete-order-button svg {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  pointer-events: none;
+}
+
+
+.delete-order-button svg {
+  vertical-align: middle;
+  pointer-events: none;
+  color: inherit;
+  transition: color 0.2s ease;
+  width: 18px;
+  height: 18px;
+}
+
+/* Delete all button */
+.delete-all-button {
+  background-color: #535151;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.3rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.delete-all-button:disabled {
+  cursor: not-allowed;
+  background-color: #e6a4a4;
+  box-shadow: none;
+}
+
+.delete-all-button:hover:not(:disabled),
+.delete-all-button:focus:not(:disabled) {
+  background-color: #c20303;
+  outline: none;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .order-details {
+    flex-direction: column;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .delete-order-button {
+    font-size: 1rem;
+  }
+}
