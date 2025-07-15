@@ -63,69 +63,76 @@ const OrderHistoryPage = () => {
     }
   };
 
-  const deleteOrder = async (orderId) => {
-    if (!window.confirm(`Are you sure you want to delete this order?`)) return;
+const deleteOrder = async (orderId) => {
+  if (!window.confirm(`Are you sure you want to delete this order?`)) return;
 
-    setDeletingOrderId(orderId);
-    setError(null);
+  setDeletingOrderId(orderId);
+  setError(null);
 
-    try {
-      const response = await fetch(`http://localhost:5000/api/orders/history/${orderId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  try {
+    const response = await fetch(`http://localhost:5000/api/orders/history/${orderId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (!response.ok) {
-        let errMsg = response.statusText;
-        try {
-          const errData = await response.json();
-          if (errData?.error) errMsg = errData.error;
-        } catch {}
-        throw new Error(`Failed to delete order: ${errMsg}`);
-      }
+    if (!response.ok) {
+      let errMsg = response.statusText;
+      try {
+        const errData = await response.json();
+        if (errData?.error) errMsg = errData.error;
+      } catch {}
+      throw new Error(`Failed to delete order: ${errMsg}`);
+    }
 
-      setTimeout(() => {
-        setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
-        setDeletingOrderId(null);
-      }, 400);
-    } catch (err) {
-      setError(err.message);
+    setTimeout(() => {
+      setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
       setDeletingOrderId(null);
+
+      // Dispatch event to notify header about order count update
+      window.dispatchEvent(new Event('order-updated'));
+    }, 400);
+  } catch (err) {
+    setError(err.message);
+    setDeletingOrderId(null);
+  }
+};
+
+const deleteAllOrders = async () => {
+  if (!window.confirm("Are you sure you want to delete ALL your orders?")) return;
+
+  setDeletingAll(true);
+  setError(null);
+
+  try {
+    const response = await fetch("http://localhost:5000/api/orders/history", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      let errMsg = response.statusText;
+      try {
+        const errData = await response.json();
+        if (errData?.error) errMsg = errData.error;
+      } catch {}
+      throw new Error(`Failed to delete all orders: ${errMsg}`);
     }
-  };
 
-  const deleteAllOrders = async () => {
-    if (!window.confirm("Are you sure you want to delete ALL your orders?")) return;
+    setOrders([]);
+    
+    // Dispatch event to notify header about order count update
+    window.dispatchEvent(new Event('order-updated'));
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setDeletingAll(false);
+  }
+};
 
-    setDeletingAll(true);
-    setError(null);
-
-    try {
-      const response = await fetch("http://localhost:5000/api/orders/history", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        let errMsg = response.statusText;
-        try {
-          const errData = await response.json();
-          if (errData?.error) errMsg = errData.error;
-        } catch {}
-        throw new Error(`Failed to delete all orders: ${errMsg}`);
-      }
-
-      setOrders([]);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setDeletingAll(false);
-    }
-  };
 
   useEffect(() => {
     fetchOrders();

@@ -14,8 +14,8 @@ const CartPage = () => {
     if (!token) return navigate("/login");
 
     try {
-      setError("");
       setLoading(true);
+      setError("");
       const res = await fetch("http://localhost:5000/api/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -80,7 +80,6 @@ const CartPage = () => {
           item.cart_id === cartId ? { ...item, quantity: newQuantity } : item
         )
       );
-
       window.dispatchEvent(new Event("cart-updated"));
     } catch (err) {
       alert(err.message);
@@ -126,9 +125,7 @@ const CartPage = () => {
       ) : (
         <div className="cart-content-wrapper">
           <button className="btn-select-toggle" onClick={handleSelectAllToggle}>
-            {selectedItems.length === cartItems.length
-              ? "Deselect All"
-              : "Select All"}
+            {selectedItems.length === cartItems.length ? "Deselect All" : "Select All"}
           </button>
 
           <button
@@ -147,11 +144,11 @@ const CartPage = () => {
           <div className="cart-items-list">
             {cartItems.map(({ cart_id, product_id, name, image_url, new_price, quantity }) => {
               const imageUrl =
-                image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
+                image_url?.startsWith("http") || image_url?.startsWith("data")
                   ? image_url
                   : `http://localhost:5000${image_url}`;
-
-              const subtotal = (parseFloat(new_price) || 0) * (quantity || 1);
+              const price = parseFloat(new_price) || 0;
+              const subtotal = price * quantity;
 
               return (
                 <div key={cart_id} className="cart-item-card">
@@ -164,9 +161,7 @@ const CartPage = () => {
                   <img src={imageUrl} alt={name} className="cart-item-img" />
                   <div className="cart-item-info">
                     <h3 className="item-title">{name}</h3>
-                    <p className="item-price">
-                      Price: NPR {parseFloat(new_price).toLocaleString()}
-                    </p>
+                    <p className="item-price">Price: NPR {price.toLocaleString()}</p>
                     <div className="qty-control">
                       <button
                         className="qty-btn"
@@ -197,7 +192,7 @@ const CartPage = () => {
                         onClick={() =>
                           handleCheckoutSingle({
                             cart_id,
-                            product_id, // ✅ Ensure this is included
+                            product_id,
                             name,
                             image_url,
                             new_price,
@@ -205,7 +200,6 @@ const CartPage = () => {
                           })
                         }
                         className="btn-checkout-single"
-                        disabled={!selectedItems.includes(cart_id)} // Disabled unless selected
                       >
                         Checkout This Item
                       </button>

@@ -60,7 +60,14 @@ export const createOrder = async (req, res) => {
 
 
 export const getOrderHistory = async (req, res) => {
-  const userId = req.user.userId;
+  const userId = req.user?.userId;
+
+  if (!userId) {
+    console.warn("Unauthorized access attempt: missing userId in request");
+    return res.status(401).json({ error: "Unauthorized: userId missing" });
+  }
+
+  console.log("Fetching order history for userId:", userId);
 
   try {
     // Get all orders for user
@@ -73,7 +80,9 @@ export const getOrderHistory = async (req, res) => {
     );
 
     const orders = ordersResult.rows;
+
     if (orders.length === 0) {
+      console.log(`No orders found for userId: ${userId}`);
       return res.json([]);
     }
 
@@ -107,12 +116,15 @@ export const getOrderHistory = async (req, res) => {
       items: orderItems.filter(item => item.order_id === order.order_id),
     }));
 
+    console.log(`Returning ${ordersWithItems.length} orders for userId: ${userId}`);
+
     res.json(ordersWithItems);
   } catch (error) {
     console.error("Get orders error:", error.message);
     res.status(500).json({ error: "Failed to fetch order history" });
   }
 };
+
 
 
 
@@ -189,4 +201,55 @@ export const deleteAllOrdersForUser = async (req, res) => {
   }
 };
 
+
+export const getAllOrdersForAdmin = async (req, res) => {
+  // ✅ Optional admin check
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ error: "Access denied: Admins only" });
+  }
+
+  try {
+    const ordersResult = await pool.query(
+      `SELECT o.order_id, o.user_id, o.name, o.phone, o.address, o.payment_method, o.total_price, o.created_at,
+              u.name AS customer_name, u.email AS customer_email
+       FROM orders o
+       JOIN mobex_users u ON o.user_id = u.user_id
+       ORDER BY o.created_at DESC`
+    );
+
+    const orders = ordersResult.rows;
+    const orderIds = orders.map(order => order.order_id);
+
+    if (orderIds.length === 0) {
+      return res.json([]);
+    }
+
+    const itemsResult = await pool.query(
+      `SELECT oi.order_id, oi.product_id, oi.quantity, 
+              p.name AS product_name, p.image_url, p.new_price AS product_price
+       FROM order_items oi
+       JOIN products p ON oi.product_id = p.product_id
+       WHERE oi.order_id = ANY($1::int[])`,
+      [orderIds]
+    );
+
+    const orderItems = itemsResult.rows;
+
+    const ordersWithItems = orders.map(order => ({
+      ...order,
+      total_price: Number(order.total_price),
+      items: orderItems
+        .filter(item => item.order_id === order.order_id)
+        .map(item => ({
+          ...item,
+          product_price: Number(item.product_price),
+        })),
+    }));
+
+    res.json(ordersWithItems);
+  } catch (error) {
+    console.error("Admin get all orders error:", error.message);
+    res.status(500).json({ error: "Failed to fetch all orders" });
+  }
+};
 

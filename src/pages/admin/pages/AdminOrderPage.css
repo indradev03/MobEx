@@ -1,0 +1,131 @@
+.admin-order-page {
+  max-width: 900px;
+  margin: 2rem auto 4rem;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.admin-order-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.25rem;
+  text-align: center;
+  color: #1a237e;
+}
+
+.admin-order-description {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-message {
+  color: #b00020;
+  background-color: #fddede;
+  border: 1px solid #b00020;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  max-width: 600px;
+  margin: 1rem auto 2rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 0 6px rgba(176, 0, 32, 0.3);
+}
+
+.no-orders {
+  font-size: 1.25rem;
+  color: #777;
+  text-align: center;
+  margin-top: 3rem;
+  font-style: italic;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  padding: 1.8rem 2rem;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.order-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.order-card h3 {
+  margin-top: 0;
+  color: #283593;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.order-card p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.order-card p strong {
+  color: #1e88e5;
+}
+
+.order-card h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #3949ab;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.order-card ul {
+  list-style: disc inside;
+  padding-left: 0;
+  margin: 0;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.4rem;
+}
+
+.order-item-image {
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .admin-order-page {
+    padding: 0 0.5rem;
+  }
+
+  .order-card {
+    padding: 1.3rem 1.5rem;
+  }
+
+  .admin-order-page h1 {
+    font-size: 2rem;
+  }
+
+  .order-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .order-card h4 {
+    font-size: 1.1rem;
+  }
+}

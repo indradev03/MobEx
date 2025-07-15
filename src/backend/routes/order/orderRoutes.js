@@ -6,6 +6,7 @@ import {
   deleteAllOrdersForUser,
 } from "../../controllers/orderController.js";
 import { authenticateToken } from "../../middlewares/authMiddleware.js";
+import { requireRole } from "../../middlewares/roleMiddleware.js"; // Import role middleware
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const router = express.Router();
 router.post("/", authenticateToken, createOrder);
 
 // Get order history for authenticated user
-router.get("/history", authenticateToken, getOrderHistory);
+router.get("/history", authenticateToken,requireRole("user") , getOrderHistory);
 
 // Delete a specific order by ID
 router.delete("/history/:orderId", authenticateToken, deleteOrderById);

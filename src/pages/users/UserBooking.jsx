@@ -144,6 +144,9 @@ const UserBooking = () => {
         throw new Error(data.error || "Failed to place order");
       }
 
+      // Notify other components (e.g., header) about order update
+      window.dispatchEvent(new Event('order-updated'));
+
       // Clear input & show success
       setName("");
       setPhone("");
@@ -155,6 +158,7 @@ const UserBooking = () => {
       setCvv("");
       setShowPaymentPopup(false);
       setOrderPlaced(true);
+      setCartItems([]); // optionally clear cart locally here
     } catch (err) {
       setSubmitError(err.message);
     } finally {
