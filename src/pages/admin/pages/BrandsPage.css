@@ -86,7 +86,7 @@
 /* Main container of the whole Brands page */
 .brands-container {
   max-width: 1300px;
-  margin-left: 290px; /* adjust based on sidebar or layout */
+  margin-left: 275px; /* adjust based on sidebar or layout */
   padding: 30px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;

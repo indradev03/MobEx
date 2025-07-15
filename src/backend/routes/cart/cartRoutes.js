@@ -5,19 +5,16 @@ import {
   updateCartQuantity,
   removeCartItem
 } from '../../controllers/cartController.js';
+import { authenticateToken } from '../../middlewares/authMiddleware.js';
+import { requireRole } from '../../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
-// Add product to cart
-router.post('/', addToCart);
+router.use(authenticateToken, requireRole("user"));
 
-// Get all cart items for the user
 router.get('/', getCartItems);
-
-// Update quantity of a specific cart item
+router.post('/', addToCart);
 router.put('/:cartId', updateCartQuantity);
-
-// Remove a cart item (optional but useful)
 router.delete('/:cartId', removeCartItem);
 
 export default router;

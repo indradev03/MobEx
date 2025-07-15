@@ -1,0 +1,340 @@
+/* Container */
+.orderHistory-container {
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin-top: 200px;
+}
+
+.orderHistory-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Empty State */
+.orderHistory-container.empty p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Order Card Wrapper - for animation */
+.orderHistory-cardWrapper {
+  transition: opacity 0.4s ease, max-height 0.4s ease, margin-bottom 0.4s ease, padding 0.4s ease;
+  opacity: 1;
+  max-height: 1000px;
+  overflow: hidden;
+}
+
+/* Fade out & collapse on delete */
+.orderHistory-cardWrapper.orderHistory-deleting {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* Order Card */
+.orderHistory-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.8rem;
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.orderHistory-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Header with date and delete button */
+.orderHistory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.6rem;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.orderHistory-date {
+  font-size: 0.95rem;
+  color: #666;
+  font-style: italic;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+/* Main content: user details and product details side by side */
+.orderHistory-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 30px;
+}
+
+/* User details box styling */
+.orderHistory-userDetails {
+  flex: 1 1 320px;
+  background: #ffffff;
+  border-radius: 16px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.orderHistory-userDetails h4 {
+  position: relative;
+  margin: 0 0 1.5rem 0;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #0056b3;
+  user-select: none;
+}
+
+.orderHistory-userDetails h4::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, #0056b3 0%, #3399ff 100%);
+  border-radius: 2px;
+}
+
+/* User info grid */
+.orderHistory-userDetailsInfo {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  row-gap: 0.85rem;
+  column-gap: 1rem;
+  align-items: center;
+}
+
+/* Label with icon */
+.orderHistory-userDetailsInfo label {
+  font-weight: 600;
+  color: #004080;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  user-select: none;
+}
+
+/* Use emojis as icons */
+.orderHistory-userDetailsInfo label.name::before {
+  content: "👤";
+  font-size: 1.2rem;
+}
+
+.orderHistory-userDetailsInfo label.phone::before {
+  content: "📞";
+  font-size: 1.2rem;
+}
+
+.orderHistory-userDetailsInfo label.address::before {
+  content: "🏠";
+  font-size: 1.2rem;
+}
+
+.orderHistory-userDetailsInfo label.payment::before {
+  content: "💳";
+  font-size: 1.2rem;
+}
+
+/* Value styling */
+.orderHistory-userDetailsInfo span {
+  font-weight: 500;
+  color: #112244;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.order-status.pending {
+  color: #d97706; /* orange */
+  font-weight: bold;
+}
+
+.order-status.processing {
+  color: #0ea5e9; /* blue */
+  font-weight: bold;
+}
+
+.order-status.completed {
+  color: #10b981; /* green */
+  font-weight: bold;
+}
+
+.order-status.cancelled {
+  color: #ef4444; /* red */
+  font-weight: bold;
+}
+
+/* Product details box styling */
+.orderHistory-productDetails {
+  flex: 2 1 600px;
+  overflow-x: auto;
+  min-width: 300px;
+}
+
+.orderHistory-productDetails h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #0077cc;
+}
+
+/* Items Table */
+.orderHistory-itemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.orderHistory-itemsTable th,
+.orderHistory-itemsTable td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+.orderHistory-itemsTable th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Product Image */
+.orderHistory-productImage {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 4px;
+
+  display: block;          /* make image a block element */
+  margin: auto;            /* auto margins center it horizontally */
+}
+
+
+/* Loading and Error states */
+.orderHistory-loadingContainer,
+.orderHistory-errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.orderHistory-loadingText {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0077cc;
+}
+
+/* Error message */
+.orderHistory-errorMessage {
+  color: #b00020;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Delete order button */
+.orderHistory-deleteOrderButton {
+  background-color: rgb(235, 4, 4); /* Bootstrap red */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.orderHistory-deleteOrderButton:hover,
+.orderHistory-deleteOrderButton:focus {
+  background-color: #b52a37;
+  outline: none;
+}
+
+.orderHistory-deleteOrderButton:disabled {
+  background-color: #e6a4a4;
+  box-shadow: none;
+  cursor: not-allowed;
+  color: #fff;
+}
+
+.orderHistory-deleteOrderButton svg {
+  width: 18px;
+  height: 18px;
+  color: inherit;
+  pointer-events: none;
+}
+
+/* Delete all button */
+.orderHistory-deleteAllButton {
+  background-color: #535151;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.3rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.orderHistory-deleteAllButton:disabled {
+  cursor: not-allowed;
+  background-color: #e6a4a4;
+  box-shadow: none;
+}
+
+.orderHistory-deleteAllButton:hover:not(:disabled),
+.orderHistory-deleteAllButton:focus:not(:disabled) {
+  background-color: #c20303;
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .orderHistory-content {
+    flex-direction: column;
+  }
+
+  .orderHistory-userDetails,
+  .orderHistory-productDetails {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .orderHistory-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .orderHistory-deleteOrderButton {
+    font-size: 1rem;
+  }
+}

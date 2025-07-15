@@ -4,13 +4,14 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from '../../controllers/wishlistController.js';
-import { authenticate } from '../../middlewares/authenticate.js';
+import { requireRole } from '../../middlewares/roleMiddleware.js'; // Import role middleware
+import { authenticateToken } from '../../middlewares/authMiddleware.js'; // Ensure user is authenticated
 
 const router = express.Router();
 
 // All routes use authenticate middleware
-router.get('/', authenticate, getWishlist);
-router.post('/', authenticate, addToWishlist);
-router.delete('/:productId', authenticate, removeFromWishlist);
+router.get('/', authenticateToken, requireRole("user"), getWishlist);
+router.post('/', authenticateToken, requireRole("user"), addToWishlist);
+router.delete('/:productId', authenticateToken, requireRole("user"), removeFromWishlist);
 
 export default router;

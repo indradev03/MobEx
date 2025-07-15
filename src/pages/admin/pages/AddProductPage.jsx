@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AddProductPage.css";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { FaSearch, FaFilter } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaSearch, FaFilter } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 const API_URL = "http://localhost:5000/api/products";
 
 const AddProductPage = () => {
-  // Static dropdown options
   const statuses = ["Available", "Sold Out", "Pre-Order"];
   const conditions = ["New", "Like New", "Used", "Refurbished"];
   const brands = [
@@ -19,7 +20,6 @@ const AddProductPage = () => {
     { brand_id: 8, name: "Vivo" }
   ];
 
-  // Form states
   const [name, setName] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
@@ -37,33 +37,17 @@ const AddProductPage = () => {
   const [specs, setSpecs] = useState([{ key: "", value: "" }]);
   const [brandId, setBrandId] = useState(brands[0].brand_id);
 
-  // Filter for brand dropdown
   const [filterBrandId, setFilterBrandId] = useState(null);
-
-  // Search states
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Products list
   const [products, setProducts] = useState([]);
-
-  // For edit mode
   const [editId, setEditId] = useState(null);
-
-  // Modal open state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Notification
-  const [notification, setNotification] = useState("");
-
-  // --- Effects ---
-
-  // Fetch products on mount and when filterBrandId changes
   useEffect(() => {
     fetchProducts(filterBrandId);
   }, [filterBrandId]);
 
-  // Generate image preview when main image file changes
   useEffect(() => {
     if (!imageFile) {
       setImagePreview("");
@@ -74,7 +58,6 @@ const AddProductPage = () => {
     reader.readAsDataURL(imageFile);
   }, [imageFile]);
 
-  // Generate thumbnails previews
   useEffect(() => {
     if (thumbnailsFiles.length === 0) {
       setThumbnailsPreview([]);
@@ -82,14 +65,9 @@ const AddProductPage = () => {
     }
     const previews = thumbnailsFiles.map((file) => URL.createObjectURL(file));
     setThumbnailsPreview(previews);
-
-    // Cleanup URLs on unmount
     return () => previews.forEach(URL.revokeObjectURL);
   }, [thumbnailsFiles]);
 
-  // --- Functions ---
-
-  // Fetch products with optional brand filter
   const fetchProducts = async (brandId = null) => {
     try {
       const url = brandId ? `${API_URL}/brand/${brandId}` : API_URL;
@@ -98,11 +76,10 @@ const AddProductPage = () => {
       const data = await res.json();
       setProducts(data);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
-  // Reset all form fields
   const resetForm = () => {
     setName("");
     setImageFile(null);
@@ -123,13 +100,11 @@ const AddProductPage = () => {
     setEditId(null);
   };
 
-  // Open modal for adding new product
   const openModalForAdd = () => {
     resetForm();
     setIsModalOpen(true);
   };
 
-  // Open modal for editing existing product
   const openModalForEdit = (product) => {
     setEditId(product.product_id);
     setName(product.name);
@@ -146,107 +121,75 @@ const AddProductPage = () => {
     setThumbnailsFiles([]);
     setThumbnailsPreview(product.thumbnails || []);
     setFeatures(product.features?.length ? product.features : [""]);
-    setSpecs(
-      product.specs
-        ? Object.entries(product.specs).map(([key, value]) => ({ key, value }))
-        : [{ key: "", value: "" }]
-    );
+    setSpecs(product.specs ? Object.entries(product.specs).map(([key, value]) => ({ key, value })) : [{ key: "", value: "" }]);
     setBrandId(product.brand_id || brands[0].brand_id);
     setIsModalOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Close modal and reset form
   const closeModal = () => {
     resetForm();
     setIsModalOpen(false);
   };
 
-  // Handle form submission for add or edit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name.trim() || !newPrice || !brandId) {
-      alert("Please fill in all required fields.");
+      toast.warn("Please fill in all required fields.");
       return;
     }
 
     try {
-          const formData = new FormData();
-          formData.append("name", name);
-          formData.append("brand_id", brandId);
-          formData.append("new_price", newPrice);
-          if (oldPrice) formData.append("old_price", oldPrice);
-          if (discount) formData.append("discount", discount);
-          formData.append("status", status);
-          formData.append("condition", condition);
-          if (details) formData.append("details", details);
-          if (storage) formData.append("storage", storage);
-          if (batteryHealth) formData.append("battery_health", batteryHealth);
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("brand_id", brandId);
+      formData.append("new_price", newPrice);
+      if (oldPrice) formData.append("old_price", oldPrice);
+      if (discount) formData.append("discount", discount);
+      formData.append("status", status);
+      formData.append("condition", condition);
+      if (details) formData.append("details", details);
+      if (storage) formData.append("storage", storage);
+      if (batteryHealth) formData.append("battery_health", batteryHealth);
+      formData.append("features", JSON.stringify(features.filter((f) => f.trim() !== "")));
+      formData.append("specs", JSON.stringify(specs.reduce((acc, item) => {
+        if (item.key.trim()) acc[item.key] = item.value;
+        return acc;
+      }, {})));
 
-          formData.append(
-            "features",
-            JSON.stringify(features.filter((f) => f.trim() !== ""))
-          );
-          formData.append(
-            "specs",
-            JSON.stringify(
-              specs.reduce((acc, item) => {
-                if (item.key.trim()) acc[item.key] = item.value;
-                return acc;
-              }, {})
-            )
-          );
-
-          if (imageFile) {
-            formData.append("image", imageFile);
-          }
-
-          if (thumbnailsFiles.length > 0) {
-            thumbnailsFiles.forEach((file) => {
-              formData.append("thumbnails", file);
-            });
-          }
-
+      if (imageFile) formData.append("image", imageFile);
+      thumbnailsFiles.forEach((file) => formData.append("thumbnails", file));
 
       const method = editId ? "PUT" : "POST";
       const url = editId ? `${API_URL}/${editId}` : API_URL;
 
-      const res = await fetch(url, {
-        method,
-        body: formData,
-      });
-
+      const res = await fetch(url, { method, body: formData });
       if (!res.ok) {
         const errorText = await res.text();
         throw new Error(`Failed to ${editId ? "update" : "add"} product: ${errorText}`);
       }
 
-      setNotification(`Product ${editId ? "updated" : "added"} successfully!`);
+      toast.success(`Product ${editId ? "updated" : "added"} successfully!`);
       resetForm();
       setIsModalOpen(false);
       fetchProducts(filterBrandId);
-      setTimeout(() => setNotification(""), 3000);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
-  // Handle product delete
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
       const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete product");
-      setNotification("Product deleted successfully!");
+      toast.success("Product deleted successfully!");
       fetchProducts(filterBrandId);
-      setTimeout(() => setNotification(""), 3000);
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
-  // Filter products based on filterBrandId and searchTerm
   const filteredProducts = products.filter((p) => {
     const matchesBrand = filterBrandId ? p.brand_id === filterBrandId : true;
     const matchesSearch = searchTerm
@@ -255,10 +198,9 @@ const AddProductPage = () => {
     return matchesBrand && matchesSearch;
   });
 
-  // Render
   return (
     <div className="addproduct-wrapper">
-      {notification && <div className="addproduct-notification">{notification}</div>}
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="header-with-button">
         <div className="headings">
@@ -269,7 +211,6 @@ const AddProductPage = () => {
           + Add Product
         </button>
       </div>
-
 <div className="filter-search-container">
   {/* Search Section */}
   <div className="search-group">
