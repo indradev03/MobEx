@@ -16,7 +16,6 @@ const AdminOrderPage = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-
         if (!token) {
           setError("You must be logged in as admin to view this page.");
           return;
@@ -31,12 +30,11 @@ const AdminOrderPage = () => {
         const text = await res.text();
 
         if (!res.ok) {
-          console.error("Raw error:", text);
           try {
             const errData = JSON.parse(text);
             setError(errData.error || "Failed to load admin orders.");
           } catch {
-            setError(text); // fallback for plain text errors like "Forbidden"
+            setError(text);
           }
           return;
         }
@@ -44,7 +42,6 @@ const AdminOrderPage = () => {
         const data = JSON.parse(text);
         setOrders(data);
       } catch (err) {
-        console.error("Fetch failed:", err);
         setError("Unable to fetch orders. Please try again later.");
       }
     };
@@ -52,48 +49,90 @@ const AdminOrderPage = () => {
     fetchOrders();
   }, []);
 
+  const handlePlaceOrder = (order) => {
+    alert(`Place order clicked for order #${order.order_id}`);
+    // Your place order logic here...
+  };
+
   return (
     <div className="admin-order-page">
-      <h1>Admin Order Page</h1>
+      <h1>Orders</h1>
       <p className="admin-order-description">
-        This Admin Order Page provides a centralized overview of all customer orders placed through the platform.
+        This Page provides a centralized overview of all customer orders placed through the platform.
       </p>
 
       {error && <p className="error-message">❌ {error}</p>}
 
-      {!error && orders.length === 0 && (
-        <p className="no-orders">No orders found.</p>
-      )}
+      {!error && orders.length === 0 && <p className="no-orders">No orders found.</p>}
 
-      {orders.map((order) => (
-        <div key={order.order_id} className="order-card">
-          <h3>Order ID: {order.order_id}</h3>
-          <p><strong>Customer:</strong> {order.customer_name} ({order.customer_email})</p>
-          <p><strong>Phone:</strong> {order.phone}</p>
-          <p><strong>Address:</strong> {order.address}</p>
-          <p><strong>Payment:</strong> {order.payment_method}</p>
-          <p><strong>Total:</strong> {formatNPR(order.total_price)}</p>
-          <p><strong>Date:</strong> {new Date(order.created_at).toLocaleString()}</p>
-          <h4>Items:</h4>
-          <ul>
-            {order.items.map((item, idx) => (
-              <li key={idx} className="order-item">
-                <img 
-                  src={item.image || "https://via.placeholder.com/50"} 
-                  alt={item.product_name} 
-                  className="order-item-image" 
-                  loading="lazy" 
-                  width={50} 
-                  height={50}
-                />
-                <span>
-                  {item.product_name} — Qty: {item.quantity}, Price: {formatNPR(item.product_price)}
-                </span>
-              </li>
+      {orders.length > 0 && (
+        <table className="admin-orders-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Payment</th>
+              <th>Total Price</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => (
+              <React.Fragment key={order.order_id}>
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>
+                    {order.customer_name} <br />
+                    <small>{order.customer_email}</small>
+                  </td>
+                  <td>{order.phone}</td>
+                  <td>{order.address}</td>
+                  <td>{order.payment_method}</td>
+                  <td>{formatNPR(order.total_price)}</td>
+                  <td>{new Date(order.created_at).toLocaleString()}</td>
+                  <td>
+                    <button
+                      className="place-order-button"
+                      onClick={() => handlePlaceOrder(order)}
+                    >
+                      Place Order
+                    </button>
+                  </td>
+                </tr>
+                <tr className="order-items-row">
+                  <td colSpan={8}>
+                    <div className="order-items-container">
+                      <h4>Items:</h4>
+                      <ul className="order-items-list">
+                        {order.items.map((item, idx) => (
+                          <li key={idx} className="order-item">
+                            <img
+                              src={item.image || item.image_url || "https://via.placeholder.com/50"}
+                              alt={item.product_name || "Product Image"}
+                              className="order-item-image"
+                              loading="lazy"
+                              width={50}
+                              height={50}
+                            />
+                            <div className="order-item-details">
+                              <strong>{item.product_name || "Unknown Product"}</strong>
+                              <span>Qty: {item.quantity}</span>
+                              <span>Price: {formatNPR(item.product_price)}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </React.Fragment>
             ))}
-          </ul>
-        </div>
-      ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
