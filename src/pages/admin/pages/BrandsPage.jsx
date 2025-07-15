@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";       // Added
+import "react-toastify/dist/ReactToastify.css";               // Added
 import "./BrandsPage.css";
 
 const BrandsPage = () => {
@@ -19,7 +21,11 @@ const BrandsPage = () => {
     fetch("http://localhost:5000/api/brands")
       .then((res) => res.json())
       .then((data) => setBrands(data))
-      .catch(() => setError("Failed to load brands"));
+      .catch(() => {
+        const msg = "Failed to load brands";
+        setError(msg);
+        toast.error(msg);
+      });
   }, []);
 
   const openModalForAdd = () => {
@@ -71,9 +77,18 @@ const BrandsPage = () => {
     e.preventDefault();
 
     const trimmedName = newBrandName.trim();
-    if (!trimmedName) return setError("Brand name cannot be empty");
-    if (!newBrandImage && !isEditing)
-      return setError("Please upload a brand image");
+    if (!trimmedName) {
+      const msg = "Brand name cannot be empty";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+    if (!newBrandImage && !isEditing) {
+      const msg = "Please upload a brand image";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -92,19 +107,28 @@ const BrandsPage = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) return setError(data.error || "Failed to save brand");
+      if (!res.ok) {
+        const msg = data.error || "Failed to save brand";
+        setError(msg);
+        toast.error(msg);
+        return;
+      }
 
       if (isEditing) {
         setBrands((prev) =>
           prev.map((b) => (b.brand_id === editingBrand.brand_id ? data : b))
         );
+        toast.success("Brand updated successfully");
       } else {
         setBrands((prev) => [...prev, data]);
+        toast.success("Brand added successfully");
       }
 
       closeModal();
     } catch (err) {
-      setError(isEditing ? "Error updating brand" : "Error adding brand");
+      const msg = isEditing ? "Error updating brand" : "Error adding brand";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
@@ -121,141 +145,151 @@ const BrandsPage = () => {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || "Failed to delete brand");
+        const msg = data.error || "Failed to delete brand";
+        setError(msg);
+        toast.error(msg);
         return;
       }
 
       setBrands((prev) => prev.filter((b) => b.brand_id !== brandId));
+      toast.success("Brand deleted successfully");
     } catch (err) {
-      setError("Error deleting brand");
+      const msg = "Error deleting brand";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
   return (
-    <div className="brands-container">
-      <div className="header-with-button">
-        <div className="headings">
-          <h1>Brands</h1>
-          <h3>Manage your mobile phone brands</h3>
+    <>
+      {/* Toast container outside main content */}
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      <div className="brands-container">
+        <div className="header-with-button">
+          <div className="headings">
+            <h1>Brands</h1>
+            <h3>Manage your mobile phone brands</h3>
+          </div>
+          <button className="brands-open-modal-button" onClick={openModalForAdd}>
+            + Add Brand
+          </button>
         </div>
-        <button className="brands-open-modal-button" onClick={openModalForAdd}>
-          + Add Brand
-        </button>
-      </div>
 
-      {showModal && (
-        <div className="brands-modal-overlay" onClick={closeModal}>
-          <div
-            className="brands-modal-content"
-            onClick={(e) => e.stopPropagation()} // prevent closing modal on content click
-          >
-            <h3>{isEditing ? "Edit Brand" : "Add Brand"}</h3>
+        {showModal && (
+          <div className="brands-modal-overlay" onClick={closeModal}>
+            <div
+              className="brands-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>{isEditing ? "Edit Brand" : "Add Brand"}</h3>
 
-            <form onSubmit={handleAddBrand} className="brands-form">
-              <input
-                type="text"
-                value={newBrandName}
-                onChange={(e) => setNewBrandName(e.target.value)}
-                placeholder="Enter brand name"
-                className="brands-input-text"
-              />
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="brands-file-input"
-              />
-
-              {newBrandImagePreview && (
-                <img
-                  src={newBrandImagePreview}
-                  alt="Brand Preview"
-                  className="brands-preview-image"
+              <form onSubmit={handleAddBrand} className="brands-form">
+                <input
+                  type="text"
+                  value={newBrandName}
+                  onChange={(e) => setNewBrandName(e.target.value)}
+                  placeholder="Enter brand name"
+                  className="brands-input-text"
                 />
-              )}
 
-              <div className="brands-button-group">
-                <button type="submit" className="brands-add-button">
-                  {isEditing ? "Update Brand" : "Add Brand"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="brands-file-input"
+                />
+
+                {newBrandImagePreview && (
+                  <img
+                    src={newBrandImagePreview}
+                    alt="Brand Preview"
+                    className="brands-preview-image"
+                  />
+                )}
+
+                <div className="brands-button-group">
+                  <button type="submit" className="brands-add-button">
+                    {isEditing ? "Update Brand" : "Add Brand"}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="brands-cancel-button"
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                </div>
+
+                {error && <p className="brands-error-text">{error}</p>}
+              </form>
+            </div>
+          </div>
+        )}
+
+        <div className="brands-grid-wrapper">
+          <h3>All Brands</h3>
+          <div className="brands-grid">
+            {brands.map((brand) => (
+              <div
+                key={brand.brand_id}
+                className="brand-card"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
+                  if (e.target.tagName.toLowerCase() !== "button") {
+                    navigate(`/admindashboard/brands/${brand.brand_id}`);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (
+                    (e.key === "Enter" || e.key === " ") &&
+                    e.target.tagName.toLowerCase() !== "button"
+                  ) {
+                    navigate(`/admindashboard/brands/${brand.brand_id}`);
+                  }
+                }}
+              >
+                <img
+                  src={`http://localhost:5000${brand.image}`}
+                  alt={`${brand.name} logo`}
+                  className="brand-image"
+                  loading="lazy"
+                />
+                <p className="brand-name">{brand.name}</p>
+
+                <button
+                  className="brand-edit-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModalForEdit(brand);
+                  }}
+                >
+                  <FaEdit
+                    style={{ marginRight: "6px", verticalAlign: "middle" }}
+                  />
+                  Edit
                 </button>
 
                 <button
-                  type="button"
-                  className="brands-cancel-button"
-                  onClick={closeModal}
+                  className="brand-delete-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteBrand(brand.brand_id);
+                  }}
                 >
-                  Cancel
+                  <FaTrashAlt
+                    style={{ marginRight: "6px", verticalAlign: "middle" }}
+                  />
+                  Delete
                 </button>
               </div>
-
-              {error && <p className="brands-error-text">{error}</p>}
-            </form>
+            ))}
           </div>
         </div>
-      )}
-
-      <div className="brands-grid-wrapper">
-        <h3>All Brands</h3>
-        <div className="brands-grid">
-          {brands.map((brand) => (
-            <div
-              key={brand.brand_id}
-              className="brand-card"
-              role="button"
-              tabIndex={0}
-              onClick={(e) => {
-                if (e.target.tagName.toLowerCase() !== "button") {
-                  navigate(`/admindashboard/brands/${brand.brand_id}`);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (
-                  (e.key === "Enter" || e.key === " ") &&
-                  e.target.tagName.toLowerCase() !== "button"
-                ) {
-                  navigate(`/admindashboard/brands/${brand.brand_id}`);
-                }
-              }}
-            >
-              <img
-                src={`http://localhost:5000${brand.image}`}
-                alt={`${brand.name} logo`}
-                className="brand-image"
-                loading="lazy"
-              />
-              <p className="brand-name">{brand.name}</p>
-
-              <button
-                className="brand-edit-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openModalForEdit(brand);
-                }}
-              >
-                <FaEdit
-                  style={{ marginRight: "6px", verticalAlign: "middle" }}
-                />
-                Edit
-              </button>
-
-              <button
-                className="brand-delete-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteBrand(brand.brand_id);
-                }}
-              >
-                <FaTrashAlt
-                  style={{ marginRight: "6px", verticalAlign: "middle" }}
-                />
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

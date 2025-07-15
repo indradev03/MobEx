@@ -1,5 +1,5 @@
 .admin-sidebar {
-  width: 260px;
+  width: 230px;
   height: 100vh;
   background-color: #0f172a; /* dark slate */
   color: #ffffff;
@@ -97,7 +97,7 @@
 }
 
 .nav-item.active {
-  background-color: #22c55e;
+  background-color: #0094ff;
   color: #ffffff;
 }
 

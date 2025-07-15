@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";           // Added
+import "react-toastify/dist/ReactToastify.css";                   // Added
 import "./Brands.css";
 
 const Brands = () => {
@@ -21,39 +23,45 @@ const Brands = () => {
       .catch((err) => {
         setError(err.message);
         setLoading(false);
+        toast.error(err.message);   // Toast on error
       });
   }, []);
 
   return (
-    <div className="brands-page">
-      <div className="brands-header">
-        <h1>Explore Top Mobile Brands</h1>
-        <p>Click on a brand to explore their latest models</p>
-      </div>
+    <>
+      {/* Toast container for notifications */}
+      <ToastContainer position="top-right" autoClose={3000} />
 
-      {error && <p className="error-text">{error}</p>}
-
-      {loading ? (
-        <div className="loading-brands">Loading brands...</div>
-      ) : (
-        <div className="brand-container">
-          {brands.map((brand) => (
-            <div
-              key={brand.brand_id}
-              className="brand-card"
-              onClick={() => navigate(`/brands/${brand.brand_id}`)}
-            >
-              <img
-                src={`http://localhost:5000${brand.image}`}
-                alt={brand.name}
-                loading="lazy"
-              />
-              <p>{brand.name}</p>
-            </div>
-          ))}
+      <div className="brands-page">
+        <div className="brands-header">
+          <h1>Explore Top Mobile Brands</h1>
+          <p>Click on a brand to explore their latest models</p>
         </div>
-      )}
-    </div>
+
+        {error && <p className="error-text">{error}</p>}
+
+        {loading ? (
+          <div className="loading-brands">Loading brands...</div>
+        ) : (
+          <div className="brand-container">
+            {brands.map((brand) => (
+              <div
+                key={brand.brand_id}
+                className="brand-card"
+                onClick={() => navigate(`/brands/${brand.brand_id}`)}
+              >
+                <img
+                  src={`http://localhost:5000${brand.image}`}
+                  alt={brand.name}
+                  loading="lazy"
+                />
+                <p>{brand.name}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
