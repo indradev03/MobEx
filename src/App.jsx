@@ -28,6 +28,9 @@ import ProductDetailsPage from "./pages/product/ProductDetailsPage";
 import FavouritesPage from './pages/users/FavouritesPage';
 import CartPage from './pages/users/CartPage';
 import UserBooking from './pages/users/UserBooking';
+import OrderHistoryPage from './pages/users/OrderHistoryPage';
+
+
 // Home section (used on "/")
 const Home = () => (
   <>
@@ -74,6 +77,8 @@ function App() {
                 <Route path="/favourites" element={<FavouritesPage />} /> 
                 <Route path="/cart" element={<CartPage />} /> 
                 <Route path="/userbooking" element={<UserBooking />} />
+              <Route path="/order-history" element={<OrderHistoryPage />} />
+
               </Routes>
               <QuickLinksSection />
               <FooterBottom />

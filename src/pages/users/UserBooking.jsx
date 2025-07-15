@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./UserBooking.css";
 
 const UserBooking = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get selected checkout items passed from CartPage or empty array
   const passedCheckoutItems = location.state?.checkoutItems || [];
 
   const [cartItems, setCartItems] = useState([]);
@@ -30,7 +31,6 @@ const UserBooking = () => {
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
-  // Fetch full cart as fallback if no passed items
   const fetchCart = async () => {
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
@@ -46,6 +46,7 @@ const UserBooking = () => {
       setCartItems(Array.isArray(data.cartItems) ? data.cartItems : []);
     } catch (err) {
       setError(err.message || "Could not load cart");
+      toast.error(err.message || "Could not load cart");
     } finally {
       setLoading(false);
     }
@@ -83,6 +84,7 @@ const UserBooking = () => {
   const handleSavePaymentInfo = () => {
     if (!validatePaymentInfo()) {
       setSubmitError("Please fill valid card information before saving.");
+      toast.error("Please fill valid card information before saving.");
       return;
     }
     setSubmitError("");
@@ -94,14 +96,17 @@ const UserBooking = () => {
 
     if (!name || !phone || !address) {
       setSubmitError("Please fill all required fields");
+      toast.error("Please fill all required fields");
       return;
     }
     if (cartItems.length === 0) {
       setSubmitError("Your cart is empty");
+      toast.error("Your cart is empty");
       return;
     }
     if (!validatePaymentInfo()) {
       setSubmitError("Please fill valid payment information");
+      toast.error("Please fill valid payment information");
       return;
     }
 
@@ -144,7 +149,8 @@ const UserBooking = () => {
         throw new Error(data.error || "Failed to place order");
       }
 
-      // Clear input & show success
+      window.dispatchEvent(new Event('order-updated'));
+
       setName("");
       setPhone("");
       setAddress("");
@@ -155,8 +161,11 @@ const UserBooking = () => {
       setCvv("");
       setShowPaymentPopup(false);
       setOrderPlaced(true);
+      setCartItems([]);
+      toast.success("Order placed successfully!");
     } catch (err) {
       setSubmitError(err.message);
+      toast.error(err.message);
     } finally {
       setSubmitting(false);
     }
@@ -177,6 +186,7 @@ const UserBooking = () => {
           <FaShoppingCart />
           Go to My Cart
         </button>
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
@@ -185,7 +195,6 @@ const UserBooking = () => {
     <div className="userbooking">
       <h1 className="userbooking__title">User Booking</h1>
 
-      {/* Back to Cart Button */}
       <button
         className="userbooking__back-btn"
         onClick={() => navigate("/cart")}
@@ -258,15 +267,6 @@ const UserBooking = () => {
               <p className="userbooking__submit-error">{submitError}</p>
             )}
 
-            {successMessage && (
-              <p
-                className="userbooking__submit-success"
-                onAnimationEnd={() => setSuccessMessage("")}
-              >
-                {successMessage}
-              </p>
-            )}
-
             <button
               type="submit"
               disabled={submitting || cartItems.length === 0}
@@ -316,7 +316,6 @@ const UserBooking = () => {
         </div>
       )}
 
-      {/* Payment Modal */}
       {showPaymentPopup && (
         <div className="userbooking__modal-overlay">
           <div className="userbooking__modal">
@@ -388,6 +387,8 @@ const UserBooking = () => {
           </div>
         </div>
       )}
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
