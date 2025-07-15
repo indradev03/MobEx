@@ -250,3 +250,24 @@
     padding: 8px;
   }
 }
+.header-history-icon {
+  position: relative;
+  background: none;
+  border: none;
+  margin-left: 0.75rem;
+  cursor: pointer;
+}
+
+.history-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 30%;
+  font-weight: bold;
+}
+
+

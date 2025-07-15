@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "./FavouritesPage.css";
 
 const FavouritesPage = () => {
@@ -10,20 +12,32 @@ const FavouritesPage = () => {
 
   const fetchWishlist = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return navigate("/login");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
     try {
-      setError("");
       setLoading(true);
       const res = await fetch("http://localhost:5000/api/wishlist", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("Failed to fetch wishlist");
+
+      if (res.status === 401 || res.status === 403) {
+        throw new Error("Unauthorized access. Please log in again.");
+      }
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Failed to fetch wishlist");
+      }
+
       const data = await res.json();
       setWishlist(data);
     } catch (err) {
-      console.error(err);
-      setError("Could not load wishlist");
+      console.error("Wishlist Fetch Error:", err);
+      setError(err.message || "Could not load wishlist");
+      toast.error(err.message || "Could not load wishlist");
     } finally {
       setLoading(false);
     }
@@ -38,21 +52,24 @@ const FavouritesPage = () => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || "Failed to remove from wishlist");
       }
-      fetchWishlist();
+
+      setWishlist((prev) => prev.filter((item) => item.product_id !== productId));
+      toast.success("Removed from wishlist");
       window.dispatchEvent(new Event("wishlist-updated"));
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to add products to your cart");
+      toast.info("Please login to add products to your cart");
       navigate("/login");
       return;
     }
@@ -67,40 +84,18 @@ const FavouritesPage = () => {
         body: JSON.stringify({ productId: product.product_id }),
       });
 
-      if (res.status === 401) {
-        alert("Unauthorized! Please login again.");
-        navigate("/login");
-        return;
-      }
-
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to add to cart");
 
-      if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
+      // Now remove from wishlist
+      await handleRemove(product.product_id);
 
-      // Now delete from wishlist table on backend
-      const removeRes = await fetch(`http://localhost:5000/api/wishlist/${product.product_id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!removeRes.ok) {
-        const removeData = await removeRes.json();
-        throw new Error(removeData.error || "Failed to remove product from wishlist");
-      }
-
-      alert(data.message || "Product added to cart and removed from wishlist!");
+      toast.success("Added to cart and removed from wishlist");
       window.dispatchEvent(new Event("cart-updated"));
-      window.dispatchEvent(new Event("wishlist-updated"));
-
-      // Remove from wishlist state to update UI
-      setWishlist((prev) => prev.filter((item) => item.product_id !== product.product_id));
-
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
-
-
 
   useEffect(() => {
     fetchWishlist();
@@ -108,20 +103,22 @@ const FavouritesPage = () => {
 
   return (
     <div className="favourites-page">
+      <ToastContainer position="top-center" autoClose={3000} />
       <h1 className="favourites-title">❤️ My Wishlist</h1>
 
       {loading && <p className="wishlist-loading">Loading your wishlist...</p>}
       {error && <p className="wishlist-error">{error}</p>}
-      {!loading && wishlist.length === 0 && (
+      {!loading && wishlist.length === 0 && !error && (
         <p className="wishlist-empty">Your wishlist is currently empty.</p>
       )}
 
       <div className="favourites-grid">
         {wishlist.map((item) => {
           const imageUrl =
-            item.image_url.startsWith("http") || item.image_url.startsWith("data")
+            item.image_url?.startsWith("http") || item.image_url?.startsWith("data")
               ? item.image_url
               : `http://localhost:5000${item.image_url}`;
+
           return (
             <div key={item.product_id} className="favourite-card">
               <div

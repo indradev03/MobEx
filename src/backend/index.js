@@ -10,6 +10,7 @@ import productRoutes from './routes/admin/addproduct/productRoutes.js'
 import wishlistRoutes from './routes/wishlist/wishlist.js';
 import cartRoutes from './routes/cart/cartRoutes.js';
 import orderRoutes from './routes/order/orderRoutes.js';
+import adminOrderRoute from './routes/order/adminOrderRoute.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/products", productRoutes);
 app.use('/api/wishlist', wishlistRoutes);
   app.use('/api/cart', cartRoutes);
   app.use("/api/orders", orderRoutes);
+  app.use('/api/admorders', adminOrderRoute);
 
 app.use("/uploads", express.static("uploads"));
 // Health check
