@@ -9,7 +9,6 @@ import BrandProductsPage from "./BrandProductsPage"; // brand detail view
 import AdminOrderPage from "./AdminOrderPage"; // Admin order management page
 
 // Stub pages for future sections
-const BookingsPage = () => <h2>Bookings Page</h2>;
 const UsersPage = () => <h2>Users Page</h2>;
 
 const AdminDashboard = () => {
@@ -32,7 +31,6 @@ const AdminDashboard = () => {
           <Route path="add-product" element={<AddProductPage />} />
           <Route path="brands" element={<BrandsPage />} />
           <Route path="brands/:brandId" element={<BrandProductsPage />} />
-          <Route path="bookings" element={<BookingsPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="orders" element={<AdminOrderPage />} />
         </Routes>

@@ -161,6 +161,26 @@
   word-break: break-word;
 }
 
+.order-status.pending {
+  color: #d97706; /* orange */
+  font-weight: bold;
+}
+
+.order-status.processing {
+  color: #0ea5e9; /* blue */
+  font-weight: bold;
+}
+
+.order-status.completed {
+  color: #10b981; /* green */
+  font-weight: bold;
+}
+
+.order-status.cancelled {
+  color: #ef4444; /* red */
+  font-weight: bold;
+}
+
 /* Product details box styling */
 .orderHistory-productDetails {
   flex: 2 1 600px;

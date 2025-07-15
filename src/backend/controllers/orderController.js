@@ -23,11 +23,12 @@ export const createOrder = async (req, res) => {
 
     // Insert into orders
     const orderResult = await client.query(
-      `INSERT INTO orders (user_id, name, phone, address, payment_method, total_price)
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING order_id`,
-      [userId, name, phone, address, paymentMethod, totalPrice]
+      `INSERT INTO orders (user_id, name, phone, address, payment_method, total_price, status)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING order_id`,
+      [userId, name, phone, address, paymentMethod, totalPrice, "pending"]
     );
+
 
     const orderId = orderResult.rows[0].order_id;
 
@@ -72,12 +73,13 @@ export const getOrderHistory = async (req, res) => {
   try {
     // Get all orders for user
     const ordersResult = await pool.query(
-      `SELECT order_id, name, phone, address, payment_method, total_price, created_at
-       FROM orders
-       WHERE user_id = $1
-       ORDER BY created_at DESC`,
+      `SELECT order_id, name, phone, address, payment_method, total_price, created_at, status
+      FROM orders
+      WHERE user_id = $1
+      ORDER BY created_at DESC`,
       [userId]
     );
+
 
     const orders = ordersResult.rows;
 
@@ -124,8 +126,6 @@ export const getOrderHistory = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch order history" });
   }
 };
-
-
 
 
 
@@ -210,11 +210,11 @@ export const getAllOrdersForAdmin = async (req, res) => {
 
   try {
     const ordersResult = await pool.query(
-      `SELECT o.order_id, o.user_id, o.name, o.phone, o.address, o.payment_method, o.total_price, o.created_at,
+      `SELECT o.order_id, o.user_id, o.name, o.phone, o.address, o.payment_method, o.total_price, o.created_at, o.status,
               u.name AS customer_name, u.email AS customer_email
-       FROM orders o
-       JOIN mobex_users u ON o.user_id = u.user_id
-       ORDER BY o.created_at DESC`
+      FROM orders o
+      JOIN mobex_users u ON o.user_id = u.user_id
+      ORDER BY o.created_at DESC`
     );
 
     const orders = ordersResult.rows;
@@ -250,6 +250,40 @@ export const getAllOrdersForAdmin = async (req, res) => {
   } catch (error) {
     console.error("Admin get all orders error:", error.message);
     res.status(500).json({ error: "Failed to fetch all orders" });
+  }
+};
+
+// Add this in your admin orders controller file
+
+export const placeOrderByAdmin = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body; // Now accepts status from the request body
+
+  // Optional: Ensure only admins can update
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ error: "Admins only" });
+  }
+
+  // Validate status
+  const allowedStatuses = ["Pending", "Processing", "Completed", "Cancelled"];
+  if (!status || !allowedStatuses.includes(status)) {
+    return res.status(400).json({ error: "Invalid or missing status" });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE orders SET status = $1 WHERE order_id = $2`,
+      [status, orderId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.json({ message: `Order #${orderId} status updated to '${status}'.` });
+  } catch (error) {
+    console.error("Admin order status update error:", error.message);
+    res.status(500).json({ error: "Failed to update order status" });
   }
 };
 

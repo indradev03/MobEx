@@ -15,7 +15,6 @@ const menuItems = [
     { title: "Home", url: "/admindashboard", icon: BarChart3 },
     { title: "Product", url: "/admindashboard/add-product", icon: Smartphone },
     { title: "Brands", url: "/admindashboard/brands", icon: Tag },
-    { title: "Bookings", url: "/admindashboard/bookings", icon: Calendar },
     { title: "Users", url: "/admindashboard/users", icon: Users },
     { title: "Orders", url: "/admindashboard/orders", icon: ShoppingBag },
 ];

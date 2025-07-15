@@ -222,6 +222,11 @@ const deleteAllOrders = async () => {
 
                     <label className="orderHistory-label payment">Payment Method:</label>
                     <span className="orderHistory-value">{order.payment_method}</span>
+
+                    <label className="orderHistory-label status">Status:</label>
+                    <span className={`orderHistory-value order-status ${order.status?.toLowerCase()}`}>
+                      {order.status || "Unknown"}
+                    </span>
                   </div>
                 </div>
 
