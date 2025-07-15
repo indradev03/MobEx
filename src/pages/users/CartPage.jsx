@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./CartPage.css";
 
 const CartPage = () => {
@@ -14,8 +16,8 @@ const CartPage = () => {
     if (!token) return navigate("/login");
 
     try {
-      setLoading(true);
       setError("");
+      setLoading(true);
       const res = await fetch("http://localhost:5000/api/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -24,6 +26,7 @@ const CartPage = () => {
       setCartItems(Array.isArray(data.cartItems) ? data.cartItems : []);
     } catch (err) {
       setError(err.message || "Could not load cart");
+      toast.error(err.message || "Could not load cart");
     } finally {
       setLoading(false);
     }
@@ -49,8 +52,9 @@ const CartPage = () => {
       setCartItems((prev) => prev.filter((item) => item.cart_id !== cartId));
       setSelectedItems((prev) => prev.filter((id) => id !== cartId));
       window.dispatchEvent(new Event("cart-updated"));
+      toast.success("Item removed from cart");
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -80,9 +84,11 @@ const CartPage = () => {
           item.cart_id === cartId ? { ...item, quantity: newQuantity } : item
         )
       );
+
       window.dispatchEvent(new Event("cart-updated"));
+      toast.success("Quantity updated");
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -125,7 +131,9 @@ const CartPage = () => {
       ) : (
         <div className="cart-content-wrapper">
           <button className="btn-select-toggle" onClick={handleSelectAllToggle}>
-            {selectedItems.length === cartItems.length ? "Deselect All" : "Select All"}
+            {selectedItems.length === cartItems.length
+              ? "Deselect All"
+              : "Select All"}
           </button>
 
           <button
@@ -144,11 +152,11 @@ const CartPage = () => {
           <div className="cart-items-list">
             {cartItems.map(({ cart_id, product_id, name, image_url, new_price, quantity }) => {
               const imageUrl =
-                image_url?.startsWith("http") || image_url?.startsWith("data")
+                image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
                   ? image_url
                   : `http://localhost:5000${image_url}`;
-              const price = parseFloat(new_price) || 0;
-              const subtotal = price * quantity;
+
+              const subtotal = (parseFloat(new_price) || 0) * (quantity || 1);
 
               return (
                 <div key={cart_id} className="cart-item-card">
@@ -161,7 +169,9 @@ const CartPage = () => {
                   <img src={imageUrl} alt={name} className="cart-item-img" />
                   <div className="cart-item-info">
                     <h3 className="item-title">{name}</h3>
-                    <p className="item-price">Price: NPR {price.toLocaleString()}</p>
+                    <p className="item-price">
+                      Price: NPR {parseFloat(new_price).toLocaleString()}
+                    </p>
                     <div className="qty-control">
                       <button
                         className="qty-btn"
@@ -200,6 +210,7 @@ const CartPage = () => {
                           })
                         }
                         className="btn-checkout-single"
+                        disabled={!selectedItems.includes(cart_id)}
                       >
                         Checkout This Item
                       </button>
@@ -211,6 +222,8 @@ const CartPage = () => {
           </div>
         </div>
       )}
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "./FavouritesPage.css";
 
 const FavouritesPage = () => {
@@ -35,6 +37,7 @@ const FavouritesPage = () => {
     } catch (err) {
       console.error("Wishlist Fetch Error:", err);
       setError(err.message || "Could not load wishlist");
+      toast.error(err.message || "Could not load wishlist");
     } finally {
       setLoading(false);
     }
@@ -56,16 +59,17 @@ const FavouritesPage = () => {
       }
 
       setWishlist((prev) => prev.filter((item) => item.product_id !== productId));
+      toast.success("Removed from wishlist");
       window.dispatchEvent(new Event("wishlist-updated"));
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to add products to your cart");
+      toast.info("Please login to add products to your cart");
       navigate("/login");
       return;
     }
@@ -86,10 +90,10 @@ const FavouritesPage = () => {
       // Now remove from wishlist
       await handleRemove(product.product_id);
 
-      alert("Product added to cart and removed from wishlist!");
+      toast.success("Added to cart and removed from wishlist");
       window.dispatchEvent(new Event("cart-updated"));
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -99,6 +103,7 @@ const FavouritesPage = () => {
 
   return (
     <div className="favourites-page">
+      <ToastContainer position="top-center" autoClose={3000} />
       <h1 className="favourites-title">❤️ My Wishlist</h1>
 
       {loading && <p className="wishlist-loading">Loading your wishlist...</p>}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./OrderHistoryPage.css";
 
 const formatNPR = (amount) => {
@@ -24,7 +26,9 @@ const OrderHistoryPage = () => {
     setError(null);
 
     if (!token) {
-      setError("No authentication token found. Please login.");
+      const errMsg = "No authentication token found. Please login.";
+      setError(errMsg);
+      toast.error(errMsg);
       setLoading(false);
       return;
     }
@@ -57,96 +61,98 @@ const OrderHistoryPage = () => {
       setOrders(data);
     } catch (err) {
       setError(err.message);
+      toast.error(err.message);
       setOrders([]);
     } finally {
       setLoading(false);
     }
   };
 
-const deleteOrder = async (orderId) => {
-  if (!window.confirm(`Are you sure you want to delete this order?`)) return;
+  const deleteOrder = async (orderId) => {
+    if (!window.confirm(`Are you sure you want to delete this order?`)) return;
 
-  setDeletingOrderId(orderId);
-  setError(null);
+    setDeletingOrderId(orderId);
+    setError(null);
 
-  try {
-    const response = await fetch(`http://localhost:5000/api/orders/history/${orderId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(`http://localhost:5000/api/orders/history/${orderId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!response.ok) {
-      let errMsg = response.statusText;
-      try {
-        const errData = await response.json();
-        if (errData?.error) errMsg = errData.error;
-      } catch {}
-      throw new Error(`Failed to delete order: ${errMsg}`);
-    }
+      if (!response.ok) {
+        let errMsg = response.statusText;
+        try {
+          const errData = await response.json();
+          if (errData?.error) errMsg = errData.error;
+        } catch {}
+        throw new Error(`Failed to delete order: ${errMsg}`);
+      }
 
-    setTimeout(() => {
-      setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
+      setTimeout(() => {
+        setOrders((prevOrders) => prevOrders.filter((order) => order.order_id !== orderId));
+        setDeletingOrderId(null);
+        window.dispatchEvent(new Event("order-updated"));
+        toast.success("Order deleted successfully");
+      }, 400);
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
       setDeletingOrderId(null);
-
-      // Dispatch event to notify header about order count update
-      window.dispatchEvent(new Event('order-updated'));
-    }, 400);
-  } catch (err) {
-    setError(err.message);
-    setDeletingOrderId(null);
-  }
-};
-
-const deleteAllOrders = async () => {
-  if (!window.confirm("Are you sure you want to delete ALL your orders?")) return;
-
-  setDeletingAll(true);
-  setError(null);
-
-  try {
-    const response = await fetch("http://localhost:5000/api/orders/history", {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      let errMsg = response.statusText;
-      try {
-        const errData = await response.json();
-        if (errData?.error) errMsg = errData.error;
-      } catch {}
-      throw new Error(`Failed to delete all orders: ${errMsg}`);
     }
+  };
 
-    setOrders([]);
-    
-    // Dispatch event to notify header about order count update
-    window.dispatchEvent(new Event('order-updated'));
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setDeletingAll(false);
-  }
-};
+  const deleteAllOrders = async () => {
+    if (!window.confirm("Are you sure you want to delete ALL your orders?")) return;
 
+    setDeletingAll(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/orders/history", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        let errMsg = response.statusText;
+        try {
+          const errData = await response.json();
+          if (errData?.error) errMsg = errData.error;
+        } catch {}
+        throw new Error(`Failed to delete all orders: ${errMsg}`);
+      }
+
+      setOrders([]);
+      window.dispatchEvent(new Event("order-updated"));
+      toast.success("All orders cleared successfully");
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      setDeletingAll(false);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="orderHistory-loadingContainer">
         <p className="orderHistory-loadingText">Loading your order history...</p>
       </div>
     );
+  }
 
   return (
     <div className="orderHistory-container">
+      <ToastContainer position="top-center" autoClose={3000} />
       <h1 className="orderHistory-title">Order History</h1>
 
       {error && (
@@ -269,7 +275,10 @@ const deleteAllOrders = async () => {
                 </div>
               </div>
 
-              <p className="orderHistory-totalPrice" style={{ marginTop: "1rem", fontWeight: "600", fontSize: "1.1rem" , color: "green" }}>
+              <p
+                className="orderHistory-totalPrice"
+                style={{ marginTop: "1rem", fontWeight: "600", fontSize: "1.1rem", color: "green" }}
+              >
                 Total Price:{" "}
                 {typeof order.total_price === "number" ? formatNPR(order.total_price) : "N/A"}
               </p>
