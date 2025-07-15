@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";               // Added
+import "react-toastify/dist/ReactToastify.css";                       // Added
 import "./ProductDetailsPage.css";
 
 const ProductDetailsPage = () => {
@@ -50,41 +52,40 @@ const ProductDetailsPage = () => {
     setMainImage(url);
   };
 
-    // inside your component
-    const handleAddToCart = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Please login to add products to your cart");
-        navigate("/login");
-        return;
-      }
+  // inside your component
+  const handleAddToCart = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.info("Please login to add products to your cart");
+      navigate("/login");
+      return;
+    }
 
-      try {
-        const res = await fetch("http://localhost:5000/api/cart", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ productId: product.product_id }),
-        });
+    try {
+      const res = await fetch("http://localhost:5000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId: product.product_id }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
+      if (!res.ok) throw new Error(data.error || "Failed to add product to cart");
 
-        alert(data.message || "Product added to cart!");
-        window.dispatchEvent(new Event('cart-updated'));
-      } catch (err) {
-        alert(err.message);
-      }
-    };
-
+      toast.success(data.message || "Product added to cart!");
+      window.dispatchEvent(new Event("cart-updated"));
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const handleAddToWishlist = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to add to wishlist");
+      toast.info("Please login to add to wishlist");
       navigate("/login");
       return;
     }
@@ -96,18 +97,16 @@ const ProductDetailsPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        // Note: Changed product_id to productId to match backend expectation
         body: JSON.stringify({ productId: product.product_id }),
       });
 
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Failed to add to wishlist");
-      alert(data.message || "Product added to wishlist!");
-      // Optionally dispatch event to update wishlist count elsewhere
-      window.dispatchEvent(new Event('wishlist-updated'));
+      toast.success(data.message || "Product added to wishlist!");
+      window.dispatchEvent(new Event("wishlist-updated"));
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -115,115 +114,120 @@ const ProductDetailsPage = () => {
   if (!product) return <p>Loading...</p>;
 
   return (
-    <div className="pd-container">
-      <button className="pd-back-btn" onClick={() => window.history.back()}>
-        &larr; Back to Products
-      </button>
+    <>
+      {/* Toast container outside main content */}
+      <ToastContainer position="top-center" autoClose={3000} />
 
-      <div className="pd-main-content">
-        <div className="pd-images">
-          <img
-            src={mainImage}
-            alt={product.name}
-            className="pd-main-img"
-            onError={(e) => (e.target.src = "/fallback-image.png")}
-          />
+      <div className="pd-container">
+        <button className="pd-back-btn" onClick={() => window.history.back()}>
+          &larr; Back to Products
+        </button>
 
-          <div className="pd-thumbnails">
-            {product.thumbnails?.length ? (
-              product.thumbnails.map((thumb, i) => {
-                const thumbUrl =
-                  thumb.startsWith("http") || thumb.startsWith("data")
-                    ? thumb
-                    : `http://localhost:5000${thumb.startsWith("/") ? thumb : "/" + thumb}`;
-                const isActive = mainImage === thumbUrl;
-                return (
-                  <img
-                    key={i}
-                    src={thumbUrl}
-                    alt={`Thumbnail ${i + 1}`}
-                    className={`pd-thumb ${isActive ? "pd-thumb-active" : ""}`}
-                    onClick={() => handleThumbnailClick(thumbUrl)}
-                    onError={(e) => (e.target.src = "/fallback-image.png")}
-                    style={{ cursor: "pointer" }}
-                  />
-                );
-              })
-            ) : (
-              <p>No thumbnails available</p>
-            )}
+        <div className="pd-main-content">
+          <div className="pd-images">
+            <img
+              src={mainImage}
+              alt={product.name}
+              className="pd-main-img"
+              onError={(e) => (e.target.src = "/fallback-image.png")}
+            />
+
+            <div className="pd-thumbnails">
+              {product.thumbnails?.length ? (
+                product.thumbnails.map((thumb, i) => {
+                  const thumbUrl =
+                    thumb.startsWith("http") || thumb.startsWith("data")
+                      ? thumb
+                      : `http://localhost:5000${thumb.startsWith("/") ? thumb : "/" + thumb}`;
+                  const isActive = mainImage === thumbUrl;
+                  return (
+                    <img
+                      key={i}
+                      src={thumbUrl}
+                      alt={`Thumbnail ${i + 1}`}
+                      className={`pd-thumb ${isActive ? "pd-thumb-active" : ""}`}
+                      onClick={() => handleThumbnailClick(thumbUrl)}
+                      onError={(e) => (e.target.src = "/fallback-image.png")}
+                      style={{ cursor: "pointer" }}
+                    />
+                  );
+                })
+              ) : (
+                <p>No thumbnails available</p>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="pd-info">
-          <h2>{product.name}</h2>
-          <p className="pd-details">{product.details}</p>
+          <div className="pd-info">
+            <h2>{product.name}</h2>
+            <p className="pd-details">{product.details}</p>
 
-          <p className="pd-price">
-            {product.old_price && (
-              <span className="pd-old-price">
-                NPR {parseFloat(product.old_price).toLocaleString()}
+            <p className="pd-price">
+              {product.old_price && (
+                <span className="pd-old-price">
+                  NPR {parseFloat(product.old_price).toLocaleString()}
+                </span>
+              )}
+              <span className="pd-new-price">
+                NPR {parseFloat(product.new_price).toLocaleString()}
               </span>
-            )}
-            <span className="pd-new-price">
-              NPR {parseFloat(product.new_price).toLocaleString()}
-            </span>
-            {product.discount && <span className="pd-discount">{product.discount}</span>}
-          </p>
+              {product.discount && <span className="pd-discount">{product.discount}</span>}
+            </p>
 
-          <p>
-            <strong>Condition:</strong> {product.condition || "N/A"}
-          </p>
-          <p>
-            <strong>Storage:</strong> {product.storage ? `${product.storage} GB` : "N/A"}
-          </p>
-          <p>
-            <strong>Battery Health:</strong> {product.battery_health ? `${product.battery_health}%` : "N/A"}
-          </p>
+            <p>
+              <strong>Condition:</strong> {product.condition || "N/A"}
+            </p>
+            <p>
+              <strong>Storage:</strong> {product.storage ? `${product.storage} GB` : "N/A"}
+            </p>
+            <p>
+              <strong>Battery Health:</strong> {product.battery_health ? `${product.battery_health}%` : "N/A"}
+            </p>
 
-          <div className="pd-buttons">
-            <button
-              className={product.status?.toLowerCase().includes("sold out") ? "pd-btn-sold" : "pd-btn-buy"}
-              disabled={product.status?.toLowerCase().includes("sold out")}
-            >
-              {product.status || "Unavailable"}
-            </button>
-            <button className="pd-btn-cart" onClick={handleAddToCart}>
-              Add to Cart
-            </button>
-            <button className="pd-btn-wishlist" onClick={handleAddToWishlist}>
-              Add to Wishlist
-            </button>
-            <button className="pd-btn-exchange" onClick={() => navigate("/exchange")}>
-              Exchange Your Smartphone
-            </button>
+            <div className="pd-buttons">
+              <button
+                className={product.status?.toLowerCase().includes("sold out") ? "pd-btn-sold" : "pd-btn-buy"}
+                disabled={product.status?.toLowerCase().includes("sold out")}
+              >
+                {product.status || "Unavailable"}
+              </button>
+              <button className="pd-btn-cart" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
+              <button className="pd-btn-wishlist" onClick={handleAddToWishlist}>
+                Add to Wishlist
+              </button>
+              <button className="pd-btn-exchange" onClick={() => navigate("/exchange")}>
+                Exchange Your Smartphone
+              </button>
+            </div>
           </div>
         </div>
+
+        {product.features?.length > 0 && (
+          <div className="pd-section">
+            <h3>Top Features</h3>
+            <ul>{product.features.map((f, i) => <li key={i}>{f}</li>)}</ul>
+          </div>
+        )}
+
+        {product.specs && Object.keys(product.specs).length > 0 && (
+          <div className="pd-section">
+            <h3>Technical Specifications</h3>
+            <table className="pd-specs">
+              <tbody>
+                {Object.entries(product.specs).map(([key, value], i) => (
+                  <tr key={i}>
+                    <th>{key}</th>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-
-      {product.features?.length > 0 && (
-        <div className="pd-section">
-          <h3>Top Features</h3>
-          <ul>{product.features.map((f, i) => <li key={i}>{f}</li>)}</ul>
-        </div>
-      )}
-
-      {product.specs && Object.keys(product.specs).length > 0 && (
-        <div className="pd-section">
-          <h3>Technical Specifications</h3>
-          <table className="pd-specs">
-            <tbody>
-              {Object.entries(product.specs).map(([key, value], i) => (
-                <tr key={i}>
-                  <th>{key}</th>
-                  <td>{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

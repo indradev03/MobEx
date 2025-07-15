@@ -1,62 +1,44 @@
 import pool from '../database/db.js';
-import jwt from 'jsonwebtoken';
 
-export const getUserIdFromReq = (req) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return null;
-  const token = authHeader.split(' ')[1];
-  if (!token) return null;
-
-  try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    return decoded.userId;
-  } catch (err) {
-    return null;
-  }
-};
-
+// === Add to Cart ===
 export const addToCart = async (req, res) => {
-  const userId = getUserIdFromReq(req);
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
+  const userId = req.user?.userId;
   const { productId } = req.body;
-  if (!productId) {
-    return res.status(400).json({ error: 'Product ID is required' });
-  }
+
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+  if (!productId) return res.status(400).json({ error: 'Product ID is required' });
 
   try {
-    const existingCartItem = await pool.query(
+    const existing = await pool.query(
       'SELECT cart_id, quantity FROM cart WHERE user_id = $1 AND product_id = $2',
       [userId, productId]
     );
 
-    if (existingCartItem.rows.length > 0) {
-      // Increment quantity if item exists
-      const newQuantity = existingCartItem.rows[0].quantity + 1;
+    if (existing.rows.length > 0) {
+      const newQuantity = existing.rows[0].quantity + 1;
       await pool.query(
         'UPDATE cart SET quantity = $1 WHERE cart_id = $2',
-        [newQuantity, existingCartItem.rows[0].cart_id]
+        [newQuantity, existing.rows[0].cart_id]
       );
       return res.json({ message: 'Cart item quantity updated' });
     }
 
-    // Insert new cart item with quantity 1
     await pool.query(
       'INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, 1)',
       [userId, productId]
     );
 
-    return res.json({ message: 'Product added to cart successfully' });
+    return res.status(201).json({ message: 'Product added to cart successfully' });
   } catch (err) {
     console.error('Error adding to cart:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-
-
+// === Get Cart Items ===
 export const getCartItems = async (req, res) => {
-  const userId = getUserIdFromReq(req);
+  const userId = req.user?.userId;
+
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
@@ -68,23 +50,21 @@ export const getCartItems = async (req, res) => {
       [userId]
     );
 
-    return res.json({ cartItems: result.rows });
+    return res.status(200).json({ cartItems: result.rows });
   } catch (err) {
     console.error('Error fetching cart items:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-
-// PUT /api/cart/:cartId
+// === Update Cart Quantity ===
 export const updateCartQuantity = async (req, res) => {
-  const userId = getUserIdFromReq(req);
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
+  const userId = req.user?.userId;
   const { cartId } = req.params;
   const { quantity } = req.body;
 
-  if (quantity < 1) {
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+  if (!cartId || !quantity || quantity < 1) {
     return res.status(400).json({ error: 'Quantity must be at least 1' });
   }
 
@@ -100,18 +80,23 @@ export const updateCartQuantity = async (req, res) => {
   }
 };
 
-// DELETE /api/cart/:cartId
+// === Remove Cart Item ===
 export const removeCartItem = async (req, res) => {
-  const userId = getUserIdFromReq(req);
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
+  const userId = req.user?.userId;
   const { cartId } = req.params;
 
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
   try {
-    await pool.query(
+    const result = await pool.query(
       'DELETE FROM cart WHERE cart_id = $1 AND user_id = $2',
       [cartId, userId]
     );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Cart item not found' });
+    }
+
     return res.json({ message: 'Cart item removed successfully' });
   } catch (err) {
     console.error('Error removing cart item:', err);

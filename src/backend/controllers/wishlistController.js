@@ -1,23 +1,8 @@
 import pool from '../database/db.js';
-import jwt from 'jsonwebtoken';
 
-// Middleware to extract userId from Authorization header JWT token
-export const getUserIdFromReq = (req) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return null;
-  const token = authHeader.split(' ')[1];
-  if (!token) return null;
-
-  try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    return decoded.userId;
-  } catch {
-    return null;
-  }
-};
-
+// === Get Wishlist ===
 export const getWishlist = async (req, res) => {
-  const userId = getUserIdFromReq(req);
+  const userId = req.user?.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
@@ -28,24 +13,24 @@ export const getWishlist = async (req, res) => {
        WHERE w.user_id = $1`,
       [userId]
     );
-    res.json(result.rows);
+    res.status(200).json(result.rows);
   } catch (err) {
-    console.error(err);
+    console.error('Get Wishlist Error:', err);
     res.status(500).json({ error: 'Failed to get wishlist' });
   }
 };
 
+// === Add to Wishlist ===
 export const addToWishlist = async (req, res) => {
-    
-  const userId = req.user.userId; // get from authenticate middleware
-
-
+  const userId = req.user?.userId;
   const { productId } = req.body;
+
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
   if (!productId) return res.status(400).json({ error: 'Product ID is required' });
 
   try {
     const exists = await pool.query(
-      'SELECT * FROM wishlist WHERE user_id = $1 AND product_id = $2',
+      'SELECT 1 FROM wishlist WHERE user_id = $1 AND product_id = $2',
       [userId, productId]
     );
     if (exists.rows.length > 0) {
@@ -59,18 +44,17 @@ export const addToWishlist = async (req, res) => {
 
     res.status(201).json({ message: 'Added to wishlist' });
   } catch (err) {
-    console.error(err);
+    console.error('Add Wishlist Error:', err);
     res.status(500).json({ error: 'Failed to add to wishlist' });
   }
 };
 
-
-// DELETE /api/wishlist/:productId
+// === Remove from Wishlist ===
 export const removeFromWishlist = async (req, res) => {
   const userId = req.user?.userId;
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
   const { productId } = req.params;
+
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
   if (!productId) return res.status(400).json({ error: 'Product ID is required' });
 
   try {
@@ -83,11 +67,9 @@ export const removeFromWishlist = async (req, res) => {
       return res.status(404).json({ error: 'Product not found in wishlist' });
     }
 
-    res.json({ message: 'Removed from wishlist' });
+    res.status(200).json({ message: 'Removed from wishlist' });
   } catch (err) {
-    console.error(err);
+    console.error('Remove Wishlist Error:', err);
     res.status(500).json({ error: 'Failed to remove from wishlist' });
   }
 };
-
-

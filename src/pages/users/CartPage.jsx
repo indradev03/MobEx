@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./CartPage.css";
 
 const CartPage = () => {
@@ -24,6 +26,7 @@ const CartPage = () => {
       setCartItems(Array.isArray(data.cartItems) ? data.cartItems : []);
     } catch (err) {
       setError(err.message || "Could not load cart");
+      toast.error(err.message || "Could not load cart");
     } finally {
       setLoading(false);
     }
@@ -49,8 +52,9 @@ const CartPage = () => {
       setCartItems((prev) => prev.filter((item) => item.cart_id !== cartId));
       setSelectedItems((prev) => prev.filter((id) => id !== cartId));
       window.dispatchEvent(new Event("cart-updated"));
+      toast.success("Item removed from cart");
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -82,8 +86,9 @@ const CartPage = () => {
       );
 
       window.dispatchEvent(new Event("cart-updated"));
+      toast.success("Quantity updated");
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -145,7 +150,7 @@ const CartPage = () => {
           </button>
 
           <div className="cart-items-list">
-            {cartItems.map(({ cart_id, name, image_url, new_price, quantity }) => {
+            {cartItems.map(({ cart_id, product_id, name, image_url, new_price, quantity }) => {
               const imageUrl =
                 image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
                   ? image_url
@@ -183,7 +188,9 @@ const CartPage = () => {
                         +
                       </button>
                     </div>
-                    <p className="item-subtotal">Subtotal: NPR {subtotal.toLocaleString()}</p>
+                    <p className="item-subtotal">
+                      Subtotal: NPR {subtotal.toLocaleString()}
+                    </p>
                     <div className="btn-group">
                       <button
                         onClick={() => handleRemove(cart_id)}
@@ -193,10 +200,17 @@ const CartPage = () => {
                       </button>
                       <button
                         onClick={() =>
-                          handleCheckoutSingle({ cart_id, name, image_url, new_price, quantity })
+                          handleCheckoutSingle({
+                            cart_id,
+                            product_id,
+                            name,
+                            image_url,
+                            new_price,
+                            quantity,
+                          })
                         }
                         className="btn-checkout-single"
-                        disabled={!selectedItems.includes(cart_id)} // Disabled unless selected
+                        disabled={!selectedItems.includes(cart_id)}
                       >
                         Checkout This Item
                       </button>
@@ -208,6 +222,8 @@ const CartPage = () => {
           </div>
         </div>
       )}
+
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
