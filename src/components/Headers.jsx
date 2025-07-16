@@ -168,22 +168,42 @@ const Headers = () => {
 
         <nav className="header-nav">
           <ul className="header-nav-links">
-            <li>
+            
+            <li className="brands-dropdown">
               <Link
                 to="/brands"
                 className={location.pathname === "/brands" ? "active-link" : ""}
               >
                 Brands
               </Link>
+              
+              <ul className="dropdown-menu">
+                <li><Link to="/brands/1">Apple</Link></li>
+                <li><Link to="/brands/2">Samsung</Link></li>
+                <li><Link to="/brands/3">Xiaomi</Link></li>
+                <li><Link to="/brands/4">OnePlus</Link></li>
+                <li><Link to="/brands/5">Realme</Link></li>
+              </ul>
+            </li>
+
+            <li>
+              <Link
+                to="/brands/1"
+                className={location.pathname === "/brands/1" ? "active-link" : ""}
+              >
+                Apple
+              </Link>
             </li>
             <li>
               <Link
-                to="/exchange"
-                className={location.pathname === "/exchange" ? "active-link" : ""}
+                to="/brands/2"
+                className={location.pathname === "/brands/2" ? "active-link" : ""}
               >
-                Exchange
+                Samsung
               </Link>
             </li>
+
+
             <li>
               <Link
                 to="/special-offers"
