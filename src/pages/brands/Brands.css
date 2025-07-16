@@ -12,7 +12,7 @@
 
 /* Container for the entire brand page */
 .brands-page {
-  padding: 120px 20px;
+  padding: 150px 20px;
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -24,7 +24,6 @@
 .brands-header h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
-  color: #ffa0a0;
 }
 
 .brands-header p {

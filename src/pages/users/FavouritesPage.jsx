@@ -87,7 +87,6 @@ const FavouritesPage = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to add to cart");
 
-      // Now remove from wishlist
       await handleRemove(product.product_id);
 
       toast.success("Added to cart and removed from wishlist");
@@ -132,6 +131,12 @@ const FavouritesPage = () => {
                 <p className="favourite-price">
                   NPR {parseFloat(item.new_price).toLocaleString()}
                 </p>
+                <p className="favourite-status">
+                  Status:{" "}
+                  <span className={item.status === "Sold Out" ? "sold-out" : "available"}>
+                    {item.status}
+                  </span>
+                </p>
                 <div className="favourite-actions">
                   <button
                     className="favourite-btn remove"
@@ -142,8 +147,9 @@ const FavouritesPage = () => {
                   <button
                     className="favourite-btn cart"
                     onClick={() => handleAddToCart(item)}
+                    disabled={item.status === "Sold Out"}
                   >
-                    Add to Cart
+                    {item.status === "Sold Out" ? "Sold Out" : "Add to Cart"}
                   </button>
                 </div>
               </div>

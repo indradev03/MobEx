@@ -58,8 +58,8 @@
 /* Fix class name here */
 .profile-edit-icon-overlay {
   position: absolute;
-  bottom: -5px;
-  right: -5px;
+  bottom: 0px;
+  right: 0px;
   background-color: #007bff;
   border-radius: 50%;
   padding: 8px;

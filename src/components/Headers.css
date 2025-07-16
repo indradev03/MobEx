@@ -45,7 +45,7 @@
 .header-auth button {
   padding: 8px 16px;
   font-size: 16px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: none;
   font-weight: bold;
   font-family: 'Times New Roman', Times, serif;
@@ -53,12 +53,13 @@
   transition: transform 0.2s ease;
 }
 .auth-login, .auth-signup {
-  background-color: #5a5959;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
 }
 .header-auth button:hover {
   background-color: #0091ff;
   transform: scale(1.05);
+  color: white;
 }
 
 .header-icons {
@@ -271,3 +272,49 @@
 }
 
 
+.brands-dropdown {
+  position: relative;
+}
+
+.brands-dropdown .dropdown-menu {
+  display: none; /* hide by default */
+  position: absolute;
+  top: 100%;  /* right below the Brands link */
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  min-width: 150px;
+  z-index: 999;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.brands-dropdown:hover .dropdown-menu {
+  display: block; /* show on hover */
+}
+
+.dropdown-menu li {
+  padding: 8px 12px;
+}
+
+.dropdown-menu li a {
+  color: #000000;
+  text-decoration: none;
+  display: block;
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+/* On hover or focus: white text and blue background */
+.dropdown-menu li a:hover,
+.brands-dropdown li a:focus {
+  color: #ffffff;
+  background-color: #1769e4;
+}

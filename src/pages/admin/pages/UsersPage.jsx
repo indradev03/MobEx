@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./UsersPage.css";
 
 const UsersPage = () => {
@@ -29,14 +31,14 @@ const UsersPage = () => {
       setFilteredUsers(data.users || []);
     } catch (err) {
       setError(err.message);
+      toast.error(`Error fetching users: ${err.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (userId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-    if (!confirmDelete) return;
+    // Removed confirmation dialog as per previous context
 
     try {
       const token = localStorage.getItem("token");
@@ -51,8 +53,9 @@ const UsersPage = () => {
       }
 
       fetchUsers();
+      toast.success("User deleted successfully");
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      toast.error(`Error deleting user: ${err.message}`);
     }
   };
 
@@ -74,6 +77,7 @@ const UsersPage = () => {
 
   return (
     <div className="users-container">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="users-header">
         <h2>User Management</h2>
         <input

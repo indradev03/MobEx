@@ -69,7 +69,7 @@ const OrderHistoryPage = () => {
   };
 
   const deleteOrder = async (orderId) => {
-    if (!window.confirm(`Are you sure you want to delete this order?`)) return;
+    // if (!window.confirm(`Are you sure you want to delete this order?`)) return;
 
     setDeletingOrderId(orderId);
     setError(null);
@@ -153,7 +153,7 @@ const OrderHistoryPage = () => {
   return (
     <div className="orderHistory-container">
       <ToastContainer position="top-center" autoClose={3000} />
-      <h1 className="orderHistory-title">Order History</h1>
+      <h1 className="orderHistory-title"> 📦 Order History</h1>
 
       {error && (
         <div className="orderHistory-errorContainer">

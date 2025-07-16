@@ -94,9 +94,7 @@ const CartPage = () => {
 
   const handleSelectToggle = (cartId) => {
     setSelectedItems((prev) =>
-      prev.includes(cartId)
-        ? prev.filter((id) => id !== cartId)
-        : [...prev, cartId]
+      prev.includes(cartId) ? prev.filter((id) => id !== cartId) : [...prev, cartId]
     );
   };
 
@@ -130,10 +128,8 @@ const CartPage = () => {
         </p>
       ) : (
         <div className="cart-content-wrapper">
-          <button className="btn-select-toggle" onClick={handleSelectAllToggle}>
-            {selectedItems.length === cartItems.length
-              ? "Deselect All"
-              : "Select All"}
+          <button className="cart-btn-select-toggle" onClick={handleSelectAllToggle}>
+            {selectedItems.length === cartItems.length ? "Deselect All" : "Select All"}
           </button>
 
           <button
@@ -150,75 +146,112 @@ const CartPage = () => {
           </button>
 
           <div className="cart-items-list">
-            {cartItems.map(({ cart_id, product_id, name, image_url, new_price, quantity }) => {
-              const imageUrl =
-                image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
-                  ? image_url
-                  : `http://localhost:5000${image_url}`;
+            {cartItems.map(
+              ({
+                cart_id,
+                product_id,
+                name,
+                image_url,
+                new_price,
+                quantity,
+                exchange_applied,
+                estimated_exchange_price,
+                final_price,
+              }) => {
+                const imageUrl =
+                  image_url && (image_url.startsWith("http") || image_url.startsWith("data"))
+                    ? image_url
+                    : `http://localhost:5000${image_url}`;
 
-              const subtotal = (parseFloat(new_price) || 0) * (quantity || 1);
+                const unitPrice = exchange_applied ? final_price : new_price;
+                const subtotal = (parseFloat(unitPrice) || 0) * (quantity || 1);
+                const discount = exchange_applied ? parseFloat(estimated_exchange_price) : 0;
 
-              return (
-                <div key={cart_id} className="cart-item-card">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.includes(cart_id)}
-                    onChange={() => handleSelectToggle(cart_id)}
-                    className="cart-item-checkbox"
-                  />
-                  <img src={imageUrl} alt={name} className="cart-item-img" />
-                  <div className="cart-item-info">
-                    <h3 className="item-title">{name}</h3>
-                    <p className="item-price">
-                      Price: NPR {parseFloat(new_price).toLocaleString()}
-                    </p>
-                    <div className="qty-control">
-                      <button
-                        className="qty-btn"
-                        onClick={() => handleQuantityChange(cart_id, quantity - 1)}
-                        disabled={quantity <= 1}
-                      >
-                        −
-                      </button>
-                      <span className="qty-value">{quantity}</span>
-                      <button
-                        className="qty-btn"
-                        onClick={() => handleQuantityChange(cart_id, quantity + 1)}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <p className="item-subtotal">
-                      Subtotal: NPR {subtotal.toLocaleString()}
-                    </p>
-                    <div className="btn-group">
-                      <button
-                        onClick={() => handleRemove(cart_id)}
-                        className="btn-remove"
-                      >
-                        Remove
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleCheckoutSingle({
-                            cart_id,
-                            product_id,
-                            name,
-                            image_url,
-                            new_price,
-                            quantity,
-                          })
-                        }
-                        className="btn-checkout-single"
-                        disabled={!selectedItems.includes(cart_id)}
-                      >
-                        Checkout This Item
-                      </button>
+                return (
+                  <div key={cart_id} className="cart-item-card">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(cart_id)}
+                      onChange={() => handleSelectToggle(cart_id)}
+                      className="cart-item-checkbox"
+                    />
+                    <img src={imageUrl} alt={name} className="cart-item-img" />
+                    <div className="cart-item-info">
+                      <h3 className="item-title">{name}</h3>
+
+                      <p className="item-price">
+                        Price:{" "}
+                        {exchange_applied ? (
+                          <>
+                            <span className="line-through">
+                              NPR {parseFloat(new_price).toLocaleString()}
+                            </span>{" "}
+                            <span className="highlight">
+                              NPR {parseFloat(final_price).toLocaleString()}
+                            </span>
+                          </>
+                        ) : (
+                          <>NPR {parseFloat(new_price).toLocaleString()}</>
+                        )}
+                      </p>
+
+                      {exchange_applied && (
+                        <p className="exchange-note">
+                          Exchange Applied ✓ — Trade-in Discount: NPR{" "}
+                          {discount.toLocaleString()}
+                        </p>
+                      )}
+
+                      <div className="qty-control">
+                        <button
+                          className="qty-btn"
+                          onClick={() => handleQuantityChange(cart_id, quantity - 1)}
+                          disabled={quantity <= 1}
+                        >
+                          −
+                        </button>
+                        <span className="qty-value">{quantity}</span>
+                        <button
+                          className="qty-btn"
+                          onClick={() => handleQuantityChange(cart_id, quantity + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <p className="item-subtotal">
+                        Subtotal: NPR {subtotal.toLocaleString()}
+                      </p>
+
+                      <div className="btn-group">
+                        <button
+                          onClick={() => handleRemove(cart_id)}
+                          className="btn-remove"
+                        >
+                          Remove
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleCheckoutSingle({
+                              cart_id,
+                              product_id,
+                              name,
+                              image_url,
+                              new_price: unitPrice,
+                              quantity,
+                            })
+                          }
+                          className="btn-checkout-single"
+                          disabled={!selectedItems.includes(cart_id)}
+                        >
+                          Checkout This Item
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              }
+            )}
           </div>
         </div>
       )}
