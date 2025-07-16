@@ -1,0 +1,450 @@
+/* Container & base styles */
+.mx-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2d2d2d;
+  max-width: 1200px;
+  margin: 150px auto 60px;
+  padding: 0 1.5rem;
+}
+
+/* Hero Section */
+.mx-hero-section {
+  text-align: center;
+}
+
+.mx-hero-section h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.mx-hero-subtitle {
+  font-size: 1.35rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Story & Mission Container */
+.mx-story-mission-wrapper {
+  display: flex;
+  gap: 3.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+/* Story & Mission Cards */
+.mx-story-section {
+  flex: 1;
+  padding: 3rem 2.5rem;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Headings */
+.mx-story-section h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2563eb;
+  text-align: center;
+  letter-spacing: 0.03em;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+/* Accent underline */
+.mx-story-section h2::after,
+.mx-mission-section h2::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 60px;
+  height: 4px;
+  background-color: #2563eb;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+/* Paragraph text */
+.mx-story-section p,
+.mx-mission-section p {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  margin-bottom: 1.6rem;
+  color: #4a4a4a;
+  text-align: justify;
+  font-weight: 400;
+}
+
+/* Brands Section */
+.mx-brands-section {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.mx-brands-section h2 {
+  font-size: 28px;
+  color: #2563eb;
+  margin-bottom: 2rem;
+}
+
+.mx-brands-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.mx-brand-card {
+  flex: 0 0 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+}
+
+.mx-brand-card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.mx-brand-card p {
+  font-weight: 600;
+  color: #444;
+}
+
+.mx-brand-card:hover {
+  transform: scale(1.1);
+}
+
+/* Why Choose Us */
+.mx-whyus-section {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.mx-whyus-section h2 {
+  font-size: 28px;
+  color: #2563eb;
+  margin-bottom: 3rem;
+}
+
+.mx-whyus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 2.5rem;
+}
+
+.mx-whyus-card {
+    background-color: white;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.mx-icon {
+  font-size: 2.8rem;
+  color: #2857bb;
+  margin-bottom: 1rem;
+}
+
+.mx-whyus-card h3 {
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: #636363;
+}
+
+.mx-whyus-card p {
+  font-weight: 400;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Team Section */
+.mx-team-section {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.mx-team-section h2 {
+  font-size: 28px;
+  color: #2563eb;
+  margin-bottom: 2.5rem;
+}
+
+.mx-team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.mx-team-card {
+  background: #f9fbff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  width: 180px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  cursor: default;
+  transition: transform 0.3s ease;
+}
+
+/* NEW: team member image avatar */
+.mx-team-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.mx-team-card:hover .mx-team-avatar {
+  transform: scale(1.05);
+}
+
+/* Hide initials avatar (old style) */
+.mx-avatar {
+  display: none;
+}
+
+/* Testimonials Section */
+.mx-testimonials-section {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.mx-testimonials-section h2 {
+  font-size: 28px;
+  color: #2563eb;
+  margin-bottom: 3rem;
+}
+
+.mx-testimonials-grid {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mx-testimonial-card {
+  background: #f9fbff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  max-width: 350px;
+  cursor: default;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mx-user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1.2rem;
+  object-fit: cover;
+}
+
+.mx-quote {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.mx-user-name {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+/* Sustainability Section */
+.mx-sustainability-section {
+  margin-bottom: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 2rem 0;
+}
+
+.mx-sustainability-content {
+  display: flex;
+  max-width: 1200px;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.mx-sustainability-text {
+  flex: 1 1 400px;
+  min-width: 300px;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.mx-sustainability-text h2 {
+  font-size: 28px;
+  color: #2563eb;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.mx-sustainability-image {
+  flex: 1 1 350px;
+  min-width: 280px;
+}
+
+.mx-sustainability-image img {
+  width: 100%;
+  border-radius: 0px;
+  object-fit: cover;
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.15));
+}
+
+/* CTA Section */
+.mx-cta-section {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.mx-cta-section h2 {
+  font-size: 35px;
+  color: #2563eb;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.mx-cta-section p {
+  font-size: 1.25rem;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.mx-cta-buttons .mx-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.85rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mx-cta-buttons .mx-btn:hover {
+  background-color: #1e40af;
+}
+
+/* Contact Section */
+.mx-contact-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.mx-contact-section h2 {
+  font-size: 2.5rem;
+  color: #2563eb;
+  margin-bottom: 1.8rem;
+}
+
+.mx-contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.mx-contact-info > div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.mx-contact-info svg {
+  color: #2563eb;
+  font-size: 1.3rem;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .mx-story-mission-wrapper {
+    flex-wrap: wrap;
+  }
+  .mx-story-section,
+  .mx-mission-section {
+    flex: 1 1 100%;
+  }
+  .mx-mission-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .mx-mission-image {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .mx-whyus-grid {
+    grid-template-columns: 1fr;
+  }
+  .mx-brands-grid {
+    justify-content: center;
+  }
+  .mx-team-grid {
+    flex-direction: column;
+  }
+  .mx-testimonials-grid {
+    flex-direction: column;
+  }
+  .mx-contact-info {
+    flex-direction: column;
+  }
+}

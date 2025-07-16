@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";           // Added
-import "react-toastify/dist/ReactToastify.css";                   // Added
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./BrandProductsList.css";
 
 const BrandProductsList = ({ brandId }) => {
@@ -21,7 +21,7 @@ const BrandProductsList = ({ brandId }) => {
       } catch (err) {
         console.error(err);
         setError("Failed to load products for this brand");
-        toast.error("Failed to load products for this brand");  // Toast error here
+        toast.error("Failed to load products for this brand");
       }
     };
 
@@ -65,6 +65,13 @@ const BrandProductsList = ({ brandId }) => {
     }
   };
 
+  // Format price with 2 decimal places
+  const formatPrice = (price) =>
+    parseFloat(price).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
   return (
     <>
       <ToastContainer position="top-center" autoClose={3000} />
@@ -94,7 +101,9 @@ const BrandProductsList = ({ brandId }) => {
               >
                 <div className="bp-image-wrapper">
                   {product.discount && (
-                    <span className="bp-discount-badge">{product.discount.replace("%", "")}% off</span>
+                    <span className="bp-discount-badge">
+                      {product.discount.replace("%", "")}% off
+                    </span>
                   )}
                   <img
                     src={
@@ -109,16 +118,18 @@ const BrandProductsList = ({ brandId }) => {
 
                 <h3>{product.name}</h3>
 
-                {product.details && <p className="bp-product-details">{product.details}</p>}
+                {product.details && (
+                  <p className="bp-product-details">{product.details}</p>
+                )}
 
                 <p className="bp-product-price">
                   {product.old_price && (
                     <span className="bp-old-price">
-                      NPR {parseFloat(product.old_price).toLocaleString()}
+                      NPR {formatPrice(product.old_price)}
                     </span>
                   )}
                   <span className="bp-new-price">
-                    NPR {parseFloat(product.new_price).toLocaleString()}
+                    NPR {formatPrice(product.new_price)}
                   </span>
                 </p>
 

@@ -304,7 +304,13 @@ const ProductDetailsPage = () => {
 
       if (!res.ok) throw new Error(data.error || "Failed to add to cart");
 
-      toast.success(`Product added to cart with exchange applied! Discount: NPR ${estimatedPrice.toLocaleString()}`);
+      toast.success(
+        `Product added to cart with exchange applied! Discount: NPR ${estimatedPrice.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+      );
+
       window.dispatchEvent(new Event("cart-updated"));
 
       setShowExchangePopup(false);
@@ -366,18 +372,23 @@ const ProductDetailsPage = () => {
           <div className="pd-info">
             <h2>{product.name}</h2>
             <p className="pd-details">{product.details}</p>
-
-            <p className="pd-price">
-              {product.old_price && (
-                <span className="pd-old-price">
-                  NPR {parseFloat(product.old_price).toLocaleString()}
-                </span>
-              )}
-              <span className="pd-new-price">
-                NPR {parseFloat(product.new_price).toLocaleString()}
-              </span>
-              {product.discount && <span className="pd-discount">{product.discount}</span>}
-            </p>
+                <p className="pd-price">
+                  {product.old_price && (
+                    <span className="pd-old-price">
+                      NPR {parseFloat(product.old_price).toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </span>
+                  )}
+                  <span className="pd-new-price">
+                    NPR {parseFloat(product.new_price).toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                  {product.discount && <span className="pd-discount">{product.discount}</span>}
+                </p>
 
             <p>
               <strong>Condition:</strong> {product.condition || "N/A"}
@@ -386,7 +397,7 @@ const ProductDetailsPage = () => {
               <strong>Storage:</strong> {product.storage ? `${product.storage} GB` : "N/A"}
             </p>
             <p>
-              <strong>Battery Health:</strong> {product.battery_health ? `${product.battery_health}%` : "N/A"}
+              <strong>Battery Health:</strong> {product.battery_health ? `${product.battery_health}` : "N/A"}
             </p>
 
             <div className="pd-buttons">
@@ -562,11 +573,12 @@ const ProductDetailsPage = () => {
                   />
                   {formErrors.batteryHealth && <small className="error-text">{formErrors.batteryHealth}</small>}
                 </label>
-
-                <p>
-                  <strong>Estimated Trade-in Price: </strong> NPR {estimatedPrice.toLocaleString()}
-                </p>
-
+                  <p>
+                    <strong>Estimated Trade-in Price: </strong> NPR {estimatedPrice.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
                 <button type="submit" className="exchange-submit-btn">
                   Submit Exchange Details
                 </button>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./FavouritesPage.css";
 
 const FavouritesPage = () => {
@@ -100,6 +100,12 @@ const FavouritesPage = () => {
     fetchWishlist();
   }, []);
 
+  const formatPrice = (price) =>
+    parseFloat(price).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
   return (
     <div className="favourites-page">
       <ToastContainer position="top-center" autoClose={3000} />
@@ -129,7 +135,7 @@ const FavouritesPage = () => {
               <div className="favourite-content">
                 <h3 className="favourite-name">{item.name}</h3>
                 <p className="favourite-price">
-                  NPR {parseFloat(item.new_price).toLocaleString()}
+                  NPR {formatPrice(item.new_price)}
                 </p>
                 <p className="favourite-status">
                   Status:{" "}

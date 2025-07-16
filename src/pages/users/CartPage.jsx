@@ -167,6 +167,12 @@ const CartPage = () => {
                 const subtotal = (parseFloat(unitPrice) || 0) * (quantity || 1);
                 const discount = exchange_applied ? parseFloat(estimated_exchange_price) : 0;
 
+                const formatPrice = (price) =>
+                  parseFloat(price).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  });
+
                 return (
                   <div key={cart_id} className="cart-item-card">
                     <input
@@ -180,25 +186,19 @@ const CartPage = () => {
                       <h3 className="item-title">{name}</h3>
 
                       <p className="item-price">
-                        Price:{" "}
                         {exchange_applied ? (
                           <>
-                            <span className="line-through">
-                              NPR {parseFloat(new_price).toLocaleString()}
-                            </span>{" "}
-                            <span className="highlight">
-                              NPR {parseFloat(final_price).toLocaleString()}
-                            </span>
+                            <span className="line-through">NPR {formatPrice(new_price)}</span>{" "}
+                            <span className="highlight">NPR {formatPrice(final_price)}</span>
                           </>
                         ) : (
-                          <>NPR {parseFloat(new_price).toLocaleString()}</>
+                          <>NPR {formatPrice(new_price)}</>
                         )}
                       </p>
 
                       {exchange_applied && (
                         <p className="exchange-note">
-                          Exchange Applied ✓ — Trade-in Discount: NPR{" "}
-                          {discount.toLocaleString()}
+                          Exchange Applied ✓ — Trade-in Discount: NPR {formatPrice(discount)}
                         </p>
                       )}
 
@@ -220,14 +220,11 @@ const CartPage = () => {
                       </div>
 
                       <p className="item-subtotal">
-                        Subtotal: NPR {subtotal.toLocaleString()}
+                        Subtotal: NPR {formatPrice(subtotal)}
                       </p>
 
                       <div className="btn-group">
-                        <button
-                          onClick={() => handleRemove(cart_id)}
-                          className="btn-remove"
-                        >
+                        <button onClick={() => handleRemove(cart_id)} className="btn-remove">
                           Remove
                         </button>
                         <button

@@ -9,11 +9,12 @@
 
 .cart-header {
   text-align: center;
+  font-size: 2.75rem;
+  font-weight: 700;
   margin-bottom: 2.5rem;
   letter-spacing: 0.03em;
   color: #222;
   user-select: none;
-  font-size: 30px;
 }
 
 /* Loading & Error Text */
@@ -66,7 +67,7 @@
   max-width: 100%;
 }
 
-.cart-btn-select-toggle {
+.cart-btn-select-toggle  {
   color: white;
   padding: 10px 26px;
   border-radius: 10px;
@@ -81,8 +82,8 @@
   background-color: #007bff;
 
 }
-.cart-btn-select-toggle:hover,
-.cart-btn-select-toggle:focus {
+
+.cart-btn-select-toggle:hover {
   background-color: #0056b3;
   outline: none;
 }
@@ -173,11 +174,12 @@
 
 .item-price {
   font-weight: 700;
-  color: #333;
+  color: green;
   margin-bottom: 0.5rem;
   font-size: 1.05rem;
   user-select: text;
 }
+
 
 .item-subtotal {
   margin-top: 8px;
@@ -185,6 +187,29 @@
   color: #555;
   font-size: 1rem;
   user-select: text;
+}
+
+.item-price .line-through {
+  text-decoration: line-through;
+  color: #d32f2f;
+  margin-right: 0.5rem;
+}
+
+.item-price .highlight {
+  color: #029c0c; /* red tone for discounted price */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.exchange-note {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background-color: #e6f4ea; /* light green background */
+  color: #2e7d32; /* dark green text */
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid #43a047; /* green accent bar */
+  border-radius: 4px;
+  display: inline-block;
 }
 
 /* Quantity Controls */
@@ -325,20 +350,4 @@
     text-align: center;
     margin: 0 0 0.8rem 0;
   }
-}
-.line-through {
-  text-decoration: line-through;
-  color: #888;
-  margin-right: 8px;
-}
-
-.highlight {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.exchange-note {
-  font-size: 14px;
-  color: #28a745;
-  margin-top: 4px;
 }
