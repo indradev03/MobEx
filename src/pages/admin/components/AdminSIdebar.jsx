@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   Smartphone,
   Package,
-  Calendar,
   Users,
   BarChart3,
   ShoppingBag,

@@ -7,9 +7,8 @@ import AddProductPage from "./AddProductPage";
 import BrandsPage from "./BrandsPage";
 import BrandProductsPage from "./BrandProductsPage"; // brand detail view
 import AdminOrderPage from "./AdminOrderPage"; // Admin order management page
+import UsersPage from "./UsersPage"; // Admin users management page
 
-// Stub pages for future sections
-const UsersPage = () => <h2>Users Page</h2>;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
