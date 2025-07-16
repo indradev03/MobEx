@@ -1,16 +1,15 @@
 .favourites-page {
   max-width: 1200px;
-  margin: 100px auto 50px;
-  padding: 20px;
+    margin: 100px auto 3rem auto;
+    padding: 2.5rem 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
 .favourites-title {
-  font-size: 32px;
   text-align: center;
   margin-bottom: 30px;
-  color: #e63946;
+  font-size: 28px;
 }
 
 .wishlist-loading,
@@ -26,6 +25,7 @@
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: 100px;
 }
 
 .favourite-card {
@@ -108,3 +108,22 @@
   background-color: #126782;
 }
 
+.favourite-status {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.favourite-status .available {
+  color: green;
+  font-weight: 600;
+}
+
+.favourite-status .sold-out {
+  color: red;
+  font-weight: 600;
+}
+
+.favourite-btn.cart:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

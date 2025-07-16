@@ -5,7 +5,9 @@ import {
   getUserProfile,
   uploadProfileImage,
   deleteProfileImage,
-  updateProfile
+  updateProfile,
+  getAllUsers,
+  deleteUserById
 } from '../../controllers/userController.js';
 
 import { authenticateToken } from '../../middlewares/authMiddleware.js';
@@ -28,5 +30,17 @@ router.delete('/profile/delete-image', authenticateToken, deleteProfileImage);
 
 // Upload profile picture
 router.post('/profile/upload', authenticateToken, uploadFields, uploadProfileImage);
+
+// Protect route so only admin can fetch users (optional)
+router.get('/all', authenticateToken, (req, res, next) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  next();
+}, getAllUsers);
+
+// DELETE user by ID - protect route, maybe admin only
+router.delete('/:id', authenticateToken, (req, res, next) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  next();
+}, deleteUserById);
 
 export default router;

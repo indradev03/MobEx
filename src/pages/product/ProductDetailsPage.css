@@ -1,7 +1,7 @@
 /* Container */
 .pd-container {
   max-width: 1200px;
-  margin: 120px auto;
+  margin: 160px auto;
   padding: 30px 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #fff;
@@ -39,6 +39,7 @@
   gap: 50px;
   flex-wrap: wrap;
   align-items: flex-start;
+  margin-top: 20px;
 }
 
 /* Left Section: Images */
@@ -140,73 +141,82 @@
 /* Text Lines */
 .pd-info p {
   font-size: 15px;
-  margin: 25px 0;
+  margin: 45px 0;
 }
 
 /* Buttons Group */
+
 .pd-buttons {
-  margin-top: 30px;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 
+/* Common styles for all buttons */
 .pd-buttons button {
-  padding: 14px;
-  font-size: 16px;
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: 600;
-  border-radius: 10px;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Add to Cart - Orange */
-.pd-btn-cart {
-  background-color: #007bff;
+/* === Status Button Styles === */
+.pd-btn-sold {
+  background-color: #f44336;
   color: #fff;
-}
-.pd-btn-cart:hover {
-  background-color: #126bca;
-  transform: translateY(-2px);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
-
-/* Button Styles */
 .pd-btn-buy {
-  background-color: #6f42c1;
+  background-color: #4caf50;
   color: #fff;
 }
 
 .pd-btn-buy:hover {
-  background-color: #5a34a6;
-  transform: translateY(-2px);
+  background-color: #43a047;
 }
 
-.pd-btn-sold {
-  background-color: #e0e0e0;
-  color: #666;
+/* === Action Buttons === */
+.pd-btn-cart {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.pd-btn-cart:hover:not(:disabled) {
+  background-color: #1976d2;
+}
+
+.pd-btn-cart:disabled {
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
 .pd-btn-wishlist {
-  background-color: #37474f;
+  background-color: #ff9800;
   color: #fff;
 }
 
 .pd-btn-wishlist:hover {
-  background-color: #263238;
-  transform: translateY(-2px);
+  background-color: #fb8c00;
 }
 
 .pd-btn-exchange {
-  background-color: #009688;
+  background-color: #9c27b0;
   color: #fff;
 }
 
-.pd-btn-exchange:hover {
-  background-color: #00796b;
-  transform: translateY(-2px);
+.pd-btn-exchange:hover:not(:disabled) {
+  background-color: #7b1fa2;
+}
+
+.pd-btn-exchange:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Section Block */
@@ -286,6 +296,7 @@
     font-size: 26px;
   }
 }
+
 @media screen and (max-width: 480px) {
   .pd-container {
     padding: 20px;
@@ -313,4 +324,85 @@
   .pd-details {
     font-size: 14px;
   }
+}
+
+/* Exchange Popup */
+.exchange-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background: white;
+  box-shadow: -3px 0 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  animation: slideInRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.exchange-popup-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.exchange-popup-close {
+  align-self: flex-end;
+  font-size: 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.exchange-popup h2 {
+  margin-bottom: 20px;
+}
+
+.exchange-popup label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.exchange-popup input,
+.exchange-popup select {
+  width: 100%;
+  padding: 8px 6px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+}
+
+.exchange-submit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.exchange-submit-btn:hover {
+  background-color: #0056b3;
 }
