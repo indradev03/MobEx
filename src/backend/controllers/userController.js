@@ -212,3 +212,39 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// controllers/userController.js (or similar)
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT user_id, name, email, contact, address, gender, role, profile_image 
+       FROM mobex_users ORDER BY user_id DESC`
+    );
+    res.json({ users: result.rows });
+  } catch (err) {
+    console.error('Fetch all users error:', err);
+    res.status(500).json({ error: 'Server error fetching users' });
+  }
+};
+
+
+export const deleteUserById = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Delete the user with the given ID
+    const result = await pool.query(
+      'DELETE FROM mobex_users WHERE user_id = $1 RETURNING *',
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ message: 'User deleted successfully', deletedUser: result.rows[0] });
+  } catch (err) {
+    console.error('Delete user error:', err);
+    res.status(500).json({ error: 'Server error deleting user' });
+  }
+};

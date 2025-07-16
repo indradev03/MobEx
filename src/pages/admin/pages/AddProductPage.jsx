@@ -179,7 +179,9 @@ const AddProductPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+
+    // if (!window.confirm("Are you sure you want to delete this product?")) return;
+
     try {
       const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete product");

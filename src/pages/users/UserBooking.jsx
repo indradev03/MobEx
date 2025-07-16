@@ -186,7 +186,6 @@ const UserBooking = () => {
           <FaShoppingCart />
           Go to My Cart
         </button>
-        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
@@ -388,6 +387,7 @@ const UserBooking = () => {
         </div>
       )}
 
+      {/* Only one ToastContainer rendered here */}
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );

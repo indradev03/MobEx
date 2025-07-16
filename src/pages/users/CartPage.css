@@ -67,7 +67,7 @@
   max-width: 100%;
 }
 
-.btn-select-toggle {
+.cart-btn-select-toggle  {
   color: white;
   padding: 10px 26px;
   border-radius: 10px;
@@ -80,10 +80,10 @@
   align-self: flex-start;
   transition: background-color 0.3s ease;
   background-color: #007bff;
-  box-shadow: 0 3px 8px rgb(0 123 255 / 0.4);
+
 }
 
-.btn-select-toggle:hover {
+.cart-btn-select-toggle:hover {
   background-color: #0056b3;
   outline: none;
 }
@@ -174,11 +174,12 @@
 
 .item-price {
   font-weight: 700;
-  color: #333;
+  color: green;
   margin-bottom: 0.5rem;
   font-size: 1.05rem;
   user-select: text;
 }
+
 
 .item-subtotal {
   margin-top: 8px;
@@ -186,6 +187,29 @@
   color: #555;
   font-size: 1rem;
   user-select: text;
+}
+
+.item-price .line-through {
+  text-decoration: line-through;
+  color: #d32f2f;
+  margin-right: 0.5rem;
+}
+
+.item-price .highlight {
+  color: #029c0c; /* red tone for discounted price */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.exchange-note {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background-color: #e6f4ea; /* light green background */
+  color: #2e7d32; /* dark green text */
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid #43a047; /* green accent bar */
+  border-radius: 4px;
+  display: inline-block;
 }
 
 /* Quantity Controls */

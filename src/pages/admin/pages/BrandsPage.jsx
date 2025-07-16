@@ -133,10 +133,9 @@ const BrandsPage = () => {
   };
 
   const handleDeleteBrand = async (brandId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this brand?"
-    );
-    if (!confirmDelete) return;
+    // Remove the confirmation dialog
+    // const confirmDelete = window.confirm("Are you sure you want to delete this brand?");
+    // if (!confirmDelete) return;
 
     try {
       const res = await fetch(`http://localhost:5000/api/brands/${brandId}`, {
@@ -159,6 +158,7 @@ const BrandsPage = () => {
       toast.error(msg);
     }
   };
+
 
   return (
     <>
