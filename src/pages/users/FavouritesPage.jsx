@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./FavouritesPage.css";
 
 const FavouritesPage = () => {
@@ -87,7 +87,6 @@ const FavouritesPage = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to add to cart");
 
-      // Now remove from wishlist
       await handleRemove(product.product_id);
 
       toast.success("Added to cart and removed from wishlist");
@@ -100,6 +99,12 @@ const FavouritesPage = () => {
   useEffect(() => {
     fetchWishlist();
   }, []);
+
+  const formatPrice = (price) =>
+    parseFloat(price).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   return (
     <div className="favourites-page">
@@ -130,7 +135,13 @@ const FavouritesPage = () => {
               <div className="favourite-content">
                 <h3 className="favourite-name">{item.name}</h3>
                 <p className="favourite-price">
-                  NPR {parseFloat(item.new_price).toLocaleString()}
+                  NPR {formatPrice(item.new_price)}
+                </p>
+                <p className="favourite-status">
+                  Status:{" "}
+                  <span className={item.status === "Sold Out" ? "sold-out" : "available"}>
+                    {item.status}
+                  </span>
                 </p>
                 <div className="favourite-actions">
                   <button
@@ -142,8 +153,9 @@ const FavouritesPage = () => {
                   <button
                     className="favourite-btn cart"
                     onClick={() => handleAddToCart(item)}
+                    disabled={item.status === "Sold Out"}
                   >
-                    Add to Cart
+                    {item.status === "Sold Out" ? "Sold Out" : "Add to Cart"}
                   </button>
                 </div>
               </div>
