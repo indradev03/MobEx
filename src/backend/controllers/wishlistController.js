@@ -1,13 +1,20 @@
 import pool from '../database/db.js';
 
 // === Get Wishlist ===
+// === Get Wishlist ===
 export const getWishlist = async (req, res) => {
   const userId = req.user?.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
     const result = await pool.query(
-      `SELECT w.wishlist_id, w.product_id, p.name, p.image_url, p.new_price
+      `SELECT 
+         w.wishlist_id, 
+         w.product_id, 
+         p.name, 
+         p.image_url, 
+         p.new_price, 
+         p.status  -- 👈 Added status here
        FROM wishlist w
        JOIN products p ON w.product_id = p.product_id
        WHERE w.user_id = $1`,

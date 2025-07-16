@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Headers from './components/Headers';
 import Slideshow from './components/Slideshow';
 import Brands from './pages/brands/Brands';
-import Exchange from './pages/Exchange';
+// import ExchangePage from './pages/users/ExchangePage';
 import SpecialOffers from './pages/SpecialOffers';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -63,7 +63,7 @@ function App() {
                   <Route path="/brands/:brandId" element={<BrandProductsPage />} />
                   <Route path="/productdetails" element={<ProductDetailsPage />} />
 
-                <Route path="/exchange" element={<Exchange />} />
+                {/* <Route path="/exchange" element={<ExchangePage />} /> */}
                 <Route path="/special-offers" element={<SpecialOffers />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
