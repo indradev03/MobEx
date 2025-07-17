@@ -3,17 +3,57 @@ import jwt from 'jsonwebtoken';
 import pool from '../database/db.js';
 
 // === Signup Controller ===
+
 export const signup = async (req, res) => {
   let { name, email, contact, address, gender, password, role } = req.body;
 
-  if (!name || !email || !contact || !address || !gender || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
+  // Normalize email
+  if (email) email = email.toLowerCase();
+
+  // === VALIDATIONS ===
+
+  if (!name || name.trim() === '') {
+    return res.status(400).json({ error: 'Name is required' });
   }
 
-  // Normalize email to lowercase
-  email = email.toLowerCase();
+  if (!email || email.trim() === '') {
+    return res.status(400).json({ error: 'Email is required' });
+  }
 
-  // Default role to 'user' if not provided or invalid
+  // Gmail-only format validation
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+  if (!gmailRegex.test(email)) {
+    return res.status(400).json({ error: 'Only Gmail addresses are allowed' });
+  }
+
+  if (!contact || contact.trim() === '') {
+    return res.status(400).json({ error: 'Contact number is required' });
+  }
+
+  const contactRegex = /^\d{10}$/;
+  if (!contactRegex.test(contact)) {
+    return res.status(400).json({ error: 'Contact number must be exactly 10 digits' });
+  }
+
+  if (!address || address.trim() === '') {
+    return res.status(400).json({ error: 'Address is required' });
+  }
+
+  if (!gender || gender.trim() === '') {
+    return res.status(400).json({ error: 'Gender is required' });
+  }
+
+  if (!password || password.trim() === '') {
+    return res.status(400).json({ error: 'Password is required' });
+  }
+
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: 'Password must be at least 8 characters long and include at least one number and one special character',
+    });
+  }
+
   const userRole = role && typeof role === 'string' ? role.toLowerCase() : 'user';
 
   try {
@@ -31,7 +71,6 @@ export const signup = async (req, res) => {
       user: result.rows[0],
     });
   } catch (err) {
-    // Unique violation code in PostgreSQL
     if (err.code === '23505') {
       return res.status(409).json({ error: 'Email already exists' });
     }
@@ -40,16 +79,31 @@ export const signup = async (req, res) => {
   }
 };
 
+
 // === Login Controller ===
 export const login = async (req, res) => {
   let { email, password, role } = req.body;
 
+  // Normalize
+  email = email?.toLowerCase();
+  role = role?.toLowerCase();
+
+  // === VALIDATIONS ===
   if (!email || !password || !role) {
     return res.status(400).json({ error: 'Please fill in all fields including role' });
   }
 
-  email = email.toLowerCase();
-  role = role.toLowerCase();
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+  if (!gmailRegex.test(email)) {
+    return res.status(400).json({ error: 'Only Gmail addresses are allowed' });
+  }
+
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: 'Password must be at least 8 characters long and include at least one number and one special character',
+    });
+  }
 
   try {
     const result = await pool.query(
