@@ -302,3 +302,49 @@ export const deleteUserById = async (req, res) => {
     res.status(500).json({ error: 'Server error deleting user' });
   }
 };
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: 'Token and new password are required' });
+  }
+
+  try {
+    // Find the user with matching reset token
+    const result = await pool.query(
+      'SELECT * FROM mobex_users WHERE reset_token = $1',
+      [token]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+
+    const user = result.rows[0];
+
+    // Check if token expired
+    if (new Date(user.reset_token_expires) < new Date()) {
+      return res.status(400).json({ error: 'Reset token has expired' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password and remove reset token
+    await pool.query(
+      `UPDATE mobex_users
+       SET password = $1, reset_token = NULL, reset_token_expires = NULL
+       WHERE user_id = $2`,
+      [hashedPassword, user.user_id]
+    );
+
+    return res.status(200).json({ message: 'Password reset successful' });
+
+  } catch (err) {
+    console.error('Reset password error:', err);
+    return res.status(500).json({ error: 'Server error', details: err.message });
+  }
+};
+
