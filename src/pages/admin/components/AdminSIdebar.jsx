@@ -9,6 +9,8 @@ import {
   LogOut
 } from "lucide-react";
 import "./AdminSidebar.css";
+import logo from "../../../assets/indeximages/Logomo.svg"; // adjust path as needed
+
 
 const menuItems = [
     { title: "Home", url: "/admindashboard", icon: BarChart3 },
@@ -31,16 +33,15 @@ export function AdminSidebar() {
     <aside className="admin-sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <Package className="logo-icon" />
-        <h2 className="logo-text">Mobile Exchange</h2>
+        <img src={logo} alt="Mobile Exchange Logo" className="logo-icon" />
       </div>
 
       {/* Admin Profile */}
       <div className="admin-profile">
-        <div className="avatar">A</div>
+        <div className="avatar">I</div>
         <div className="admin-info">
-          <p className="admin-name">Admin User</p>
-          <p className="admin-email">admin@mobile.com</p>
+          <p className="admin-name">Indradev</p>
+          <p className="admin-email">indradev@gmail.com</p>
         </div>
       </div>
 

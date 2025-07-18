@@ -1,8 +1,8 @@
 .admin-sidebar {
   width: 230px;
   height: 100vh;
-  background-color: #0f172a; /* dark slate */
-  color: #ffffff;
+  background-color: #f9fafb; /* light base */
+  color: #0f172a; /* dark text */
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
@@ -10,7 +10,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -31,7 +31,7 @@
 .logo-text {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #0f172a;
 }
 
 /* Admin profile under logo */
@@ -65,11 +65,12 @@
   font-size: 0.95rem;
   font-weight: 600;
   margin: 0;
+  color: #0f172a;
 }
 
 .admin-email {
   font-size: 0.8rem;
-  color: #cbd5e1;
+  color: #64748b;
   margin: 0;
 }
 
@@ -84,7 +85,7 @@
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
-  color: #cbd5e1;
+  color: #334155;
   border-radius: 8px;
   text-decoration: none;
   margin-bottom: 0.4rem;
@@ -92,12 +93,12 @@
 }
 
 .nav-item:hover {
-  background-color: #1e293b;
-  color: #ffffff;
+  background-color: #e2e8f0;
+  color: #0f172a;
 }
 
 .nav-item.active {
-  background-color: #0094ff;
+  background-color: #0399da;
   color: #ffffff;
 }
 
@@ -110,13 +111,13 @@
 /* Logout at bottom */
 .sidebar-footer {
   padding-top: 1rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid #cbd5e1;
 }
 
 .logout-btn {
   width: 100%;
   background: transparent;
-  color: #f87171;
+  color: #ef4444;
   border: none;
   display: flex;
   align-items: center;
@@ -128,6 +129,6 @@
 }
 
 .logout-btn:hover {
-  background-color: #1e293b;
-  color: #ffffff;
+  background-color: #e2e8f0;
+  color: #0f172a;
 }
