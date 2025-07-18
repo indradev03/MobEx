@@ -1,33 +1,48 @@
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
-import pool from '../database/db.js'; // Adjust if needed
+import pool from '../database/db.js';
 
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email || !email.endsWith('@gmail.com')) {
+
+    // === 1. Basic Validation ===
+    if (!email || typeof email !== 'string' || !email.endsWith('@gmail.com')) {
       return res.status(400).json({ error: 'Valid Gmail address is required' });
     }
 
-    const userRes = await pool.query('SELECT * FROM mobex_users WHERE email = $1', [email]);
-    console.log('User query result:', userRes.rows);
+    // === 2. Check if user exists ===
+    const result = await pool.query(
+      'SELECT user_id, name FROM mobex_users WHERE email = $1',
+      [email]
+    );
 
-    if (userRes.rows.length === 0) {
-      return res.status(200).json({ message: 'If an account exists, a reset link has been sent' });
+    if (result.rows.length === 0) {
+      // Never reveal whether email exists
+      return res.status(200).json({
+        message: 'If an account exists, a reset link has been sent'
+      });
     }
 
-    const user = userRes.rows[0];
+    const user = result.rows[0];
+
+    // === 3. Generate token and expiry ===
     const resetToken = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
     await pool.query(
-      'UPDATE mobex_users SET reset_token = $1, reset_token_expires = $2 WHERE email = $3',
-      [resetToken, expiresAt, email]
+      'UPDATE mobex_users SET reset_token = $1, reset_token_expires = $2 WHERE user_id = $3',
+      [resetToken, expiresAt, user.user_id]
     );
-    console.log('Reset token saved to DB');
 
     const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
 
+    // === 4. Validate email config ===
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      return res.status(500).json({ error: 'Email configuration missing in environment' });
+    }
+
+    // === 5. Setup mailer ===
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -42,17 +57,17 @@ export const forgotPassword = async (req, res) => {
       subject: 'Password Reset Request',
       html: `
         <h3>Hello ${user.name},</h3>
-        <p>We received a request to reset your password. Click the link below to proceed:</p>
+        <p>You requested to reset your password. Click below to continue:</p>
         <a href="${resetLink}">${resetLink}</a>
-        <p>This link will expire in 15 minutes.</p>
-        <p>If you didn't request this, please ignore this email.</p>
+        <p>This link is valid for 15 minutes. If you didn’t request this, please ignore this email.</p>
       `,
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Reset email sent');
 
-    res.status(200).json({ message: 'Reset link has been sent to your Gmail address' });
+    res.status(200).json({
+      message: 'Reset link has been sent to your Gmail address'
+    });
 
   } catch (err) {
     console.error('Forgot password error:', err);
