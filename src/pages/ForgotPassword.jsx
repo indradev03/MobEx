@@ -8,21 +8,44 @@ const ForgotPassword = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setMessage('');
 
-    if (!email) {
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    if (!email.trim()) {
       setError('Please enter your email');
-      setMessage('');
       return;
     }
 
-    // Placeholder for real API call to send reset email
-    setError('');
-    setMessage(`If an account with ${email} exists, a password reset link has been sent.`);
+    if (!gmailRegex.test(email)) {
+      setError('Only Gmail addresses are allowed');
+      return;
+    }
 
-    // Optional: redirect after some time
-    // setTimeout(() => navigate('/login'), 3000);
+    try {
+      const response = await fetch('http://localhost:5000/api/users/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Something went wrong');
+      } else {
+        setMessage(data.message);
+        setEmail('');
+        // Optional: redirect after a few seconds
+        // setTimeout(() => navigate('/login'), 3000);
+      }
+    } catch (err) {
+      console.error('Forgot password error:', err);
+      setError('Server error. Please try again later.');
+    }
   };
 
   return (
@@ -35,19 +58,19 @@ const ForgotPassword = () => {
         <label>Email</label>
         <input
           type="email"
-          placeholder="Enter your email"
+          placeholder="Enter your Gmail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <button type="submit">Send Reset Link</button>
       </form>
-      <div className='forgetpassword-links'>
+
+      <div className="forgetpassword-links">
         <p>
           Remember your password? <a href="/login">Login here</a>
         </p>
       </div>
-
     </div>
   );
 };

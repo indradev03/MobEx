@@ -66,7 +66,7 @@
 
 /* Table headers */
 .aop-admin-orders-table thead tr {
-  background-color: #364f5f;
+  background-color: #007bff;
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
@@ -117,7 +117,7 @@
 .aop-admin-orders-table td:nth-child(2) small {
   display: block;
   font-weight: 500;
-  color: #ec8005;
+  color: #007bff;
   font-size: 0.9rem;
   margin-top: 6px;
   user-select: text;

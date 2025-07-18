@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { ToastContainer, toast } from 'react-toastify';  // Added
-import 'react-toastify/dist/ReactToastify.css';           // Added
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Signup.css';
 
 const Signup = () => {
@@ -22,23 +22,78 @@ const Signup = () => {
     e.preventDefault();
     setError('');
 
-    // Basic validation
-    if (!name || !email || !contact || !address || !gender || !password || !confirmPassword) {
-      const errMsg = 'All fields are required';
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+    const contactRegex = /^\d{10}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    // Individual field validations
+    if (!name.trim()) {
+      const errMsg = 'Name is required';
       setError(errMsg);
-      toast.error(errMsg);  // Show toast
+      toast.error(errMsg);
       return;
     }
+
+    if (!email.trim()) {
+      const errMsg = 'Email is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!gmailRegex.test(email)) {
+      const errMsg = 'invalid email format';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!contact.trim()) {
+      const errMsg = 'Contact number is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!contactRegex.test(contact)) {
+      const errMsg = 'Invalid contact number format';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!address.trim()) {
+      const errMsg = 'Address is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!gender.trim()) {
+      const errMsg = 'Gender is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!password) {
+      const errMsg = 'Password is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      const errMsg = 'Invalid password format';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
     if (password !== confirmPassword) {
       const errMsg = 'Passwords do not match';
       setError(errMsg);
-      toast.error(errMsg);  // Show toast
-      return;
-    }
-    if (!/^\d{7,15}$/.test(contact)) {
-      const errMsg = 'Contact number must be 7 to 15 digits';
-      setError(errMsg);
-      toast.error(errMsg);  // Show toast
+      toast.error(errMsg);
       return;
     }
 
@@ -61,26 +116,24 @@ const Signup = () => {
       if (!response.ok) {
         const errMsg = data.error || 'Signup failed';
         setError(errMsg);
-        toast.error(errMsg);  // Show toast
+        toast.error(errMsg);
         return;
       }
 
       toast.success('Signup successful! Redirecting to login...');
-      // On success, redirect after a short delay to allow toast display
       setTimeout(() => {
         navigate('/login');
       }, 1500);
     } catch (err) {
       const errMsg = 'Something went wrong. Please try again.';
       setError(errMsg);
-      toast.error(errMsg);  // Show toast
+      toast.error(errMsg);
       console.error(err);
     }
   };
 
   return (
     <>
-      {/* ToastContainer outside main container */}
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="signup-container">
@@ -112,8 +165,6 @@ const Signup = () => {
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
                 required
-                pattern="\d{7,15}"
-                title="Contact number must be 7 to 15 digits"
               />
 
               <label>Address</label>
