@@ -17,8 +17,34 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    if (!email || !password) {
-      const errMsg = 'Please fill in both fields';
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    // === VALIDATIONS ===
+    if (!email.trim()) {
+      const errMsg = 'Email is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!gmailRegex.test(email)) {
+      const errMsg = 'Invalid email format';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!password) {
+      const errMsg = 'Password is required';
+      setError(errMsg);
+      toast.error(errMsg);
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      const errMsg =
+        'Incorrect password';
       setError(errMsg);
       toast.error(errMsg);
       return;
@@ -78,7 +104,6 @@ const Login = () => {
 
   return (
     <>
-      {/* Toast outside login container */}
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="login-container">
@@ -92,7 +117,6 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="Email"
           />
 
           <label>Password</label>
@@ -102,7 +126,6 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="Password"
             />
             <div
               className="password-toggle-icon"

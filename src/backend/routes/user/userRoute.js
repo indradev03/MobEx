@@ -7,11 +7,13 @@ import {
   deleteProfileImage,
   updateProfile,
   getAllUsers,
-  deleteUserById
+  deleteUserById,
+  resetPassword
 } from '../../controllers/userController.js';
 
 import { authenticateToken } from '../../middlewares/authMiddleware.js';
 import { uploadFields } from '../../middlewares/multerConfig.js'; // ✅ handles "image" and "thumbnails"
+import { forgotPassword } from '../../controllers/forgotpasswordController.js';
 
 const router = express.Router();
 
@@ -30,6 +32,11 @@ router.delete('/profile/delete-image', authenticateToken, deleteProfileImage);
 
 // Upload profile picture
 router.post('/profile/upload', authenticateToken, uploadFields, uploadProfileImage);
+
+router.post('/forgot-password', forgotPassword);
+
+router.post('/reset-password/:token', resetPassword);
+
 
 // Protect route so only admin can fetch users (optional)
 router.get('/all', authenticateToken, (req, res, next) => {
