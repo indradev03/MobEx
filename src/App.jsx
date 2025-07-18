@@ -29,6 +29,7 @@ import FavouritesPage from './pages/users/FavouritesPage';
 import CartPage from './pages/users/CartPage';
 import UserBooking from './pages/users/UserBooking';
 import OrderHistoryPage from './pages/users/OrderHistoryPage';
+import ResetPassword from './pages/ResetPassword';
 
 
 // Home section (used on "/")
@@ -71,6 +72,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+
                 <Route path="/productdetails" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/userdashboard" element={<UserDashboard />} />

@@ -3,17 +3,57 @@ import jwt from 'jsonwebtoken';
 import pool from '../database/db.js';
 
 // === Signup Controller ===
+
 export const signup = async (req, res) => {
   let { name, email, contact, address, gender, password, role } = req.body;
 
-  if (!name || !email || !contact || !address || !gender || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
+  // Normalize email
+  if (email) email = email.toLowerCase();
+
+  // === VALIDATIONS ===
+
+  if (!name || name.trim() === '') {
+    return res.status(400).json({ error: 'Name is required' });
   }
 
-  // Normalize email to lowercase
-  email = email.toLowerCase();
+  if (!email || email.trim() === '') {
+    return res.status(400).json({ error: 'Email is required' });
+  }
 
-  // Default role to 'user' if not provided or invalid
+  // Gmail-only format validation
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+  if (!gmailRegex.test(email)) {
+    return res.status(400).json({ error: 'Only Gmail addresses are allowed' });
+  }
+
+  if (!contact || contact.trim() === '') {
+    return res.status(400).json({ error: 'Contact number is required' });
+  }
+
+  const contactRegex = /^\d{10}$/;
+  if (!contactRegex.test(contact)) {
+    return res.status(400).json({ error: 'Contact number must be exactly 10 digits' });
+  }
+
+  if (!address || address.trim() === '') {
+    return res.status(400).json({ error: 'Address is required' });
+  }
+
+  if (!gender || gender.trim() === '') {
+    return res.status(400).json({ error: 'Gender is required' });
+  }
+
+  if (!password || password.trim() === '') {
+    return res.status(400).json({ error: 'Password is required' });
+  }
+
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: 'Password must be at least 8 characters long and include at least one number and one special character',
+    });
+  }
+
   const userRole = role && typeof role === 'string' ? role.toLowerCase() : 'user';
 
   try {
@@ -31,7 +71,6 @@ export const signup = async (req, res) => {
       user: result.rows[0],
     });
   } catch (err) {
-    // Unique violation code in PostgreSQL
     if (err.code === '23505') {
       return res.status(409).json({ error: 'Email already exists' });
     }
@@ -40,16 +79,31 @@ export const signup = async (req, res) => {
   }
 };
 
+
 // === Login Controller ===
 export const login = async (req, res) => {
   let { email, password, role } = req.body;
 
+  // Normalize
+  email = email?.toLowerCase();
+  role = role?.toLowerCase();
+
+  // === VALIDATIONS ===
   if (!email || !password || !role) {
     return res.status(400).json({ error: 'Please fill in all fields including role' });
   }
 
-  email = email.toLowerCase();
-  role = role.toLowerCase();
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+  if (!gmailRegex.test(email)) {
+    return res.status(400).json({ error: 'Only Gmail addresses are allowed' });
+  }
+
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: 'Password must be at least 8 characters long and include at least one number and one special character',
+    });
+  }
 
   try {
     const result = await pool.query(
@@ -248,3 +302,49 @@ export const deleteUserById = async (req, res) => {
     res.status(500).json({ error: 'Server error deleting user' });
   }
 };
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: 'Token and new password are required' });
+  }
+
+  try {
+    // Find the user with matching reset token
+    const result = await pool.query(
+      'SELECT * FROM mobex_users WHERE reset_token = $1',
+      [token]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+
+    const user = result.rows[0];
+
+    // Check if token expired
+    if (new Date(user.reset_token_expires) < new Date()) {
+      return res.status(400).json({ error: 'Reset token has expired' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password and remove reset token
+    await pool.query(
+      `UPDATE mobex_users
+       SET password = $1, reset_token = NULL, reset_token_expires = NULL
+       WHERE user_id = $2`,
+      [hashedPassword, user.user_id]
+    );
+
+    return res.status(200).json({ message: 'Password reset successful' });
+
+  } catch (err) {
+    console.error('Reset password error:', err);
+    return res.status(500).json({ error: 'Server error', details: err.message });
+  }
+};
+
