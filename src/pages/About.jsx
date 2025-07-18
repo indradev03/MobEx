@@ -21,9 +21,9 @@ import OppoLogo from "../assets/Brandimage/vivo.png";
 
 // Images
 import SarojImg from "../assets/indeximages/IMG_5805.jpg";
-import AnmolImg from "../assets/indeximages/IMG_5805.jpg";
+import AnmolImg from "../assets/indeximages/anmol.jpg";
 import BinishaImg from "../assets/indeximages/Binisha.png";
-import JoshnaImg from "../assets/indeximages/Binisha.png";
+import JoshnaImg from "../assets/indeximages/joshna.jpg";
 
 
 import SustainabilityImage from "../assets/indeximages/SustainabilityImage.jpg";

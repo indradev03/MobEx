@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import MobexLogo from "../assets/indeximages/Mobex_logo.svg";
+import MobexLogo from "../assets/indeximages/finallogo.svg";
 import CheckoutIcon from "../assets/indeximages/checkout.png";
 import FavouriteIcon from "../assets/indeximages/favourite.png";
 import ProfileIcon from "../assets/indeximages/people.png";
