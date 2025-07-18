@@ -222,14 +222,6 @@ const Headers = () => {
             </li>
             <li>
               <Link
-                to="/contact"
-                className={location.pathname === "/contact" ? "active-link" : ""}
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/faq"
                 className={location.pathname === "/faq" ? "active-link" : ""}
               >
