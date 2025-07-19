@@ -126,10 +126,7 @@ const FavouritesPage = () => {
 
           return (
             <div key={item.product_id} className="favourite-card">
-              <div
-                className="favourite-img-wrapper"
-                onClick={() => navigate(`/product-details?id=${item.product_id}`)}
-              >
+              <div className="favourite-img-wrapper">
                 <img src={imageUrl} alt={item.name} className="favourite-img" />
               </div>
               <div className="favourite-content">

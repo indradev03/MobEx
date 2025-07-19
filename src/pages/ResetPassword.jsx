@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import 'react-toastify/dist/ReactToastify.css';
 import './ResetPassword.css';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const { token } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
 
     if (!password || !confirmPassword) {
-      setError('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -35,15 +36,15 @@ export default function ResetPassword() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Failed to reset password');
+        toast.error(data.error || 'Failed to reset password');
       } else {
-        setMessage('Password reset successful!');
+        toast.success('Password reset successful!');
         setPassword('');
         setConfirmPassword('');
         setTimeout(() => navigate('/login'), 2000);
       }
     } catch {
-      setError('Server error. Please try again later.');
+      toast.error('Server error. Please try again later.');
     }
   };
 
@@ -51,6 +52,7 @@ export default function ResetPassword() {
     return (
       <div className="reset-password-container">
         <p className="error">Invalid or expired reset link.</p>
+        <ToastContainer position="top-center" autoClose={3000}  />
       </div>
     );
   }
@@ -58,26 +60,36 @@ export default function ResetPassword() {
   return (
     <div className="reset-password-container">
       <h2>Reset Password</h2>
-      {error && <p className="error">{error}</p>}
-      {message && <p className="message">{message}</p>}
+      <form onSubmit={handleSubmit} className="reset-password-form">
+        <div className="input-group">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="New password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
+          </span>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          placeholder="New password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
+        <div className="input-group">
+          <input
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <span className="toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+            {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+          </span>
+        </div>
+
         <button type="submit">Reset Password</button>
       </form>
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 }

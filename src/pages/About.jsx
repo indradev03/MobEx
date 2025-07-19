@@ -82,7 +82,7 @@ const About = () => {
         <div className="mx-story-section fade-in">
           <h2>Our Story</h2>
           <p>
-            Founded in 2010, Mobile Exchange began with a passion to connect
+            Mobile Exchange began with a passion to connect
             users with authentic and reliable mobile brands. We've grown into a
             trusted marketplace offering the latest smartphones, unbeatable
             exchange deals, and value-driven purchases. We empower tech lovers
