@@ -16,16 +16,20 @@ import samsung4 from "../../assets/slideshowimg/samsung4.jpg";
 import samsung5 from "../../assets/slideshowimg/samsung5.jpg";
 import samsung6 from "../../assets/slideshowimg/samsung6.jpg";
 
-import xiaomi1 from "../../assets/indeximages/exchange.jpg";
-import xiaomi2 from "../../assets/indeximages/Bottomlogo.svg";
+import xiaomi1 from "../../assets/slideshowimg/xaomi1.jpg";
+import xiaomi2 from "../../assets/slideshowimg/xaomi2.jpg";
+import xiaomi3 from "../../assets/slideshowimg/xaomi3.jpg";
+import xiaomi4 from "../../assets/slideshowimg/xaomi4.jpg";
+import xiaomi5 from "../../assets/slideshowimg/xaomi5.jpg";
+import xiaomi6 from "../../assets/slideshowimg/xaomi6.jpg";
 
 import "./BrandSlideshow.css";
 
 // Your slideshow images keyed by brand slug
 const brandSlides = {
-  apple: [apple7, apple1, apple2,apple3,apple4,apple5,apple6],
+  apple: [apple3, apple4 ,apple7, apple1, apple2,apple5,apple6],
   samsung: [samsung1,samsung4,samsung5,samsung3, samsung6, samsung2],
-  xiaomi: [xiaomi1, xiaomi2],
+  xiaomi: [xiaomi1,xiaomi4, xiaomi5,xiaomi6,xiaomi3,xiaomi2],
 };
 
 // Map numeric brand IDs to slug keys here

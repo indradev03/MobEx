@@ -38,8 +38,6 @@ const UsersPage = () => {
   };
 
   const handleDelete = async (userId) => {
-    // Removed confirmation dialog as per previous context
-
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
@@ -79,7 +77,10 @@ const UsersPage = () => {
     <div className="users-container">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="users-header">
-        <h2>User Management</h2>
+        <div>
+          <h2>User Management</h2>
+          <h3>Manage Users </h3>
+        </div>
         <input
           type="text"
           className="search-input"
@@ -93,39 +94,41 @@ const UsersPage = () => {
       {error && <div className="error-text">Error: {error}</div>}
 
       {!loading && !error && (
-        <div className="users-grid">
-          {filteredUsers.length === 0 ? (
-            <p className="no-users">No users found.</p>
-          ) : (
-            filteredUsers.map((user) => (
-              <div className="user-card" key={user.user_id}>
-                <button
-                  className="btn-icon-delete"
-                  onClick={() => handleDelete(user.user_id)}
-                  title="Delete User"
-                >
-                  <FaTrashAlt />
-                </button>
+        <div className="users-grid-wrapper">
+          <div className="users-grid">
+            {filteredUsers.length === 0 ? (
+              <p className="no-users">No users found.</p>
+            ) : (
+              filteredUsers.map((user) => (
+                <div className="user-card" key={user.user_id}>
+                  <button
+                    className="btn-icon-delete"
+                    onClick={() => handleDelete(user.user_id)}
+                    title="Delete User"
+                  >
+                    <FaTrashAlt />
+                  </button>
 
-                <div className="user-avatar">
-                  {user.profile_image ? (
-                    <img
-                      src={`http://localhost:5000${user.profile_image}`}
-                      alt={`${user.name}'s profile`}
-                    />
-                  ) : (
-                    <div className="placeholder-avatar">👤</div>
-                  )}
-                </div>
+                  <div className="user-avatar">
+                    {user.profile_image ? (
+                      <img
+                        src={`http://localhost:5000${user.profile_image}`}
+                        alt={`${user.name}'s profile`}
+                      />
+                    ) : (
+                      <div className="placeholder-avatar">👤</div>
+                    )}
+                  </div>
 
-                <div className="user-info">
-                  <h3 className="user-name">{user.name}</h3>
-                  <p className="user-email">{user.email}</p>
-                  <p className="user-contact">{user.contact || "No contact info"}</p>
+                  <div className="user-info">
+                    <h3 className="user-name">{user.name}</h3>
+                    <p className="user-email">{user.email}</p>
+                    <p className="user-contact">{user.contact || "No contact info"}</p>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
       )}
     </div>

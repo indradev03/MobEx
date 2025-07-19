@@ -1,0 +1,83 @@
+.support-wrapper {
+  background: linear-gradient(to right, #eef2f3, #f5f7fa);
+  padding: 3rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.support-container {
+  max-width: 960px;
+  padding: 2.5rem;
+  width: 100%;
+}
+
+.support-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.support-subheading {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.support-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.support-item {
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.support-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.support-item h3 {
+  margin-bottom: 0.75rem;
+  color: #0077cc;
+  font-size: 1.25rem;
+}
+
+.support-item p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.support-item a {
+  color: #0077cc;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .support-heading {
+    font-size: 2rem;
+  }
+
+  .support-subheading {
+    font-size: 1rem;
+  }
+
+  .support-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .support-item p {
+    font-size: 0.95rem;
+  }
+}
