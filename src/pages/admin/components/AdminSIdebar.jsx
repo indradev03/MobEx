@@ -9,7 +9,7 @@ import {
   LogOut
 } from "lucide-react";
 import "./AdminSidebar.css";
-import logo from "../../../assets/indeximages/Logomo.svg"; // adjust path as needed
+import logo from "../../../assets/indeximages/finallogo.svg"; // adjust path as needed
 
 
 const menuItems = [
