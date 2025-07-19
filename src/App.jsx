@@ -6,8 +6,9 @@ import Brands from './pages/brands/Brands';
 // import ExchangePage from './pages/users/ExchangePage';
 import SpecialOffers from './pages/SpecialOffers';
 import About from './pages/About';
-import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import TermsAndConditions from './pages/TermsAndConditions';
+import CustomerSupport from './pages/CustomerSupport';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NewArrival from './components/NewArrivals';
@@ -67,8 +68,9 @@ function App() {
                 {/* <Route path="/exchange" element={<ExchangePage />} /> */}
                 <Route path="/special-offers" element={<SpecialOffers />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/terms" element={<TermsAndConditions />} />
+                <Route path="/support" element={<CustomerSupport />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />

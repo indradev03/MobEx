@@ -134,7 +134,7 @@ const Signup = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={3000} />
 
       <div className="signup-container">
         <h2>Sign Up</h2>

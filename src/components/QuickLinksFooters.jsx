@@ -45,7 +45,7 @@
                 <h2>Inside MobEx</h2>
                 <ul>
                 <li><Link to="/about">About Us</Link></li>
-                <li><Link to="/why-us">Why Us</Link></li>
+                <li><Link to="/special-offers">Specail Offers</Link></li>
                 </ul>
             </div>
 
@@ -55,9 +55,7 @@
                 <ul>
                 <li><Link to="/terms">Terms and Conditions</Link></li>
                 <li><Link to="/support">Customer Support</Link></li>
-                <li><Link to="/faqs">FAQs</Link></li>
-                <li><Link to="/returns">Return Policy</Link></li>
-                <li><Link to="/payments">Payment Options</Link></li>
+                <li><Link to="/faq">FAQs</Link></li>
                 </ul>
             </div>
             </div>

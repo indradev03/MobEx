@@ -1,10 +1,9 @@
 .users-container {
   max-width: 1300px;
-  margin-left: 290px;
-  margin-top: 100px ;
-  padding: 0 15px;
+  margin-left: 275px;
+  padding: 30px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
+  min-height: 100vh;/
 }
 
 .users-header {
@@ -16,12 +15,27 @@
   gap: 15px;
 }
 
+.users-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .users-header h2 {
   font-weight: 700;
   font-size: 28px;
   color: #222;
   margin: 0;
+  line-height: 1.1;
   flex-grow: 1;
+}
+
+.users-header h3 {
+  font-weight: 500;
+  font-size: 16px;
+  color: #6b7280; /* Gray-500 */
+  margin: 0;
+  user-select: none;
 }
 
 .search-input {
@@ -32,13 +46,20 @@
   border-radius: 8px;
   border: 1.8px solid #ccc;
   outline-offset: 2px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.1);
 }
 
 .search-input:focus {
   border-color: #4f46e5; /* Indigo-600 */
   box-shadow: 0 0 5px #c7d2fe;
+}
+
+.users-grid-wrapper {
+    padding: 50px 80px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
 
 .users-grid {
@@ -48,7 +69,7 @@
 }
 
 .user-card {
-  background: linear-gradient(145deg, #ffffff, #e6e9f0);
+  background: white;
   border-radius: 14px;
   padding: 20px 25px;
   box-shadow:
@@ -85,9 +106,7 @@
 }
 
 .btn-icon-delete:hover {
-  background-color: #e53e3e;
-  color: white;
-  box-shadow: 0 0 8px #e53e3eaa;
+  color: rgb(71, 0, 0);
 }
 
 .user-avatar {
@@ -160,6 +179,10 @@
   .users-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .users-header > div {
+    margin-bottom: 12px;
   }
 
   .search-input {

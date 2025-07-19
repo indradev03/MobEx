@@ -4,7 +4,7 @@ import './FAQ.css';
 const faqs = [
   {
     question: "What is MobileXchange?",
-    answer: "MobileXchange is an online platform where you can buy, sell, and exchange smartphones at competitive prices.",
+    answer: "MobileXchange is an online platform where you can buy and exchange smartphones at competitive prices.",
   },
   {
     question: "How do I exchange my old smartphone?",
@@ -29,14 +29,6 @@ const faqs = [
   {
     question: "What payment methods do you accept?",
     answer: "We accept credit/debit cards, digital wallets, and cash on delivery (COD) in selected regions.",
-  },
-  {
-    question: "Do I need an account to buy or sell?",
-    answer: "Yes, creating an account allows us to provide order tracking, purchase history, and faster checkouts.",
-  },
-  {
-    question: "How do I sell my phone?",
-    answer: "Go to the 'Sell' section, enter your device details, get an estimated price, and schedule a pickup.",
   },
   {
     question: "How long does delivery take?",

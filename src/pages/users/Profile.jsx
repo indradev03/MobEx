@@ -199,7 +199,7 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={3000} />
       <h2 className="profile-title">My Profile</h2>
 
       <div className="profile-card">
