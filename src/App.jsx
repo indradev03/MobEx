@@ -16,7 +16,7 @@ import './App.css';
 import Premium from './components/PremiumProducts';
 import Banner from './components/Banner';
 import AboutSection from './components/AboutSection';
-import WhyUsSection from './components/WhyUsSection.jsx';
+import WhyUsSection from './components/WhyUsSection';
 import QuickLinksSection from './components/QuickLinksFooters';
 import FooterBottom from './components/Footer';
 import ProductDetails from './pages/ProductDetails';
