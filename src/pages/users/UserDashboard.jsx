@@ -5,7 +5,7 @@ import NewArrival from '../../components/NewArrivals';
 import Premium from '../../components/PremiumProducts';
 import Banner from '../../components/Banner';
 import AboutSection from '../../components/AboutSection';
-import WhyUsSection from '../../components/WhyusSection';
+import WhyUsSection from '../../components/WhyUsSection';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
