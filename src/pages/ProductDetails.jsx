@@ -4,7 +4,7 @@ import "./ProductDetails.css"; // Optional: For styling
 
 import iphone16purple from "../assets/productsimages/iphone16purple.png";
 import Iphone16Pink from '../assets/productsimages/Iphone16Pink.png';
-import Iphone16Black from '../assets/productsimages/Iphone16Black.png';
+import Iphone16Black from '../assets/productsimages/iphone16Black.png';
 import Iphone16Green from '../assets/productsimages/iphone16Green.png';
 
 import Iphone13MiniBlue1 from '../assets/productsimages/Iphone13miniblue1.svg';
